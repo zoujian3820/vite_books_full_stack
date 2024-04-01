@@ -1,0 +1,31 @@
+{
+  "name": "books-vite-vue3",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --mode development --open",
+    "build": "vue-tsc && vite build --mode production",
+    "preview": "vite preview --open --port 8888",
+    "eslint": "eslint --init",
+    "lint": "eslint --ext .ts --ext .vue --ext js src/"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "good-storage": "^1.1.1",
+    "vue": "^3.4.21"
+  },
+  "devDependencies": {
+    "@types/good-storage": "^1.1.2",
+    "@types/node": "^20.11.30",
+    "@typescript-eslint/eslint-plugin": "^7.4.0",
+    "@typescript-eslint/parser": "^7.4.0",
+    "@vitejs/plugin-vue": "^5.0.4",
+    "eslint": "^8.57.0",
+    "eslint-plugin-vue": "^9.24.0",
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0",
+    "vue-eslint-parser": "^9.4.2",
+    "vue-tsc": "^2.0.6"
+  }
+}
