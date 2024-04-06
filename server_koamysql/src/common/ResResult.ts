@@ -1,6 +1,6 @@
 enum Code {
   SUCCESS = 200,
-  SERVERERROR = 500,
+  SERVERERROR = 500
 }
 
 export class ResResult {

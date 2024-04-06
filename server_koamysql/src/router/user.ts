@@ -4,6 +4,9 @@
 //  */
 import { Context } from 'koa'
 import Router from 'koa-router'
+import logger from '../common/LogUtil'
+import Userinfo from '../model/Userinfo'
+import userDao from '../dao/UserDao'
 
 // 对Context接口进行扩展，添加params属性
 // interface CustomContext extends Context {
@@ -17,21 +20,18 @@ const router = new Router()
 
 router.prefix('/usermodule')
 
-router.get('/findUserinfo/:username', async (ctx: Context) => {
-  const { username } = ctx.params
-  ctx.body = ctx.resSuccess(`您好：${username}`)
+router.get('/findUserinfo/:username/:password', async (ctx: Context) => {
+  const { username, password } = ctx.params
+  logger.debug(`执行路由请求findUserinfo开始...${username + '_' + password}`)
+  const userinfos: Userinfo[] = await userDao.findUserinfo(username, password)
+  // console.log('userinfos', userinfos)
+  ctx.body = ctx.resSuccess(userinfos) //`您好：${username}`)
 })
 
 router.post('/addUser', async (ctx: Context) => {
   const user: Userinfo = ctx.request.body
-  ctx.body = ctx.resSuccess(`您好：${user.username}, 年龄：${user.age}`)
+  ctx.body = ctx.resSuccess(`您好：${user.username}, 地址：${user.address}`)
 })
-
-interface Userinfo {
-  username: string
-  password: string
-  age: number
-}
 
 // export default router
 

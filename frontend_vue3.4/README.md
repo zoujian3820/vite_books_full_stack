@@ -104,12 +104,31 @@ mysql -uadmin -p1234
 # 如果不存在test数据库，则创建
 # character 指定数据库字符集为utf8mb4 避免在数据库中存的数据出现乱码或有些字符不支持的情况
 # collate 指定字符集的默认校对规则
-create database if not exists test character set utf8mb4 collate utf8mb4_general_ci;
+create database if not exists 数据库名 character set utf8mb4 collate utf8mb4_general_ci;
 
 // 查看数据库命令 show databases;
 // 选择数据库命令 use 数据库名;
 // 删除数据库命令 drop database if exists 数据库名; 
 drop database if exists test2; // 假如存在test2数据库就删除
+
+//【数据库备份】使用mysqldump导出数据：不能切到mysql控制台再使用以下命令，打开cmd就可以直接跑了
+mysqldump -u用户名 -p密码 --set-gtid-purged=OFF 旧数据库名 > /导出地址/xxx.sql
+
+mysqldump -uadmin -p1234 --set-gtid-purged=OFF test > D:\test.sql
+
+mysqldump -u admin -p1234 test > d:\test2.sql 
+// linux上
+mysqldump -u admin -p1234 test > /tmp/tset_db.sql
+
+
+仅是做普通的本机备份恢复时,可以添加
+--set-gtid-purged=OFF
+作用是在备份时候不出现GTID信息
+
+// 导入数据到新库：
+mysql -u用户名 -p密码 数据库名 < /数据库文件地址/xxx.sql
+mysql -uadmin -p1234 new_db < d:/test.sql
+
 
 // 创建数据库表
     // 字符类型
@@ -148,6 +167,12 @@ create table userinfo(
     birth datetime null,
     primary key(userid)
 );
+
+// 查询出表的列信息，每列字段的数据类型，及有哪些列字段
+方法一：desc 表名; 
+  desc userinfo;
+方法二：show columns from 表名; 
+  show columns from userinfo;
 
 // 修改表名
 alter table userinfo rename myuserinfo; // 修改表userinfo的表名为myuserinfo

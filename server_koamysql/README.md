@@ -111,8 +111,8 @@ console.log('server running on prot 3002')
 
 // 启动访问 http://localhost:3002/dang/test
 ```
-### 实现二级路由 src/router/user.ts
-- 第一步 编写二级路由user.ts
+### 实现二级路由 src/router/User.ts
+- 第一步 编写二级路由User.ts
 ```
 import { Context } from 'koa'
 import Router from 'koa-router'
@@ -157,7 +157,7 @@ console.log('server running on prot 3002')
 ```
 ### 实现 post 请求
 ```
-// user.ts中
+// User.ts中
 router.post('/addUser', async (ctx: Context) => {
   const user: Userinfo = ctx.request.body
   ctx.body = `您好：${user.username}, 年龄：${user.age}`
@@ -202,7 +202,7 @@ class AllRouterLoader {
     // 'D:\study-project\viteProject\server_koamysq\src\router'
     const dir: string = path.join(process.cwd(), '/src/router')
 
-    // ['user.ts', 'books.ts']
+    // ['User.ts', 'Books.ts']
     const allFiles: string[] = this.getFiles(dir)
     const allFullFilePaths: string[] = []
     for (let file of allFiles) {
@@ -250,7 +250,7 @@ class AllRouterLoader {
 export default AllRouterLoader.allRouterLoader
 
 ```
-- 修改src/router/user.ts中的导出方式，改用node的方式module.exports=
+- 修改src/router/User.ts中的导出方式，改用node的方式module.exports=
 ```
 // export default router
 
@@ -349,3 +349,10 @@ app.use(async (ctx: Context, next: koa.Next) => {
   await next()
 })
 ```
+### 日志封装-运用TS封装log4js
+src\common\LogUtil.ts
+### 数据库配置封装-TS实现mysql配置【泛型综合+重载】
+src\conf\DbConfig.ts
+### Dao封装-mysql连接和异步查询方法+Dao实现
+src\dao\
+

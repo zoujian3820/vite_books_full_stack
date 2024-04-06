@@ -17,10 +17,6 @@
     // "emitDeclarationOnly": true, // 只生成声明文件（.d.ts文件）而不生成Javascript文件，同时配了noEmit的情况下，按emitDeclarationOnly处理, 需和搭配declaration使用
     "declaration": true, // 如果设为true，在编译完成后生成相应的*.d.ts文件
     "sourceMap": true, // tsc生成js的sourceMap文件(在outDir配置的目录下)，可以方便调试，看到ts源代码
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    },
     /* Linting */
     "strict": true // 代码开启严格模式
     // "noUnusedLocals": true,

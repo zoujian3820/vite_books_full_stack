@@ -6,6 +6,8 @@ import koa, { Context } from 'koa'
 
 import allRouterLoader from './common/AllRouterLoader'
 import { success, fail } from './common/ResResult'
+// import DbConfig from './conf/DbConfig'
+// console.log(DbConfig.getConf('user'))
 
 const app = new koa()
 // 把请求错误和成功的统一处理，用中间件的方式挂载到context上

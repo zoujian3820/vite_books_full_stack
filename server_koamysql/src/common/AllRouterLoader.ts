@@ -34,7 +34,7 @@ class AllRouterLoader {
     // 'D:\study-project\viteProject\server_koamysq\src\router'
     const dir: string = path.join(process.cwd(), '/src/router')
 
-    // ['user.ts', 'books.ts']
+    // ['User.ts', 'Books.ts']
     const allFiles: string[] = this.getFiles(dir)
     const allFullFilePaths: string[] = []
     for (let file of allFiles) {
@@ -68,8 +68,8 @@ class AllRouterLoader {
     return rootRouter
   }
   // 自定义守卫，参数为any
-  // 返回值的类型被明确指定为 data is Router 使用了Ts的类型谓词
-  // 表示这个函数用来判断 data 是否为 Router 类型。
+  // 返回值的类型被明确指定为 data is Router(使用了Ts的类型谓词)
+  // 如果函数返回值为true, 表示data数据类型为Router，否则不是
   isRouter(data: any): data is Router {
     return data instanceof Router
   }
