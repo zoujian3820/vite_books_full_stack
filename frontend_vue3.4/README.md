@@ -29,6 +29,7 @@ npm i eslint eslint-plugin-vue vue-eslint-parser @typescript-eslint/parser @type
 选择Browser
 选择Javascript
 ```
+
 ## 安装mysql
 - 1.下载下来安装完成后
 - 2.配置环境变量，在安装完的目录中找到bin文件夹，复制地址配置到变量中
