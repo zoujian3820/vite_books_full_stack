@@ -780,6 +780,21 @@ src\dao\
     ```
     方案三：使用模型类来实现，最适合对单表进行的各种查询, 只适合查询
 
+    - 使用以下装饰器方式时，一定得检查tsconfig.json中有没有添加以下三个配置
+      ```
+      "compilerOptions": {
+        "target": "ES2020",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+      }
+      ```
+    - 否则会一直报错
+      ```
+      TypeError: Cannot convert undefined or null to object
+      at Function.getOwnPropertyDescriptor (<anonymous>)
+      at D:\study-project\viteProject\server_koamysql\node_modules\sequelize-typescript\dist\model\column\column.js:18:131
+      ```
+
     ```
     import { Column, Model, Table } from 'sequelize-typescript'
     import { DataTypes } from 'sequelize'
