@@ -39,6 +39,10 @@ router.get('/findByUsmAndPsw/:username/:password', async (ctx: Context) => {
   ctx.body = ctx.resSuccess(userinfos)
 })
 
+router.get('/countTotalOrm', async (ctx: Context) => {
+  ctx.body = ctx.resSuccess(await userDaoOrm.countUserinfo())
+})
+
 router.get('/findByLikeWithOrm/:key', async (ctx: Context) => {
   const { key } = ctx.params
   ctx.body = ctx.resSuccess(await userDaoOrm.findByLike(key))
