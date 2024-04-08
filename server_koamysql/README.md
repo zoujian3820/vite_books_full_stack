@@ -309,7 +309,20 @@ select count(birth) as 有生日人数, address as 地址, count(valid) as 总�
 |               1 | 上海               |         1 |
 |               1 | 重庆               |         1 |
 +-----------------+--------------------+-----------+
-
+// 根据多列数据分组，此处根据username和address分组，统计相同名字且地址一样的有多少人，这里面有生日数据的有多少人
+select count(birth) as 有生日人数,username,  address as 地址, count(valid) as 总人数 from userinfo where password=1234 or username='小七' group by address, username;
++-----------------+----------+--------------------+-----------+
+| 有生日人数      | username | 地址               | 总人数    |
++-----------------+----------+--------------------+-----------+
+|               1 | zhangsan | 广州               |         1 |
+|               1 | 李四     | 湖北武汉           |         1 |
+|               1 | 李one    | 广州               |         1 |
+|               0 | 王二     | 没有填写地址       |         1 |
+|               0 | 小七     | 东莞               |         1 |
+|               1 | 丽影     | 上海               |         1 |
+|               1 | 小晴     | 重庆               |         2 |
+|               0 | 莫菲     | 广州               |         1 |
++-----------------+----------+--------------------+-----------+
 ```
 
 ## 安装Navicat工具操作mysql数据库
@@ -766,27 +779,35 @@ src\dao\
     }
     ```
     方案三：使用模型类来实现，最适合对单表进行的各种查询, 只适合查询
+
     ```
-    import {Column, Model, Table} from 'sequelize-typescript'
+    import { Column, Model, Table } from 'sequelize-typescript'
+    import { DataTypes } from 'sequelize'
+
     @Table({
       tableName: 'userinfo'
     })
-    export default class Userinfo extends Model<Userinfo> {
+    export default class UserinfoModel extends Model<UserinfoModel> {
       @Column({
+        type: DataTypes.INTEGER,
         field: 'userid',
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
+        comment: '用户ID'
       })
       userid!: number
-      @Column({field: 'username'})
-      public username!: string
-      @Column({field: 'password'})
-      password!: string
-      @Column({field: 'address'})
-      address!: string
-      @Column({field: 'valid'})
-      valid!: number
 
-      token!: string
+      @Column({ type: DataTypes.STRING(30), field: 'username', allowNull: false, comment: '用户名' })
+      public username!: string
+
+      @Column({ type: DataTypes.STRING(20), field: 'password', allowNull: false, comment: '密码' })
+      password!: string
+
+      @Column({ type: DataTypes.STRING(20), field: 'address', allowNull: true, comment: '地址' })
+      address!: string
+
+      @Column({ type: DataTypes.TINYINT, field: 'valid', comment: '有效性' })
+      valid!: number
     }
+
     ```
