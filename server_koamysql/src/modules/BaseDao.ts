@@ -1,10 +1,10 @@
 import { Dialect } from 'sequelize'
 import { Sequelize } from 'sequelize-typescript'
-import DbConfig from '../conf/DbConfig'
+import DbConfig from '@/conf/DbConfig'
 import path from 'path'
 
-class BaseDaoOrm {
-  static baseDaoOrm: BaseDaoOrm = new BaseDaoOrm()
+class BaseDao {
+  static baseDao: BaseDao = new BaseDao()
   sequelize!: Sequelize
   constructor() {
     this.initSeqConf('mysql')
@@ -19,12 +19,14 @@ class BaseDaoOrm {
       dialect,
       define: { timestamps: false, freezeTableName: true }
     })
-    this.addModels()
+    // this.addModels()
   }
   addModels() {
-    const modelPath = path.join(process.cwd(), '/src/ormmodel')
+    const modelPath = path.join(process.cwd(), '/src/modules/decormodel')
     this.sequelize.addModels([modelPath])
   }
 }
-
-export default BaseDaoOrm.baseDaoOrm
+const baseDao = BaseDao.baseDao
+baseDao.addModels()
+// export default BaseDao.baseDao
+export const { sequelize } = baseDao

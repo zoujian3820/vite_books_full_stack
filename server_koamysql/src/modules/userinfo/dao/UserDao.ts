@@ -1,19 +1,21 @@
 import { Op, Sequelize } from 'sequelize'
-import { model } from '../definemodel'
-import Userinfo from '../model/Userinfo'
+import Userinfo from '@/types/Userinfo'
+import { model as defmodel } from '../defmodel'
+// 装饰器模型不适用增加数据, 只适全查询
+import model from '@modules/decormodel/Userinfo'
 
-class UserDaoDefind {
-  static userDaoDefine: UserDaoDefind = new UserDaoDefind()
+class UserDao {
+  static userDao: UserDao = new UserDao()
   async addUser(userinfo: Userinfo) {
     // 已在GlobalException.ts中做全局错误拦截处理，此处无需try catch
-    const result = await model.create(userinfo)
+    const result = await defmodel.create(userinfo)
     // 单个数可用toJSON，数组得用map展开单个toJSON
     return result.toJSON()
   }
   findAllUser() {
     // 反回所有数据
     // 此方法可加raw去除其他无用结构数据
-    return model.findAll({ raw: true })
+    return defmodel.findAll({ raw: true })
   }
   findByProps() {
     // 只反回所有数据中的  设定的列值
@@ -93,4 +95,4 @@ class UserDaoDefind {
 // }
 
 // export const { addUser, findAllUser, findByProps, findByUsmAndPsw, findByLike, findByUsmAndAddr } = UserDaoDefind
-export default UserDaoDefind.userDaoDefine
+export default UserDao.userDao

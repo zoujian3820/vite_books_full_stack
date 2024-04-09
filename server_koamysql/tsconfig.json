@@ -20,10 +20,12 @@
     "declaration": true, // 如果设为true，在编译完成后生成相应的*.d.ts文件
     "sourceMap": true, // tsc生成js的sourceMap文件(在outDir配置的目录下)，可以方便调试，看到ts源代码
     /* Linting */
-    "strict": true // 代码开启严格模式
-    // "noUnusedLocals": true,
-    // "noUnusedParameters": true,
-    // "noFallthroughCasesInSwitch": true
+    "strict": true, // 代码开启严格模式
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@modules/*": ["./src/modules/*"]
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts"],
   "exclude": ["node_modules", "dist", "**/*.js"]

@@ -1,3 +1,5 @@
+// node搭配ts设置路径别名 https://www.cnblogs.com/gogechang/p/17894865.html
+import 'module-alias/register'
 import koa, { Context } from 'koa'
 // import body from 'koa-body'
 // import json from 'koa-json'

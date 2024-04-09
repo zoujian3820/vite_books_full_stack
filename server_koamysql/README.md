@@ -1,6 +1,41 @@
 # koa mysql
 
 
+## node搭配ts设置路径别名
+参考地址 https://www.cnblogs.com/gogechang/p/17894865.html
+```
+# 安装第三方依赖
+npm i module-alias @types/module-alias;
+```
+1、在tsconfig.json中增加baseUrl和paths配置
+```
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@modules/*": ["./src/modules/*"]
+    }
+  }
+}
+```
+2、在package.json中增加_moduleAliases属性配置
+```
+{
+  "scripts": {},
+  "_moduleAliases": {
+    "@": "./src",
+    "@modules": "./src/modules"
+  }
+}
+```
+3、在你的项目入口文件中，此项目的app.ts文件中，在第一行加入这段代码
+```
+import 'module-alias/register'
+或者下面这种
+require('module-alias/register')
+```
+
 ## 安装mysql
 - 1.下载下来安装完成后
 - 2.配置环境变量，在安装完的目录中找到bin文件夹，复制地址配置到变量中
