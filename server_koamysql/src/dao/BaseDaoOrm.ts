@@ -17,7 +17,7 @@ class BaseDaoOrm {
       port,
       // 表示是何种数据库，此时为mysql
       dialect,
-      define: { timestamps: false, freezeTableName: false }
+      define: { timestamps: false, freezeTableName: true }
     })
     this.addModels()
   }

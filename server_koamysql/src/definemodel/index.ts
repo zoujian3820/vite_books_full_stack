@@ -60,7 +60,7 @@ class Userinfo {
       },
       {
         // true表示使用给定的表名，false表示模型名后加s作为表名
-        // freezeTableName: true,
+        freezeTableName: true,
         // true表示给模型加上时间戳属生(createAt, updateAt), false表示不带时间戳属性
         timestamps: false
       }
