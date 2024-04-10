@@ -33,7 +33,6 @@ class AllRouterLoader {
     // 获取当前执行环境地址，拼接路由文件夹地址
     // 'D:\study-project\viteProject\server_koamysq\src\router'
     const dir: string = path.join(process.cwd(), '/src/router')
-
     // ['User.ts', 'Books.ts']
     const allFiles: string[] = this.getFiles(dir)
     const allFullFilePaths: string[] = []

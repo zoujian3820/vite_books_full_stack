@@ -11,7 +11,8 @@ import Userinfo from '@/types/Userinfo'
 // import userDaoDefine from '../dao/UserDaoDefine'
 // import userDaoOrm from '../dao/UserDaoOrm'
 
-import userDao from '../modules/userinfo/dao/UserDao'
+import userDao from '@/modules/userinfo/dao/UserDao'
+// import oneToMany from '@modules/ctgy/defmodel/OneToMany'
 
 // 对Context接口进行扩展，添加params属性
 // interface CustomContext extends Context {
@@ -40,6 +41,39 @@ router.get('/findByUsmAndPsw/:username/:password', async (ctx: Context) => {
   // const userinfos: Userinfo | null = await userDao.findByUsmAndPsw(username, password)
   const userinfos = await userDao.findByUsmAndPsw(username, password)
   ctx.body = ctx.resSuccess(userinfos)
+})
+
+// router.get('/oneToMany', async (ctx: Context) => {
+//   const res = await oneToMany(1)
+//   ctx.body = ctx.resSuccess(res)
+// })
+
+router.get('/testSql', async (ctx: Context) => {
+  type A = {
+    thirdctgyid?: number
+    thirdname?: string
+    secctgyid?: number
+    secondname?: string
+    firstctgyId?: number
+    thirdctgys?: A[]
+  }
+  const res = await userDao.testSql(1)
+  const arr: A[] = []
+  if (res[0]?.length) {
+    const result: A[] = res[0] as A[]
+    for (let item of result) {
+      const findItem = arr.find((a) => a.secctgyid === item.secctgyid)
+      if (!findItem) {
+        arr.push({
+          ...item,
+          thirdctgys: [{ thirdctgyid: item.thirdctgyid, thirdname: item.thirdname, secctgyid: item.secctgyid }]
+        })
+      } else {
+        findItem.thirdctgys?.push({ thirdctgyid: item.thirdctgyid, thirdname: item.thirdname, secctgyid: item.secctgyid })
+      }
+    }
+  }
+  ctx.body = ctx.resSuccess(arr)
 })
 
 router.get('/countTotalOrm', async (ctx: Context) => {

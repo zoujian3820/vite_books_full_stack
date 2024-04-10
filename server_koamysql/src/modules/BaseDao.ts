@@ -17,7 +17,20 @@ class BaseDao {
       port,
       // 表示是何种数据库，此时为mysql
       dialect,
-      define: { timestamps: false, freezeTableName: true }
+      define: { timestamps: false, freezeTableName: true },
+      // 数据库连接池配置, Sequelize默认就会使用连接池，只是下面配置用的很低
+      pool: {
+        // 最大连接对象的个数
+        max: 300,
+        // 最小连接数，服务一运行起来，就会直接先请求50个数据库连接，等待使用
+        min: 50,
+        // idle 一个连接在释放前可空闲的时间，单位为毫秒ms，
+        // 在连接空闲（未使用）10 秒后从池中删除连接, 回归到未连接状态
+        // 只有当连接池中连接数量大于最小连接数量时会生效
+        idle: 10000,
+        // 表示最大连接超时时间，一条sql查询在获取连接资源之前的最长等待时间，单位毫秒
+        acquire: 60000
+      }
     })
     // this.addModels()
   }

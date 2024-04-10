@@ -3,9 +3,19 @@ import Userinfo from '@/types/Userinfo'
 import { model as defmodel } from '../defmodel'
 // 装饰器模型不适用增加数据, 只适全查询
 import model from '@modules/decormodel/Userinfo'
+import { sequelize } from '@modules/BaseDao'
 
 class UserDao {
   static userDao: UserDao = new UserDao()
+  async testSql(firstctgyId: number) {
+    // let sql: string = `select * from books.secondctgy sc inner join books.thirdctgy tc on sc.secondctgyid=tc.secctgid where sc.firstctgyId=${firstctgyId}`
+
+    let sql = `
+    select tc.thirdctgyid, tc.thirdname, tc.secctgyid, sc.secondname, sc.firstctgyId 
+    from books.thirdctgy tc left outer join books.secondctgy sc 
+    on tc.secctgyid=sc.secondctgyid`
+    return await sequelize.query(sql)
+  }
   async addUser(userinfo: Userinfo) {
     // 已在GlobalException.ts中做全局错误拦截处理，此处无需try catch
     const result = await defmodel.create(userinfo)

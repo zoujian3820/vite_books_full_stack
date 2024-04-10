@@ -175,6 +175,32 @@ create table userinfo(
     primary key(userid)
 );
 
+// 以下方式，直接声明在哪个数据库下，建表 
+create table 数据库名.表名(
+  username字段 varchar(30) not null,
+)
+create table `数据库名`.`表名`(
+  username字段 varchar(30) not null,
+)
+
+// 展示出当前的创建命令，以及外键信息
+show create table 表名;
+show create table 数据库名.表名;
+show create table books.thirdctgy;
+----------------------------------------------------------------------------------------------------------+
+| Table     | Create Table
++-----------+---------------------------------------------------------------------------------------------+
+| thirdctgy | CREATE TABLE `thirdctgy` (
+  `thirdctgyid` int NOT NULL AUTO_INCREMENT,
+  `thirdname` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `secctgyid` int DEFAULT NULL,
+  PRIMARY KEY (`thirdctgyid`),
+  KEY `fk_secctgyid` (`secctgyid`),
+  CONSTRAINT `fk_secctgyid` FOREIGN KEY (`secctgyid`) REFERENCES `secondctgy` (`secondctgyid`)
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci |
++-----------+------------------------------------------------------------------------------------------------
+
+
 // 查询出表的列信息，每列字段的数据类型，及有哪些列字段
 方法一：desc 表名; 
   desc userinfo;
@@ -809,8 +835,8 @@ src\dao\
     方案二：使用sequelize的原生数据库操作, 适合增删改查的所有场景
     ```
     async function findSecThirdCtgys(firstctgyId: number) {
-      let sql: string = `select * from books.secondctgy sc inner join books.thirdctgy tc on sc.secondctgyid=tc.secctgid where sc.firstctgyId=${firstctgyId}`
-      return (await sequelize.query(sql)) as [SecondCtgy[], SecondCtgy[]]
+      let sql: string = `select * from books.secondctgy sc inner join books.thirdctgy tc on sc.secondctgyid=tc.secctgyid where sc.firstctgyId=${firstctgyId}`
+      return await sequelize.query(sql)
     }
     ```
     方案三：使用模型类来实现，最适合对单表进行的各种查询, 只适合查询
@@ -861,3 +887,142 @@ src\dao\
     }
 
     ```
+
+### 新建mysql一级分类表
+```
+// 声明给books数据库，新建一个表firstctgy
+create table books.firstctgy(
+    firstCtgyId int not null auto_increment,
+    name varchar(20) null,
+    primary key(firstCtgyId)
+);
+# 一次性手动给表firstctgy加入8条数据
+insert into books.firstctgy values(1,'童书'),(2,'电子书'),(3,'女装'),(4,'食品'),(5,'男装'),(6,'数码相机'),(7,'创意文具'),(8,'童装童鞋');
+```
+### 新建mysql二级分类表，加入外键
+外键只能和另一张表的主键关联, 如果另一张表中的主键不存在当前要设定的值，则数据库插入数据会失败
+```
+create table books.secondctgy(
+    secondctgyid int not null auto_increment,
+    secondname varchar(20) not null,
+    firstctgyId int not null,
+    primary key(secondctgyid),
+    # 约束 外键名为fk_firstctgyid 当前表中firstctgyId关联到一级分类firstctgy表中的firstCtgyId主键，级联更新
+    constraint fk_firstctgyid foreign key(`firstctgyId`) references books.firstctgy(`firstCtgyId`) on update cascade);
+);
+
+# 插入这条数据会失败，因为firstctgyId设置为100，而books.firstctgy表中firstCtgyId最大值为8，要当前firstctgyId设定值，在books.firstctgy表中有才会成功
+insert into books.secondctgy values(1, '0-2岁', 100);
+# 插入以下7条数据测试
+insert into books.secondctgy values(1, '0-2岁', 1);
+insert into books.secondctgy values(2, '3-6岁', 1);
+insert into books.secondctgy values(3, '7-10岁', 1);
+insert into books.secondctgy values(4, '11-14岁', 1);
+insert into books.secondctgy values(5, '文艺', 2);
+insert into books.secondctgy values(6, '人文社科', 2);
+insert into books.secondctgy values(7, '教育', 2);
+```
+ 
+### 关联数据准备——mysql多表内连接 inner join
+```
+create table books.thirdctgy(
+    thirdctgyid int not null auto_increment,
+    thirdname varchar(20) not null,
+    secctgyid int null,
+    primary key(thirdctgyid),
+    # 约束 外键名为fk_secctgyid 当前表中secctgyid关联到一级分类firstctgy表中的secondctgyid主键
+    constraint fk_secctgyid foreign key(`secctgyid`) references books.secondctgy(`secondctgyid`));
+);
+
+// 插入以下测试数据
+# 三级分类【二级分类为0-2岁】
+insert into books.thirdctgy values(1, '图画故事', 1),(2, '认知', 1),(3, '益智游戏', 1),(4, '纸板书', 1),(5, '艺术课堂', 1),(6, '入园准备', 1);
+
+# 三级分类【二级分类为3-6岁】
+insert into books.thirdctgy values(7, '绘本', 2),(8, '科普百科', 2),(9, '少儿英语',2),(10, '乐高学习', 2),(11, '入学准备', 2);
+
+# 三级分类【二级分类为7-10岁】
+insert into books.thirdctgy(thirdname,secctgyid) values('文学', 3),('科普百科', 3),('卡通动漫', 3),('童话', 3),('少儿英语', 3);
+
+# 三级分类【二级分类为11-14岁】
+insert into books.thirdctgy(thirdname,secctgyid) values('励志', 4),('地理', 4),('政治', 4),('趣味幽默', 4),('少儿英语', 4),('益智游戏', 4),('艺术课堂', 4),('游戏/手工', 4),('绘画', 4);
+
+# 三级分类【二级分类为文艺】
+insert into books.thirdctgy(thirdname,secctgyid) values('小说', 5),('哲理文学', 5),('传记', 5),('青春文学', 5),('动漫/幽默', 5),('艺术', 5),('古籍', 5),('法律', 5),('经济', 5);
+
+# 三级分类【二级分类为人文社科】
+insert into books.thirdctgy(thirdname,secctgyid) values('宗教哲学', 6),('历史', 6),('传记', 6),('教育', 6),('社会科学', 6),('艺术', 6),('工具书', 6),('教师用书', 6),('考研', 6),('公务员', 6);
+``` 
+联表查询
+```
+# 以下两种写法，结果一致
+# where写法：
+select * from A表, B表 where A表.主键id=B表外键id; 
+
+select * from books.secondctgy sc, books.thirdctgy tc where tc.secctgyid=sc.secondctgyid; 
+
+# 内连接写法： 
+select * from A表 inner join B表 on A表.主键id=B表外键id; 
+
+# books数据库的secondctgy表，取别名sc  内连接(inner join)   thirdctgy表(取别名tc) 
+# on后面跟条件，用tc表的外键id(secctgyid) 是否等于 sc表的主键id(secondctgyid)来判断，是否查询出来
+select * from books.secondctgy sc inner join books.thirdctgy tc on tc.secctgyid=sc.secondctgyid; 
+
+# 用下面命令能查询出表的外键信息
+show create table 数据库名.表名; 
+show create table books.thirdctgy; 
+```
+### mysql多表左外连接 left outer join 和右外连接 right outer join
+```
+// 三级分类表thirdctgy插入这条，缺少secctgyid的数据，按上面内连接方式就查询不出来了
+insert into thirdctgy(thirdname) values('图书100');
+```
+- 左连接格式 
+```
+select A表.xx, B表.xx from A表 left outer join B表 on A表.外键id = B表.主键id;
+```
+左外连接：只考虑left outer join关键字左边的表，不管有没有数据都查出来
+```
+# 以三级分类表 thirdctgy 为左
+select tc.thirdctgyid, tc.thirdname, tc.secctgyid, sc.secondname, sc.firstctgyId from thirdctgy tc left outer join secondctgy sc on tc.secctgyid=sc.secondctgyid; 
+# 以二级分类表 secondctgy 为左
+select tc.thirdctgyid, tc.thirdname, tc.secctgyid, sc.secondctgyid, sc.secondname, sc.firstctgyId from  secondctgy sc left outer join thirdctgy tc on tc.secctgyid=sc.secondctgyid; 
+```
+- 右外连接格式
+```
+select A表.xx, B表.xx from A表 right outer join B表 on A表.外键id = B表.主键id;
+```
+右连接，和左连接类似，只考虑right outer join关键字右边的表，不管有没有数据都查出来
+```
+select tc.thirdctgyid, tc.thirdname, tc.secctgyid, sc.secondctgyid, sc.secondname, sc.firstctgyId from thirdctgy tc right outer join secondctgy sc on tc.secctgyid=sc.secondctgyid; 
+```
+### sequelize多表关联局限性，返回数据和前端要显示的相差太远
+- 第一步：完成级联查询（二级分类表和三级分类表级联查询）
+```
+
+# 建立二级分类表模型和三级分类表模型的关联
+import { secondCtgyModel } from './SecCtgyModel'
+import { thirdCtgyModel } from './ThirdCtgyModel'
+// on to many: 一对多的关系, 一个二级分类，可以有多个三级分类
+
+// 表示二级分类模型secondCtgyModel，有多个三级分类，对应模型thirdCtgyModel
+// 且三级分类thirdCtgyModel别名（表名）为thirdctgy，两表之间外键为secctgyid
+secondCtgyModel.hasMany(thirdCtgyModel, { as: 'thirdctgy', foreignKey: 'secctgyid' })
+
+// many to one: 多个三级分类可对应一个二级分类
+// 三级分类thirdCtgyModel 属于(belongsTo) 二级分类secondCtgyModel
+// 两表之间的外键为 secctgyid  与目标二级分类的主键为secondctgyid 相关联
+thirdCtgyModel.belongsTo(secondCtgyModel, { foreignKey: 'secctgyid', targetKey: 'secondctgyid' })
+
+
+#开始查询
+async function findSecThrdCtgysByFstCtgyId(firstctgyId: number) {
+  const result = await secondCtgyModel.findAll({
+    // raw:true 表示让底层开启原生查询
+    raw: true,
+    where: { firstctgyId },
+    include: [{ model: thirdCtgyModel, as: 'thirdctgy' }]
+  })
+  console.log(result)
+}
+```

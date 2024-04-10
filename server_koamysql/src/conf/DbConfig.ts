@@ -39,7 +39,7 @@ class Conf {
         database: 'books'
       },
       prod: {
-        host: '线上地址',
+        host: 'localhost',
         user: 'admin',
         password: '1234',
         port: 3306,
