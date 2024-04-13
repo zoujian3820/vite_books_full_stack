@@ -1,7 +1,7 @@
 import { Context } from 'koa'
 import { get, post, Controller } from '@/decorator'
 import ctgyDao from '@/modules/ctgy/dao/CtgyDao'
-import findSecThrdCtgysByFstCtgyId from '@modules/ctgy/defmodel/OneToMany'
+import { findSecThrdCtgysByFstCtgyId } from '@modules/ctgy/defmodel'
 
 @Controller('/ctgymodule')
 class CtgyController {

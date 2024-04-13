@@ -24,7 +24,7 @@ secondCtgyModel.hasMany(thirdCtgyModel, { as: 'thirdctgys', foreignKey: 'secctgy
 thirdCtgyModel.belongsTo(secondCtgyModel, { foreignKey: 'secctgyid', targetKey: 'secondctgyid' })
 
 // 开始查询
-export default async function findSecThrdCtgysByFstCtgyId(firstctgyId: number) {
+export async function findSecThrdCtgysByFstCtgyId(firstctgyId: number) {
   const result = await secondCtgyModel.findAll({
     // raw:true 表示让底层开启原生查询
     // raw: true,
