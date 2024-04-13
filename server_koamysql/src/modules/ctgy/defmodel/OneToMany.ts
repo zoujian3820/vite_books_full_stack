@@ -31,6 +31,6 @@ export default async function findSecThrdCtgysByFstCtgyId(firstctgyId: number) {
     where: { firstctgyId },
     include: [{ model: thirdCtgyModel, as: 'thirdctgys' }]
   })
-  console.log(result)
+  // console.log(result)
   return result
 }

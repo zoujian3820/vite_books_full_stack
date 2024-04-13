@@ -5,9 +5,9 @@ import { Context } from 'koa'
 const router = new Router()
 router.prefix('/ctgymodule')
 
-router.get('/findSecThrdCtgys/:firstctgyid', async (ctx: Context) => {
+router.get('/findSecThirdCtgys/:firstctgyid', async (ctx: Context) => {
   const { firstctgyid } = ctx.params
-  const result = await ctgyDao.findSecThrdCtgys(firstctgyid)
+  const result = await ctgyDao.findSecThirdCtgys(parseInt(firstctgyid))
   ctx.body = ctx.resSuccess(result)
 })
 

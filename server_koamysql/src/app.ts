@@ -6,7 +6,7 @@ import koa, { Context } from 'koa'
 // import Router from 'koa-router'
 // import userRouter from './router/user'
 
-import allRouterLoader from './common/AllRouterLoader'
+import allRouterLoader from './common/AllCtrlRouterLoader'
 import { success, fail } from './common/ResResult'
 // import DbConfig from './conf/DbConfig'
 // console.log(DbConfig.getConf('user'))

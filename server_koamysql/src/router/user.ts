@@ -5,7 +5,8 @@
 import { Context } from 'koa'
 import Router from 'koa-router'
 import logger from '@/common/LogUtil'
-import Userinfo from '@/types/Userinfo'
+import { Userinfo } from '@modules/userinfo/dao/UserDao'
+
 // import userDao from '../dao/UserDao'
 // import { addUser, findAllUser, findByProps, findByUsmAndPsw, findByLike, findByUsmAndAddr } from '../dao/UserDaoDefine'
 // import userDaoDefine from '../dao/UserDaoDefine'
@@ -57,10 +58,10 @@ router.get('/testSql', async (ctx: Context) => {
     firstctgyId?: number
     thirdctgys?: A[]
   }
-  const res = await userDao.testSql(1)
+  const result: A[] = (await userDao.testSql(1))[0] as A[]
   const arr: A[] = []
-  if (res[0]?.length) {
-    const result: A[] = res[0] as A[]
+  if (result?.length) {
+    // const result: A[] = res[0] as A[]
     for (let item of result) {
       const findItem = arr.find((a) => a.secctgyid === item.secctgyid)
       if (!findItem) {

@@ -1026,3 +1026,55 @@ async function findSecThrdCtgysByFstCtgyId(firstctgyId: number) {
   console.log(result)
 }
 ```
+
+### 装饰器重构Koa路由准备之元数据  reflect-metadata
+元数据指附加在对象，类，方法，属性，参数上的数据
+```
+npm i reflect-metadata -S
+
+// 例：
+import 'reflect-metadata'
+let obj = {
+  username: '哈啦少',
+  age: 23,
+  info() {
+    console.log('信息')
+  }
+}
+
+// 存数据
+Reflect.defineMetadata('key01', '我是要存的数据', obj)
+// 取数据
+console.log(Reflect.getMetadata('key01', obj)) // 我是要存的数据
+
+Reflect.defineMetadata('key01', '我存的数据_kaka', obj, 'username')
+console.log(Reflect.getMetadata('key01', obj, 'username')) // 我存的数据_kaka
+
+if(Reflect.hasMetadata('key01', obj)){
+ // Reflect.hasMetadata 查看对象或对象属性上是否存在某个元数据
+}
+
+// 装饰器写法
+import 'reflect-metadata'
+
+@Reflect.metadata('key01', '我是要存的数据_001')
+class People {
+  @Reflect.metadata('key01', '我是要存的数据_002')
+  username = '王二'
+  
+  @Reflect.metadata('importinfo', '我是要存的数据_003')
+  eat(){}
+}
+
+console.log(Reflect.getMetadata('key01', People))
+console.log(Reflect.getMetadata('key01', People.prototype, 'username'))
+console.log(Reflect.getMetadata('importinfo', People.prototype, 'eat'))
+
+# 新增装饰器实现路由注册
+server_koamysql\src\decorator\controllerdecorator.ts
+server_koamysql\src\decorator\reqmethoddecorator.ts
+// 改写全局路由自动注册工具
+server_koamysql\src\common\AllCtrlRouterLoader.ts
+// 路由使用装饰器写法，统一放到controller文件夹
+server_koamysql\src\controller\CtgyController.ts
+```

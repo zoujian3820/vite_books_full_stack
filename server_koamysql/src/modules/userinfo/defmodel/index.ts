@@ -1,6 +1,6 @@
 import { DataTypes, Model } from 'sequelize'
 import { sequelize } from '@modules/BaseDao'
-import Userinf from '@/types/Userinfo'
+import { Userinfo as Userinf } from '../dao/UserDao'
 
 // 继承两个, 继承Userinf公共数据类型接口，可以少写内部这份代码
 export interface UserInstance extends Userinf, Model {

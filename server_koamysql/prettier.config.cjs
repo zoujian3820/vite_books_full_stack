@@ -1,7 +1,7 @@
 // 此处配置用来覆盖本地vscode中prettier的配置，并与.eslintrc.cjs中rules保持一致
 // 这样prettier在格式化时，就和eslint保持同步了
 module.exports = {
-  printWidth: 130, //单行长度
+  printWidth: 100, //单行长度
   tabWidth: 2, //缩进长度
   useTabs: false, //使用空格代替tab缩进
   semi: false, //句末使用分号

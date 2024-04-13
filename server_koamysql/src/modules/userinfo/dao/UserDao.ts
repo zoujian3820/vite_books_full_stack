@@ -1,9 +1,18 @@
 import { Op, Sequelize } from 'sequelize'
-import Userinfo from '@/types/Userinfo'
 import { model as defmodel } from '../defmodel'
 // 装饰器模型不适用增加数据, 只适全查询
 import model from '@modules/decormodel/Userinfo'
 import { sequelize } from '@modules/BaseDao'
+
+// type定义的也可用extends实现类型的复用
+export type Userinfo = {
+  userid: number
+  username: string
+  password: string
+  address: string
+  valid: number
+  birth: Date
+}
 
 class UserDao {
   static userDao: UserDao = new UserDao()
