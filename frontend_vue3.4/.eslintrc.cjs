@@ -56,6 +56,17 @@ module.exports = {
     'prefer-const': 2, // 不变的变量一定要使用const （2为开启这条规则）
     '@typescript-eslint/no-unused-vars': 0, // 不允许出现未使用过的变量 （0为关闭这个条规则）
     '@typescript-eslint/no-inferrable-types': 0, // 不允许变量后面添加类型 （0为关闭这个条规则）
-    '@typescript-eslint/no-non-null-assertion': 0
+    '@typescript-eslint/no-non-null-assertion': 0,
+    '@typescript-eslint/ban-types': [
+      'error',
+      {
+        types: {
+          //允许使用空括号
+          '{}': false
+        },
+        extendDefaults: true
+      }
+    ],
+    'vue/multi-word-component-names': 'off'
   }
-};
+}

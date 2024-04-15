@@ -1,9 +1,17 @@
 import { createApp } from 'vue'
-import './style.css'
+// import './style.css'
 import App from './App.vue'
 import { LmgUtil } from './utils/imgUtil'
+import ElementPlus from 'element-plus'
+import 'element-plus/theme-chalk/index.css'
+import store from './store'
+import router from './router'
 
 LmgUtil.storageLmgList()
 
 console.log('环境变量', import.meta.env)
-createApp(App).mount('#app')
+createApp(App)
+  .use(router)
+  .use(store)
+  .use(ElementPlus, { size: 'small' })
+  .mount('#app')

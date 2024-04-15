@@ -892,9 +892,9 @@ src\dao\
 ```
 // 声明给books数据库，新建一个表firstctgy
 create table books.firstctgy(
-    firstCtgyId int not null auto_increment,
+    firstctgyId int not null auto_increment,
     name varchar(20) null,
-    primary key(firstCtgyId)
+    primary key(firstctgyId)
 );
 # 一次性手动给表firstctgy加入8条数据
 insert into books.firstctgy values(1,'童书'),(2,'电子书'),(3,'女装'),(4,'食品'),(5,'男装'),(6,'数码相机'),(7,'创意文具'),(8,'童装童鞋');
@@ -908,7 +908,7 @@ create table books.secondctgy(
     firstctgyId int not null,
     primary key(secondctgyid),
     # 约束 外键名为fk_firstctgyid 当前表中firstctgyId关联到一级分类firstctgy表中的firstCtgyId主键，级联更新
-    constraint fk_firstctgyid foreign key(`firstctgyId`) references books.firstctgy(`firstCtgyId`) on update cascade);
+    constraint fk_firstctgyid foreign key(`firstctgyId`) references books.firstctgy(`firstctgyId`) on update cascade);
 );
 
 # 插入这条数据会失败，因为firstctgyId设置为100，而books.firstctgy表中firstCtgyId最大值为8，要当前firstctgyId设定值，在books.firstctgy表中有才会成功

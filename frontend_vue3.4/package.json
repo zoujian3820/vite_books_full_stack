@@ -11,9 +11,13 @@
     "lint": "eslint --ext .ts --ext .vue --ext js src/"
   },
   "dependencies": {
+    "axios": "^1.6.8",
     "dotenv": "^16.4.5",
+    "element-plus": "^2.7.0",
     "good-storage": "^1.1.1",
-    "vue": "^3.4.21"
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.0",
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@types/good-storage": "^1.1.2",
@@ -23,8 +27,11 @@
     "@vitejs/plugin-vue": "^5.0.4",
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.24.0",
+    "sass": "^1.75.0",
+    "sass-loader": "^14.2.0",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
+    "vite-plugin-vue-devtools": "^7.0.27",
     "vue-eslint-parser": "^9.4.2",
     "vue-tsc": "^2.0.6"
   }

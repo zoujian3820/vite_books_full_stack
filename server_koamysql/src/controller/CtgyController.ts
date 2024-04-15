@@ -10,7 +10,10 @@ class CtgyController {
     const { firstctgyid } = ctx.params
     ctx.body = ctx.resSuccess(await ctgyDao.findSecThirdCtgys(parseInt(firstctgyid)))
   }
-
+  @get('/findFirstCtgys')
+  async findFirstCtgys(ctx: Context) {
+    ctx.body = ctx.resSuccess(await ctgyDao.findFirstCtgys())
+  }
   @get('/findSecThirdCtgys2/:firstctgyid')
   async findSecThrdCtgysByFstCtgyId(ctx: Context) {
     const { firstctgyid } = ctx.params

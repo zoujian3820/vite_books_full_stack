@@ -1,0 +1,10 @@
+html {
+  /* 540px屏幕参照 */
+  font-size: 18.518518518518517vw;
+  height: 100vh;
+}
+body {
+  margin: 0;
+  font-size: 0.16rem;
+  height: 100vh;
+}

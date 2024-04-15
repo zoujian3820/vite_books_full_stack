@@ -23,7 +23,9 @@
     "sourceMap": true, // tsc生成js的sourceMap文件(在outDir配置的目录下)，可以方便调试，看到ts源代码
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      // 解决 无法找到模块“vuex”的声明文件 报错问题
+      "vuex": ["./node_modules/vuex/types"]
     },
     /* Linting */
     "strict": true, // 代码开启严格模式

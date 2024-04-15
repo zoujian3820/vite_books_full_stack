@@ -1,23 +1,17 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import { test } from './utils/test'
-test()
+
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
+  <router-view />
 </template>
 
-<style scoped>
-.logo {
+<style>
+@import '@/assets/viewwindow.css';
+@import '@/assets/reset.css';
+@import 'https://at.alicdn.com/t/c/font_4507918_s75lsj157zr.css?spm=a313x.manage_type_myprojects.i1.9.5efe3a81pEFotK&file=font_4507918_s75lsj157zr.css';
+
+/* .logo {
   height: 6em;
   padding: 1.5em;
   will-change: filter;
@@ -30,5 +24,5 @@ test()
 
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
-}
+} */
 </style>

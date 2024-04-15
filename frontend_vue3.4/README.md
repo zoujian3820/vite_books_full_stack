@@ -277,3 +277,61 @@ select * from userinfo where username like binary 'L%'; //查询名字 以大写
 链接：https://pan.baidu.com/s/1YK-triv80E7O4Whvu58NnA?pwd=y45k 
 提取码：y45k
 
+
+## Axios初中高级三种异步封装
+安装依赖
+```
+npm i axios -S
+npm i element-plus -S
+```
+初低级写法
+```
+import axios from 'axios'
+axios.defaults.baseURL = '/dang'
+axios.get('/bookmodule/findOneBooks', { id: 1 }).then(
+  (res) => { console.log(res) },
+  (err) => { console.log(err) }
+)
+axios.post('/addBooks', books).then(
+  (res) => { console.log(res) },
+  (err) => { console.log(err) }
+)
+axios.put('/uptBooks', { bookid: 10 }).then(
+  (res) => { console.log(res) },
+  (err) => { console.log(err) }
+)
+```
+中级写法
+```
+import axios from 'axios'
+const axiosInstance = axios.create({baseURL:'/dang',timeout: 60000}) 
+export default axiosInstance
+// 使用
+function getXX() {
+  return axiosInstance.get('/xxxx/ddd')
+}
+```
+高级写法,可添加拦截器和响应器，能对数据预处理，对前后端交互异常能统一弹窗处理
+- src\utils\axiosUtil.ts
+### 安装些依赖
+```
+npm install sass sass-loader -D
+npm i vuex vue-router -S
+```
+### 安装vite-plugin-vue-devtools调试Vue3
+- 旧版的vue-devtools浏览器插件适合Vue2，调试Vue3会很卡顿，非常不友好，在项目中加入vite-plugin-vue-devtools插件可以解决
+- https://devtools-next.vuejs.org/guide/vite-plugin
+```
+npm install vite-plugin-vue-devtools -D 
+
+ 
+# 在vite.config.ts中添加如下配
+import { defineConfig } from 'vite'
+import VueDevTools from 'vite-plugin-vue-devtools'
+
+export default defineConfig({
+  plugins: [
+    VueDevTools()
+  ]
+})
+```
