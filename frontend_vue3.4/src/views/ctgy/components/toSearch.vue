@@ -52,7 +52,7 @@
                 width: 2.74rem;
                 background: none;
                 border: none;
-                font-size: 0.36rem;
+                font-size: 0.28rem;
             }
 
             .icon-saomiao {

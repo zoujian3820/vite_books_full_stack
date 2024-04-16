@@ -52,7 +52,7 @@ router.get('/findByUsmAndPsw/:username/:password', async (ctx: Context) => {
 router.get('/testSql', async (ctx: Context) => {
   type A = {
     thirdctgyid?: number
-    thirdname?: string
+    thirdctgyname?: string
     secctgyid?: number
     secondname?: string
     firstctgyId?: number
@@ -67,10 +67,20 @@ router.get('/testSql', async (ctx: Context) => {
       if (!findItem) {
         arr.push({
           ...item,
-          thirdctgys: [{ thirdctgyid: item.thirdctgyid, thirdname: item.thirdname, secctgyid: item.secctgyid }]
+          thirdctgys: [
+            {
+              thirdctgyid: item.thirdctgyid,
+              thirdctgyname: item.thirdctgyname,
+              secctgyid: item.secctgyid
+            }
+          ]
         })
       } else {
-        findItem.thirdctgys?.push({ thirdctgyid: item.thirdctgyid, thirdname: item.thirdname, secctgyid: item.secctgyid })
+        findItem.thirdctgys?.push({
+          thirdctgyid: item.thirdctgyid,
+          thirdctgyname: item.thirdctgyname,
+          secctgyid: item.secctgyid
+        })
       }
     }
   }

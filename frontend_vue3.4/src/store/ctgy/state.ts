@@ -4,8 +4,10 @@ export interface FirstCtgy {
 }
 export interface SecondCtgy {
   secondctgyid: number
-  secctgyname: string
+  secondname: string
   thirdctgys: ThirdCtgy[]
+  subThirdctgys: ThirdCtgy[]
+  isReadyOpen: boolean
 }
 export interface ThirdCtgy {
   thirdctgyid: number

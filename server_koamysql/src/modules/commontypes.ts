@@ -15,7 +15,11 @@ export function getSubItemsFrmArr<T extends ItemType<T>[], K extends keyof EleOf
   }) as Pick<EleOfArr<T>, K>[]
 }
 
-export function getOneItemValuesFrmArr<T extends ItemType<T>[], K extends keyof EleOfArr<T>, E = EleOfArr<T>>(arr: T, k: K) {
+export function getOneItemValuesFrmArr<
+  T extends ItemType<T>[],
+  K extends keyof EleOfArr<T>,
+  E = EleOfArr<T>
+>(arr: T, k: K) {
   return arr.map(({ [k]: v }: E) => {
     return v
   })
@@ -26,7 +30,10 @@ function getNoReptValsItem(arr: (number | string)[]) {
   return arr.filter((item) => !data.includes(item) && data.push(item))
 }
 
-export function getNoReptItem<T extends ItemType<T>[], K extends keyof EleOfArr<T> = keyof EleOfArr<T>>(arr: T, k: K) {
+export function getNoReptItem<
+  T extends ItemType<T>[],
+  K extends keyof EleOfArr<T> = keyof EleOfArr<T>
+>(arr: T, k: K) {
   const data: ItemType<T>[] = []
   let oneItemValues: any[] = getOneItemValuesFrmArr(arr, k)
   let noReptOneItemValues = getNoReptValsItem(oneItemValues)
@@ -39,15 +46,26 @@ export function getNoReptItem<T extends ItemType<T>[], K extends keyof EleOfArr<
   return data
 }
 
-export function combineRelativeCtgy<T extends ItemType<T>[]>(arr: T, relativeKey: string, relativeValues: any) {
+export function combineRelativeCtgy<T extends ItemType<T>[]>(
+  arr: T,
+  relativeKey: string,
+  relativeValues: any
+) {
   return arr.map((item) => {
     return combine(item, { [relativeKey]: JSON.parse(JSON.stringify(relativeValues)) })
   })
 }
 
-type T = [{ secondctgyid: string; secondname: string }, { secondctgyid: number; thirdctgyid: number; thirdname: string }]
+type T = [
+  { secondctgyid: string; secondname: string },
+  { secondctgyid: number; thirdctgyid: number; thirdctgyname: string }
+]
 
-type UnionToIntersection<U> = (U extends any ? (args: U) => void : never) extends (args: infer I) => void ? I : never
+type UnionToIntersection<U> = (U extends any ? (args: U) => void : never) extends (
+  args: infer I
+) => void
+  ? I
+  : never
 
 export function combine<T extends object[]>(...args: T): UnionToIntersection<T[number]>
 export function combine<T extends object[]>(...t: T) {

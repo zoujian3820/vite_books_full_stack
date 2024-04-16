@@ -1,35 +1,43 @@
 <template>
     <div class="content">
         <ul class="firstctgy">
-            <li class="firstctgy-item" @click="changeTap(index)"
-                :class="{ 'firstctgy-item_active': firstCtgyActiveIndex === index }"
-                v-for="(item, index) of firstCtgyList" :key="item.firstctgyId">
+            <li class="firstctgy-item" @click="changeTap(item.firstctgyId)"
+                :class="{ 'firstctgy-item_active': firstCtgyActiveId === item.firstctgyId }"
+                v-for="(item) of firstCtgyList" :key="item.firstctgyId">
                 <span class="firstctgyname">{{ item.firstctgyname }}</span>
             </li>
         </ul>
-        <ul class="secondctgy"></ul>
+        <div class="secondthrdctgy">
+            <ul>
+                <li class="secondthrdctgy-item" v-for="item of secondCtgyList" :key="item.secondctgyid">
+                    <div class="secondctgy-item">
+                        <span class="secondctgyname">{{ item.secondname }}</span>
+                        <span class="secondctgynameshop">
+                            {{ item.secondname }}馆
+                            <i class="iconfont icon-youjiantou" />
+                        </span>
+                    </div>
+                    <ThrdCtgy :isReadyOpen="item.isReadyOpen" :secondctgy="item" :thirdCtgys="item.thirdctgys"
+                        :subThirdctgys="item.subThirdctgys" />
+                </li>
+            </ul>
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { CtgyActions } from '@/store/actions';
-import { CtgyGettersProxy } from '@/store/getters';
-import { FirstCtgy } from '@/store/state';
-import { Ref, ref, /*toRefs*/ } from 'vue';
+// import { FirstCtgy } from '@/store/state';
+import FstToThrCtgy from '@/views/ctgy/service'
+import ThrdCtgy from '@/views/ctgy/components/ThrdCtgy.vue'
+const { geFirstCtgys, changeTap, firstCtgyList, firstCtgyActiveId, secondCtgyList, geSecondThrdCtgyList } = FstToThrCtgy
 
-const firstCtgyActiveIndex: Ref<number> = ref(0)
-const firstCtgyList: Ref<FirstCtgy[]> = ref([])
-async function geFirstCtgys() {
-    await CtgyActions.findFirstCtgyList()
-    firstCtgyList.value = CtgyGettersProxy.getFirstCtgyList
-}
+    ; (async () => {
+        await geFirstCtgys()
+        firstCtgyActiveId.value = firstCtgyList.value[0].firstctgyId
+        geSecondThrdCtgyList()
+    })();
 
-async function changeTap(index: number) {
-    firstCtgyActiveIndex.value = index
-}
 
-geFirstCtgys()
-// const { getFirstCtgyList, getSecThrdCtgyList } = toRefs(CtgyGettersProxy)
 </script>
 <style lang="scss" scoped>
 .content {
@@ -52,6 +60,7 @@ geFirstCtgys()
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 0.202rem;
         }
 
         &-item_active {
@@ -67,9 +76,37 @@ geFirstCtgys()
         }
     }
 
-    .secondctgy {
+    .secondthrdctgy {
         flex: 1;
-        margin-right: 0.19rem;
+        margin: 0 0.15rem 0 0.19rem;
+
+        &-item {
+            background-color: #fff;
+
+            .secondctgy-item {
+                height: 0.73rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                font-size: 0.2rem;
+
+                .secondctgyname {
+                    color: #0d0d0d;
+                    font-weight: bold;
+                }
+
+                .secondctgynameshop {
+                    display: flex;
+                    align-items: center;
+                    color: #535353;
+                }
+
+                .icon-youjiantou {
+                    font-size: 100%;
+                    margin-left: 0.02rem;
+                }
+            }
+        }
     }
 }
 </style>

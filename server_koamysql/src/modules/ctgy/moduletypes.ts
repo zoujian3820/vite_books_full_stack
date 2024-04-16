@@ -1,18 +1,24 @@
-import { getNoReptItem, combineRelativeCtgy, combine, EleOfArr, getSubItemsFrmArr } from '@modules/commontypes'
+import {
+  getNoReptItem,
+  combineRelativeCtgy,
+  combine,
+  EleOfArr,
+  getSubItemsFrmArr
+} from '@modules/commontypes'
 
 type SecThrCtgyList = {
   secondctgyid: number
   secondname: string
   firstctgyId: number
   thirdctgyid: number
-  thirdname: string
+  thirdctgyname: string
   secctgyid: number
 }[]
 
 export default function convert(secThrCtgys: SecThrCtgyList) {
   let secCtgyList = getSubItemsFrmArr(secThrCtgys, 'secondctgyid', 'secondname', 'firstctgyId')
   let noReptSecCtgyList = getNoReptItem(secCtgyList, 'secondctgyid')
-  let thrdCtgyList = getSubItemsFrmArr(secThrCtgys, 'thirdctgyid', 'thirdname', 'secctgyid')
+  let thrdCtgyList = getSubItemsFrmArr(secThrCtgys, 'thirdctgyid', 'thirdctgyname', 'secctgyid')
   const relativeSecThrCtgyList = combineRelativeCtgy(noReptSecCtgyList, 'thirdctgys', [])
   // 最终的二级三级分类保存数组
   const lastSecThrCtgyList: typeof relativeSecThrCtgyList = []

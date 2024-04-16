@@ -4,7 +4,7 @@ export const secThrCtgys = [
     secondname: '0-2岁',
     firstctgyId: 1,
     thirdctgyid: 1,
-    thirdname: '图画故事',
+    thirdctgyname: '图画故事',
     secctgyid: 1
   },
   {
@@ -12,7 +12,7 @@ export const secThrCtgys = [
     secondname: '0-2岁',
     firstctgyId: 1,
     thirdctgyid: 2,
-    thirdname: '认知',
+    thirdctgyname: '认知',
     secctgyid: 1
   },
   {
@@ -20,7 +20,7 @@ export const secThrCtgys = [
     secondname: '0-2岁',
     firstctgyId: 1,
     thirdctgyid: 3,
-    thirdname: '益智游戏',
+    thirdctgyname: '益智游戏',
     secctgyid: 1
   },
   {
@@ -28,7 +28,7 @@ export const secThrCtgys = [
     secondname: '0-2岁',
     firstctgyId: 1,
     thirdctgyid: 4,
-    thirdname: '纸板书',
+    thirdctgyname: '纸板书',
     secctgyid: 1
   },
   {
@@ -36,7 +36,7 @@ export const secThrCtgys = [
     secondname: '0-2岁',
     firstctgyId: 1,
     thirdctgyid: 5,
-    thirdname: '艺术课堂',
+    thirdctgyname: '艺术课堂',
     secctgyid: 1
   },
   {
@@ -44,7 +44,7 @@ export const secThrCtgys = [
     secondname: '0-2岁',
     firstctgyId: 1,
     thirdctgyid: 6,
-    thirdname: '入园准备',
+    thirdctgyname: '入园准备',
     secctgyid: 1
   },
   {
@@ -52,7 +52,7 @@ export const secThrCtgys = [
     secondname: '3-6岁',
     firstctgyId: 1,
     thirdctgyid: 7,
-    thirdname: '绘本',
+    thirdctgyname: '绘本',
     secctgyid: 2
   },
   {
@@ -60,7 +60,7 @@ export const secThrCtgys = [
     secondname: '3-6岁',
     firstctgyId: 1,
     thirdctgyid: 8,
-    thirdname: '科普百科',
+    thirdctgyname: '科普百科',
     secctgyid: 2
   },
   {
@@ -68,7 +68,7 @@ export const secThrCtgys = [
     secondname: '3-6岁',
     firstctgyId: 1,
     thirdctgyid: 9,
-    thirdname: '少儿英语',
+    thirdctgyname: '少儿英语',
     secctgyid: 2
   },
   {
@@ -76,7 +76,7 @@ export const secThrCtgys = [
     secondname: '3-6岁',
     firstctgyId: 1,
     thirdctgyid: 10,
-    thirdname: '乐高学习',
+    thirdctgyname: '乐高学习',
     secctgyid: 2
   },
   {
@@ -84,7 +84,7 @@ export const secThrCtgys = [
     secondname: '3-6岁',
     firstctgyId: 1,
     thirdctgyid: 11,
-    thirdname: '入学准备',
+    thirdctgyname: '入学准备',
     secctgyid: 2
   },
   {
@@ -92,7 +92,7 @@ export const secThrCtgys = [
     secondname: '7-10岁',
     firstctgyId: 1,
     thirdctgyid: 12,
-    thirdname: '文学',
+    thirdctgyname: '文学',
     secctgyid: 3
   },
   {
@@ -100,7 +100,7 @@ export const secThrCtgys = [
     secondname: '7-10岁',
     firstctgyId: 1,
     thirdctgyid: 13,
-    thirdname: '科普百科',
+    thirdctgyname: '科普百科',
     secctgyid: 3
   },
   {
@@ -108,7 +108,7 @@ export const secThrCtgys = [
     secondname: '7-10岁',
     firstctgyId: 1,
     thirdctgyid: 14,
-    thirdname: '卡通动漫',
+    thirdctgyname: '卡通动漫',
     secctgyid: 3
   },
   {
@@ -116,7 +116,7 @@ export const secThrCtgys = [
     secondname: '7-10岁',
     firstctgyId: 1,
     thirdctgyid: 15,
-    thirdname: '童话',
+    thirdctgyname: '童话',
     secctgyid: 3
   },
   {
@@ -124,7 +124,7 @@ export const secThrCtgys = [
     secondname: '7-10岁',
     firstctgyId: 1,
     thirdctgyid: 16,
-    thirdname: '少儿英语',
+    thirdctgyname: '少儿英语',
     secctgyid: 3
   },
   {
@@ -132,7 +132,7 @@ export const secThrCtgys = [
     secondname: '11-14岁',
     firstctgyId: 1,
     thirdctgyid: 17,
-    thirdname: '励志',
+    thirdctgyname: '励志',
     secctgyid: 4
   },
   {
@@ -140,7 +140,7 @@ export const secThrCtgys = [
     secondname: '11-14岁',
     firstctgyId: 1,
     thirdctgyid: 18,
-    thirdname: '地理',
+    thirdctgyname: '地理',
     secctgyid: 4
   },
   {
@@ -148,7 +148,7 @@ export const secThrCtgys = [
     secondname: '11-14岁',
     firstctgyId: 1,
     thirdctgyid: 19,
-    thirdname: '政治',
+    thirdctgyname: '政治',
     secctgyid: 4
   },
   {
@@ -156,7 +156,7 @@ export const secThrCtgys = [
     secondname: '11-14岁',
     firstctgyId: 1,
     thirdctgyid: 20,
-    thirdname: '趣味幽默',
+    thirdctgyname: '趣味幽默',
     secctgyid: 4
   },
   {
@@ -164,7 +164,7 @@ export const secThrCtgys = [
     secondname: '11-14岁',
     firstctgyId: 1,
     thirdctgyid: 21,
-    thirdname: '少儿英语',
+    thirdctgyname: '少儿英语',
     secctgyid: 4
   },
   {
@@ -172,7 +172,7 @@ export const secThrCtgys = [
     secondname: '11-14岁',
     firstctgyId: 1,
     thirdctgyid: 22,
-    thirdname: '益智游戏',
+    thirdctgyname: '益智游戏',
     secctgyid: 4
   },
   {
@@ -180,7 +180,7 @@ export const secThrCtgys = [
     secondname: '11-14岁',
     firstctgyId: 1,
     thirdctgyid: 23,
-    thirdname: '艺术课堂',
+    thirdctgyname: '艺术课堂',
     secctgyid: 4
   },
   {
@@ -188,7 +188,7 @@ export const secThrCtgys = [
     secondname: '11-14岁',
     firstctgyId: 1,
     thirdctgyid: 24,
-    thirdname: '游戏/手工',
+    thirdctgyname: '游戏/手工',
     secctgyid: 4
   },
   {
@@ -196,7 +196,7 @@ export const secThrCtgys = [
     secondname: '11-14岁',
     firstctgyId: 1,
     thirdctgyid: 25,
-    thirdname: '绘画',
+    thirdctgyname: '绘画',
     secctgyid: 4
   }
 ]
@@ -216,7 +216,7 @@ type SecThrCtgy = {
   secondname: string
   firstctgyId: number
   thirdctgyid: number
-  thirdname: string
+  thirdctgyname: string
   secctgyid: number
 }
 */

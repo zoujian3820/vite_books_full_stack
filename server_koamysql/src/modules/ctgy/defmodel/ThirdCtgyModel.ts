@@ -12,9 +12,9 @@ class ThirdCtgyModel {
           primaryKey: true, // 表示主键
           autoIncrement: true // 表示主键自增
         },
-        thirdname: {
+        thirdctgyname: {
           type: DataTypes.STRING(20),
-          field: 'thirdname',
+          field: 'thirdctgyname',
           // 表示当前列是否允许为空，false表示该列不能为空
           allowNull: false
           // unique: true // 表示该列的值必须唯一

@@ -1,7 +1,11 @@
 import { secThrCtgys, ItemType, EleOfArr, getSubItemsFrmArr } from './one'
 import { getNoReptItem } from './two'
 
-function combineRelativeCtgy<T extends ItemType<T>[]>(arr: T, relativeKey: string, relativeValues: any) {
+function combineRelativeCtgy<T extends ItemType<T>[]>(
+  arr: T,
+  relativeKey: string,
+  relativeValues: any
+) {
   return arr.map((item) => {
     return combine(item, { [relativeKey]: JSON.parse(JSON.stringify(relativeValues)) })
   })
@@ -12,14 +16,14 @@ type SecThrCtgyList = {
   secondname: string
   firstctgyId: number
   thirdctgyid: number
-  thirdname: string
+  thirdctgyname: string
   secctgyid: number
 }[]
 
 export default function convert(secThrCtgys: SecThrCtgyList) {
   let secCtgyList = getSubItemsFrmArr(secThrCtgys, 'secondctgyid', 'secondname', 'firstctgyId')
   let noReptSecCtgyList = getNoReptItem(secCtgyList, 'secondctgyid')
-  let thrdCtgyList = getSubItemsFrmArr(secThrCtgys, 'thirdctgyid', 'thirdname', 'secctgyid')
+  let thrdCtgyList = getSubItemsFrmArr(secThrCtgys, 'thirdctgyid', 'thirdctgyname', 'secctgyid')
   const relativeSecThrCtgyList = combineRelativeCtgy(noReptSecCtgyList, 'thirdctgys', [])
   // 最终的二级三级分类保存数组
   const lastSecThrCtgyList: typeof relativeSecThrCtgyList = []
@@ -75,13 +79,20 @@ export default function convert(secThrCtgys: SecThrCtgyList) {
 
 // convert()
 
-type T = [{ secondctgyid: string; secondname: string }, { secondctgyid: number; thirdctgyid: number; thirdname: string }]
+type T = [
+  { secondctgyid: string; secondname: string },
+  { secondctgyid: number; thirdctgyid: number; thirdctgyname: string }
+]
 
 type TNumber = T[number]
 type UnionToFn<U> = U extends any ? (args: U) => void : never
 type TestUnionToFn = UnionToFn<TNumber>
 
-type UnionToIntersection<U> = (U extends any ? (args: U) => void : never) extends (args: infer I) => void ? I : never
+type UnionToIntersection<U> = (U extends any ? (args: U) => void : never) extends (
+  args: infer I
+) => void
+  ? I
+  : never
 type TestUnionToIntersection<U> = UnionToIntersection<T[number]>
 
 function combine<T extends object[]>(...args: T): UnionToIntersection<T[number]>

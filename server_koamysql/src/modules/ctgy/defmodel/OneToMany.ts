@@ -11,7 +11,7 @@ import { thirdCtgyModel } from './ThirdCtgyModel'
 // 且要和下面findAll中保持一致
 /** 执行下面 findSecThrdCtgysByFstCtgyId 方法时，执行以下查询语句
  SELECT `secondctgy`.`secondctgyid`, `secondctgy`.`secondname`, `secondctgy`.`firstctgyId`,
-  `thirdctgys`.`thirdctgyid` AS `thirdctgys.thirdctgyid`, `thirdctgys`.`thirdname` AS `thirdctgys.thirdname`,
+  `thirdctgys`.`thirdctgyid` AS `thirdctgys.thirdctgyid`, `thirdctgys`.`thirdctgyname` AS `thirdctgys.thirdctgyname`,
    `thirdctgys`.`secctgyid` AS `thirdctgys.secctgyid` 
    FROM `secondctgy` AS `secondctgy` LEFT OUTER JOIN `thirdctgy` AS `thirdctgys`
     ON `secondctgy`.`secondctgyid` = `thirdctgys`.`secctgyid` WHERE `secondctgy`.`firstctgyId` = 1;
