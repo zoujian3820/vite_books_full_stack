@@ -5,7 +5,7 @@ import convert from '../moduletypes'
 import FirstCtgys from '@modules/decormodel/firstCtgy'
 class CtgyDao {
   static ctgyDao: CtgyDao = new CtgyDao()
-  async findFirstCtgys() {
+  async findFirstCtgys(): Promise<FirstCtgys[]> {
     return await FirstCtgys.findAll({
       raw: true
     })
