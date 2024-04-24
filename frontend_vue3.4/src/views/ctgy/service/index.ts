@@ -1,7 +1,8 @@
 import { CtgyActions } from '@/store/actions'
 import { CtgyGettersProxy } from '@/store/getters'
-import { FirstCtgy, SecondCtgy } from '@/store/state'
+import { FirstCtgy, SecondCtgy, ThirdCtgy } from '@/store/state'
 import { Ref, ref /*toRefs*/, watchEffect } from 'vue'
+import router from '@/router'
 
 export default class FstToThrCtgy {
   static firstCtgyActiveId: Ref<number> = ref(0)
@@ -41,5 +42,14 @@ export default class FstToThrCtgy {
         parentEle.style.paddingBottom = '0.5rem'
       }
     }
+  }
+
+  static toBookInfo(item: ThirdCtgy) {
+    router.push({
+      path: '/books',
+      query: {
+        thirdctgyid: item.thirdctgyid
+      }
+    })
   }
 }

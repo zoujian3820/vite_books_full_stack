@@ -6,6 +6,7 @@ declare module 'koa' {
   export interface ContextDelegatedRequest {
     rootRouter: Router
     params: { [k: string]: string }
+    query: { [k: string]: string }
     resSuccess: typeof success
     resFail: typeof fail
   }

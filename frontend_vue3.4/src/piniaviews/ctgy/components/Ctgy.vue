@@ -12,13 +12,14 @@
                 <li class="secondthrdctgy-item" v-for="item of secondCtgyList" :key="item.secondctgyid">
                     <div class="secondctgy-item">
                         <span class="secondctgyname">{{ item.secondname }}</span>
-                        <span class="secondctgynameshop">
+                        <span class="secondctgynameshop"
+                            @click="toBookInfo(firstCtgyActiveId, item.secondctgyid, thirdAllCtgy.thirdctgyid)">
                             {{ item.secondname }}馆
                             <i class="iconfont icon-youjiantou" />
                         </span>
                     </div>
-                    <ThrdCtgy :isReadyOpen="item.isReadyOpen" :secondctgy="item" :thirdCtgys="item.thirdctgys"
-                        :subThirdctgys="item.subThirdctgys" />
+                    <ThrdCtgy :firstCtgyActiveId="firstCtgyActiveId" :isReadyOpen="item.isReadyOpen" :secondctgy="item"
+                        :thirdCtgys="item.thirdctgys" :subThirdctgys="item.subThirdctgys" />
                 </li>
             </ul>
         </div>
@@ -26,27 +27,55 @@
 </template>
 
 <script setup lang="ts">
-// import { FirstCtgy } from '@/store/state';
-import FstToThrCtgy from '@/views/ctgy/service'
-import ThrdCtgy from '@/views/ctgy/components/ThrdCtgy.vue'
-const { geFirstCtgys, changeTap, firstCtgyList, firstCtgyActiveId, secondCtgyList, geSecondThrdCtgyList } = FstToThrCtgy
+import { onBeforeUnmount, WatchStopHandle } from 'vue';
+import FstToThrCtgy from '../service'
+import ThrdCtgy from './ThrdCtgy.vue'
+import { onBeforeRouteLeave } from 'vue-router';
+import { thirdAllCtgy } from '@/piniastore/ctgy'
 
-    ; (async () => {
-        await geFirstCtgys()
-        firstCtgyActiveId.value = firstCtgyList.value[0].firstctgyId
-        geSecondThrdCtgyList()
-    })();
+const {
+    storeRefs,
+    storeFirstCtgy,
+    geFirstCtgys,
+    changeTap,
+    firstCtgyActiveId,
+    watchFirstCtgyActiveIdHandle,
+    toBookInfo
+} = FstToThrCtgy
+const { firstCtgyList, secondCtgyList } = storeRefs
 
+
+let stopWatch: WatchStopHandle = () => { }
+
+async function getData() {
+    await geFirstCtgys()
+    firstCtgyActiveId.value = firstCtgyList.value[0].firstctgyId
+    storeFirstCtgy()
+
+    stopWatch = watchFirstCtgyActiveIdHandle()
+}
+
+onBeforeUnmount(() => {
+    stopWatch()
+    console.log('onBeforeUnmount')
+})
+
+onBeforeRouteLeave((to, from) => {
+    console.log(`来自页面:${from.fullPath}__去页面:${to.fullPath}`)
+})
+
+getData()
 
 </script>
 <style lang="scss" scoped>
 .content {
     display: flex;
     position: absolute;
-    top: 1.02rem;
+    top: 1.215rem;
     left: 0;
     bottom: 0.85rem;
     width: 100%;
+    gap: 0.1rem;
 
     .firstctgy {
         width: 1.3rem;
@@ -60,7 +89,7 @@ const { geFirstCtgys, changeTap, firstCtgyList, firstCtgyActiveId, secondCtgyLis
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.202rem;
+            font-size: 0.2rem;
         }
 
         &-item_active {
@@ -78,7 +107,9 @@ const { geFirstCtgys, changeTap, firstCtgyList, firstCtgyActiveId, secondCtgyLis
 
     .secondthrdctgy {
         flex: 1;
-        margin: 0 0.15rem 0 0.19rem;
+        margin: 0 0.15rem 0 0;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
 
         &-item {
             background-color: #fff;

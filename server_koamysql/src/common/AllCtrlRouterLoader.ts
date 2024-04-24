@@ -5,6 +5,7 @@ import Koa, { Context } from 'koa'
 import body from 'koa-body'
 import json from 'koa-json'
 import globalException from './GlobalException'
+import { sequelize } from '@modules/BaseDao'
 
 class AllRouterLoader {
   app!: Koa
@@ -15,6 +16,10 @@ class AllRouterLoader {
     this.app = app
     this.loadMiddleAware() // 加载中间件
     this.storeRootRouterToCtx() // 保存根路由
+    // 调用一下 BaseDao中的方法，使其能够执行addModels方法，加载所有decormodel模型，
+    // 因为有可能没有用到sequelize.define方式定义模型, 所以提前调用一下
+    sequelize.query
+
     this.loadAllCtrlRouterWrapper() // 加载控制器路由
 
     this.listen() // 监听

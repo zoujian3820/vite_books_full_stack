@@ -362,3 +362,17 @@ export default defineConfig({
   ]
 })
 ```
+
+### 安装 pinia 替代 vuex
+安装pinia
+```
+npm i pinia -S
+```
+全局配置
+```
+import { createApp } from 'vue'
+import App from './App.vue'
+import { createPinia } from 'pinia'
+
+createApp(App).use(createPinia()).mount('#app')
+```

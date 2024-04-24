@@ -1,0 +1,81 @@
+@mixin text-overflow() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin clamp($lines: 2) {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+}
+
+@mixin flex-box(
+  $justifyContent: flex-start,
+  $alignItems: flex-start,
+  $flexDirection: row
+) {
+  display: flex;
+  justify-content: $justifyContent;
+  align-items: $alignItems;
+  flex-direction: $flexDirection;
+}
+
+@mixin scroll($xAxis: hidden, $yAxis: auto) {
+  height: 100%;
+  overflow-x: $xAxis;
+  overflow-y: $yAxis;
+  -webkit-overflow-scrolling: touch;
+}
+
+@mixin wh($width: 100%, $height: 100%) {
+  width: $width;
+  min-width: $width;
+  height: $height;
+}
+
+@mixin alignCenter($height: 100%) {
+  text-align: center;
+  line-height: $height;
+}
+
+@mixin whAlignCenter($width: 100%, $height: 100%) {
+  @include wh($width, $height);
+  @include alignCenter($height);
+}
+
+@mixin clearContent() {
+  & {
+    content: '';
+    display: none;
+  }
+}
+
+@mixin clear($type: all) {
+  @if $type == after {
+    &:after {
+      @include clearContent;
+    }
+  } @else if $type == before {
+    &:before {
+      @include clearContent;
+    }
+  } @else {
+    &:after,
+    &:before {
+      @include clearContent;
+    }
+  }
+}
+
+@mixin placeholder($fontSize: 14px, $color: '#999') {
+  font-size: $fontSize;
+  &::placeholder {
+    font-size: $fontSize;
+    text-transform: capitalize;
+    @if $color {
+      color: $color;
+    }
+  }
+}

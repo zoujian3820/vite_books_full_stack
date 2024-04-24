@@ -78,9 +78,10 @@ class AxiosUtil {
   // 3、发送请求给服务器 [发送 post get put delete 或 patch]
   sendRequest(options: AxiosRequestConfig_) {
     // this.axiosInstance({
-    //   data: '',
+    //   data: {},
+    //   params: {},
     //   url: '',
-    //   method: 'post'
+    //   method: 'post | get'
     // })
     if (conf.env === 'production') {
       this.axiosInstance.defaults.baseURL = conf.baseApi
@@ -93,10 +94,13 @@ class AxiosUtil {
   // 4、深入灵活应用TS完成请求method类型自动提示
   reqPrepare() {
     return methods.forEach((method) => {
-      this.request[method] = (url, isMock, data) => {
+      this.request[method] = (url, isMock, data = {}) => {
+        const params = data.params
+        delete data.params
         return this.sendRequest({
           method,
           data,
+          params,
           isMock,
           url
         })

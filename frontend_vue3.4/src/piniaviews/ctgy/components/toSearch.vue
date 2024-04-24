@@ -17,22 +17,13 @@
 <script setup lang="ts">
 </script>
 <style lang="scss" scoped>
+@import '@/assets/css/common.scss';
+
 .content {
-    display: flex;
-    margin: 0 0.18rem 0.18rem;
-    padding-top: 0.18rem;
-    width: 5.04rem;
-    height: 0.855rem;
-    align-items: center;
-    gap: 0.28rem;
+    @extend .multiplex-content;
 
     .tosearch {
-        width: 4.32rem;
-        height: 0.67rem;
-        background-color: #f6f6f6;
-        border-radius: 1rem;
-        display: flex;
-        align-items: center;
+        @extend .multiplex-tosearch;
 
         .icon-fangdajing {
             font-size: 0.31rem;
@@ -52,7 +43,7 @@
                 width: 2.74rem;
                 background: none;
                 border: none;
-                font-size: 0.28rem;
+                font-size: 0.2rem;
             }
 
             .icon-saomiao {

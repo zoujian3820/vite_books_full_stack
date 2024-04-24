@@ -6,11 +6,11 @@
   <router-view />
 </template>
 
-<style>
+<style lang="scss">
 @import '@/assets/viewwindow.css';
 @import '@/assets/reset.css';
-/* @import '//at.alicdn.com/t/c/font_4507918_4ws7eimwc2y.css'; */
-@import '@/assets/font/iconfont.css';
+@import '//at.alicdn.com/t/c/font_4507918_2u4o04vg4fi.css';
+/* @import '@/assets/font/iconfont.css'; */
 
 body {
   user-select: none;
