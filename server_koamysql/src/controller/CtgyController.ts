@@ -7,7 +7,7 @@ import ctgyDao from '@/modules/ctgy/dao/CtgyDao'
 import ctgyService from '@/modules/ctgy/service/CtgyService'
 
 import { findSecThrdCtgysByFstCtgyId } from '@modules/ctgy/defmodel'
-
+import redisUtil from '@/common/RedisUtil'
 @Controller('/ctgymodule')
 class CtgyController {
   @get('/testRedis')
@@ -20,12 +20,15 @@ class CtgyController {
 
     const getUsername1 = await redisClient.get('username1')
     const hgetUser1Name = await redisClient.hget('user1', 'name')
-    const hgetUser2 = await redisClient.hgetall('user2')
+    const hgetallUser2 = await redisClient.hgetall('user2')
+    const hgetallfirstCtgysHash = await redisUtil.hgetall('firstCtgysHash')
+    // const hgetallfirstCtgysHash = await redisClient.hgetall('firstCtgysHash')
 
     ctx.body = ctx.resSuccess({
       get: getUsername1,
       hget: hgetUser1Name,
-      hgetall: hgetUser2
+      hgetALL: hgetallUser2,
+      hgetall: hgetallfirstCtgysHash
     })
   }
 

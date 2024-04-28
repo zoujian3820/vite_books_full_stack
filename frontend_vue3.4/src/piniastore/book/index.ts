@@ -18,11 +18,17 @@ export default defineStore('bookStore', {
     }
   },
   actions: {
-    async findAllBookListByScId(secondCtgyid: number) {
+    async findAllBookListByScId(
+      secondCtgyid: number,
+      sortField: string,
+      ascOrDesc: string
+    ) {
       const bookList: AxiosResponse<BookInfo[]> = await BookApi.getAllBookListByScId(
-        secondCtgyid
+        secondCtgyid,
+        sortField,
+        ascOrDesc
       )
-      this.bookList = bookList.data
+      this.bookList = getCalcDstpriceData(bookList)
       goodStorage.set('bookList', this.bookList)
     },
     async findBooksByThirdCtgyId(
@@ -36,14 +42,7 @@ export default defineStore('bookStore', {
         ascOrDesc
       )
 
-      bookList.data = bookList.data.map((item) => {
-        return {
-          ...item,
-          discountprice: toFixed_(item.originalprice * item.discount)
-        }
-      })
-
-      this.bookList = bookList.data
+      this.bookList = getCalcDstpriceData(bookList)
       goodStorage.set('bookList', this.bookList)
     }
   }
@@ -54,4 +53,13 @@ const toFixed_ = (num: number): number => {
     return parseFloat(num.toFixed(2))
   }
   return num
+}
+
+const getCalcDstpriceData = (list: AxiosResponse<BookInfo[]>) => {
+  return list.data.map((item) => {
+    return {
+      ...item,
+      discountprice: toFixed_(item.originalprice * item.discount)
+    }
+  })
 }

@@ -14,7 +14,8 @@ class AllConf {
 }
 class EnvConfigClass {
   static envConfigClass: EnvConfigClass = new EnvConfigClass()
-  readonly curEnv = import.meta.env.MODE === 'development' ? 'development' : 'production'
+  readonly curEnv =
+    import.meta.env.MODE === 'development' ? 'development' : 'production'
   envConf!: EnvConf
   allConf!: AllConf
   constructor() {
@@ -25,7 +26,7 @@ class EnvConfigClass {
     this.envConf = {
       development: {
         baseApi: '/dang',
-        mockBaseApi: 'https://www.fastmock.site/mock/a244a48ca0f6b7efaald57b9e57b2c8b/dangdang/'
+        mockBaseApi: 'https://www.fastmock.site/mock/xxx'
       },
       production: {
         baseApi: '/dang',

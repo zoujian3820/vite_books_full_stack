@@ -20,9 +20,14 @@ class BooksDao {
     })
   }
 
-  async findBooksBySecondCtgyId(secondctgyid: number) {
+  async findBooksBySecondCtgyId(
+    secondctgyid: number,
+    sortField: string = 'originalprice',
+    ascOrDesc: string = 'asc'
+  ) {
     return await BooksModel.findAll({
       raw: true,
+      order: [[sortField, ascOrDesc]],
       where: { secondctgyid }
     })
   }

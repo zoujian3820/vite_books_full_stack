@@ -9,6 +9,9 @@
         <booksort />
         <bookitem />
     </div>
+    <div>
+        <shopcart />
+    </div>
 
 </template>
 
@@ -19,6 +22,7 @@ import breadcrumbs from './components/breadcrumbs.vue';
 import thrdctgys from './components/thrdctgys.vue';
 import bookitem from './components/bookitem.vue';
 import booksort from './components/booksort.vue';
+import shopcart from './components/shopcart.vue';
 
 import books from './service'
 import FstToThrCtgy from '@/piniaviews/ctgy/service';
@@ -60,6 +64,7 @@ if (secondctgyid && thirdctgyid) {
     position: absolute;
     top: 2.875rem;
     width: 5.04rem;
-    margin: 0.18rem;
+    margin: 0.18rem 0.18rem 0;
+    padding-bottom: 0.18rem;
 }
 </style>

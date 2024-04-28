@@ -45,20 +45,22 @@ export default class FstToThrCtgy {
 
     // FstToThrCtgy.storeFirstCtgy()
   }
-  static changeThrdCtgyActiveId(thrdCtgyActiveId: number) {
+  static async changeThrdCtgyActiveId(thrdCtgyActiveId: number) {
     FstToThrCtgy.switchThrdCtgyActiveId.value = thrdCtgyActiveId
     if (thrdCtgyActiveId !== -1) {
       const curThirdCtgy = FstToThrCtgy.findCurThirdCtgy()
       if (curThirdCtgy) {
         FstToThrCtgy.store.updateThirdCtgySortById(thrdCtgyActiveId)
         FstToThrCtgy.store.storeThirdCtgy(curThirdCtgy)
-        Books.findBooksByThirdCtgyId()
+        await Books.findBooksByThirdCtgyId(thrdCtgyActiveId)
       }
     } else {
       // 全部
       FstToThrCtgy.store.storeThirdCtgy(thirdAllCtgy)
-      Books.findAllBooksByScId()
+      await Books.findAllBooksByScId()
     }
+
+    Books.uptBookNumWithSCLstNum()
   }
   static changeTap(id: number) {
     FstToThrCtgy.firstCtgyActiveId.value = id

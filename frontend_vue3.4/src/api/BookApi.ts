@@ -12,10 +12,18 @@ class BookApi {
       params
     })
   }
-  getAllBookListByScId(secondctgyid: number) {
-    return request.get('/booksmodule/findBooksBySecondCtgyId', false, {
-      params: { secondctgyid }
-    })
+  getAllBookListByScId(
+    secondctgyid: number,
+    sortField: string = 'originalprice',
+    ascOrDesc: string = 'asc'
+  ) {
+    // return request.get('/booksmodule/findBooksBySecondCtgyId', false, {
+    //   params: { secondctgyid }
+    // })
+    return request.get(
+      `/booksmodule/findBooksBySecondCtgyId/${secondctgyid}/${sortField}/${ascOrDesc}`,
+      false
+    )
   }
 }
 

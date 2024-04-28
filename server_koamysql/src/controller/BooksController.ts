@@ -17,11 +17,15 @@ class BooksController {
       )
     )
   }
-  @get('/findBooksBySecondCtgyId')
+  @get('/findBooksBySecondCtgyId/:secondctgyid/:sortField/:ascOrDesc')
   async findBooksBySecondCtgyId(ctx: Context) {
-    const secondctgyid = Number(ctx.query.secondctgyid)
-    if (!isNaN(secondctgyid)) {
-      ctx.body = ctx.resSuccess(await BooksDao.findBooksBySecondCtgyId(secondctgyid))
+    // const secondctgyid = Number(ctx.query.secondctgyid)
+    const { secondctgyid, sortField, ascOrDesc } = ctx.params
+    // if (!isNaN(secondctgyid)) {
+    if (secondctgyid) {
+      ctx.body = ctx.resSuccess(
+        await BooksDao.findBooksBySecondCtgyId(parseInt(secondctgyid), sortField, ascOrDesc)
+      )
     }
   }
 }

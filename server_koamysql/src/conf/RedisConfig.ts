@@ -17,6 +17,7 @@ export interface RedisClient {
   hmset(obj: string, ...keyvalues: any[]): any
   hget(obj: string, key: string): any
   hgetall(obj: string): any
+  hdel(obj: string, ...keys: string[]): any
 }
 
 class RedsConfig {

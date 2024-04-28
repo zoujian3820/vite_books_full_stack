@@ -1134,11 +1134,13 @@ server_koamysql\src\controller\CtgyController.ts
 [10648] 23 Apr 21:43:23.351 # Server initialized
 [10648] 23 Apr 21:43:23.352 * Ready to accept connections
 ```
-接着再打开一个CMD窗口，进入当前文件夹路径下后，执行：
+上面这个窗口不能关，表示redis在运行中，接着再打开一个CMD窗口，进入当前文件夹路径下后，执行：
 
 `redis-cli`
 ```
 127.0.0.1:6379>
+
+# 然后你就可以在当前窗口中，执行get set等命令了
 ```
 
 
@@ -1501,4 +1503,9 @@ npm install koa-redis @types/koa-redis --save
 
 # 如果不是用的koa框架，用的express，直接安装 redis 就好了
 npm install redis --save
+
+# redis配置文件
+src\conf\RedisConfig.ts
+# 重写了接口的redis调用文件
+src\common\RedisUtil.ts
 ```

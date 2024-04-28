@@ -7,6 +7,8 @@ import 'element-plus/theme-chalk/index.css'
 import store from './store'
 import router from './router'
 import { createPinia } from 'pinia'
+// import { Test } from './utils/goodstorageutil'
+// Test()
 
 LmgUtil.storageLmgList()
 
