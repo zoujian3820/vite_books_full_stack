@@ -131,30 +131,23 @@ const { bookList } = storeRefs
                 gap: 0.05rem;
                 font-size: 0.15rem;
 
+                .coupons,
+                .free-shipping,
                 .self-support {
+                    @include flex-box(center, center);
                     padding: 0 0.15rem;
                     border-radius: 0.05rem;
+                    border: 1px solid #d06d70;
+                    background-color: #fff;
+                    text-shadow: 0 0.005rem #d06d70;
+                    color: #7f7f7f;
+                }
+
+                .self-support {
+                    border: none;
                     text-shadow: 0 0.005rem #f7f7f7;
                     background-color: #eb636d;
                     color: white;
-                }
-
-                .coupons {
-                    padding: 0 0.15rem;
-                    border-radius: 0.05rem;
-                    border: 1px solid #d06d70;
-                    background-color: #fff;
-                    color: #7f7f7f;
-                    text-shadow: 0 0.005rem #d06d70;
-                }
-
-                .free-shipping {
-                    padding: 0 0.15rem;
-                    border-radius: 0.05rem;
-                    border: 1px solid #d06d70;
-                    background-color: #fff;
-                    color: #7f7f7f;
-                    text-shadow: 0 0.005rem #d06d70;
                 }
             }
 
