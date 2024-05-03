@@ -31,10 +31,10 @@ class AllRouterLoader {
     this.app.use(json())
     this.app.use(body())
     this.app.use(globalException)
-    // jwt认证中间件 及密钥
-    this.app.use(koaJwt({ secret: MyJwt.secret }).unless({ path: uncheckedPathsRegExps }))
     // 处理无效token的中间件
     this.app.use(HandleInvalidToken)
+    // jwt认证中间件 及密钥
+    this.app.use(koaJwt({ secret: MyJwt.secret }).unless({ path: uncheckedPathsRegExps }))
   }
   storeRootRouterToCtx() {
     const rootRouter = new Router()

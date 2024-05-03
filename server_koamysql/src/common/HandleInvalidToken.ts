@@ -32,8 +32,6 @@ export default async (ctx: Context, next: koa.Next) => {
     const parts = authorization.split(' ')
     const token = parts[1]
 
-    console.log(Req.url)
-
     if (!userid) {
       ctx.body = fail('userid不能为空', Code.UNAUTHORIZEDERROR, 'invalid_token')
       return

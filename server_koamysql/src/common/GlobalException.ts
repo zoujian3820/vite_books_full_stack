@@ -87,12 +87,12 @@ const globalException = async (ctx: Context, next: koa.Next) => {
 
 /**********改用 koa-jwt 中间件的方式，不用自身手写的鉴权了 ********************/
 const globalException = async (ctx: Context, next: koa.Next) => {
-  // 当下一个中间件出现异常，这里将捕获到异常，并返回给客户端
+  // 当后面的中间件出现异常，这里将捕获到异常，并返回给客户端，后面的中间件就包插 koa-jwt
   // 在src\common\AllCtrlRouterLoader.ts的 loadMiddleAware 方法中
-  // 实现下一个中间件就是 koa-jwt
   /*
   loadMiddleAware() {
     this.app.use(globalException)
+    this.app.use(HandleInvalidToken)
     // jwt认证中间件 及密钥
     this.app.use(koaJwt({ secret: 'xxxxxx' }))
   }
