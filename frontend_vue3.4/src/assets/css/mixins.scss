@@ -23,7 +23,6 @@
 }
 
 @mixin scroll($xAxis: hidden, $yAxis: auto) {
-  height: 100%;
   overflow-x: $xAxis;
   overflow-y: $yAxis;
   -webkit-overflow-scrolling: touch;

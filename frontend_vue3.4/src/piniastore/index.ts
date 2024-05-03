@@ -1,8 +1,11 @@
-import { createStore } from 'vuex'
-import { ctgyModule } from '@/store/ctgy'
+import ctgy from './ctgy/index'
+import book from './book/index'
+import search from './search/index'
+import shopcart from './shopcart/index'
+import userinfo from './userinfo/index'
 
-export default createStore({
-  modules: {
-    ctgyModule
-  }
-})
+export const ctgyStore = ctgy()
+export const bookStore = book()
+export const searchStore = search()
+export const shopcartStore = shopcart()
+export const userinfoStore = userinfo()

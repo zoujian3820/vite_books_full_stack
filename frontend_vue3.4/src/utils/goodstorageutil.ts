@@ -2,7 +2,7 @@ type EleOfArr<T> = T extends Array<infer E> ? E : never
 
 // 如下限制结果为: T为数组数据类型，K为联合类型，数组: [{a:'q1',b:'ty'}] T: {a:string,b:string}
 // K的可选值为：数组单个item对象中，所有的key值 K: a|b
-function getValArrOfObj<
+export function getValArrOfObj<
   T extends any[],
   K extends keyof EleOfArr<T>,
   E = EleOfArr<T>
@@ -18,15 +18,29 @@ export enum OPTION {
   NONE = -1 // 什么都不做
 }
 
-export const isPlainObject = (val: unknown): val is object =>
-  Object.prototype.toString.call(val) === '[object Object]'
+export enum Operate {
+  INIT = 0,
+  THRDCTGYID = 1, // thrdctgyid
+  AUTOCOMPKEYWORD = 2 // autocompkeyword
+}
+
+export const isPlainObject = (val: unknown): val is object => {
+  return Object.prototype.toString.call(val) === '[object Object]'
+}
+
+export const isString = (val: unknown): val is string => {
+  return Object.prototype.toString.call(val) === '[object String]'
+}
 
 class Storage {
   static storage: Storage = new Storage()
   set(key: string, value: string): any
   set(key: string, value: object): any
   set(key: string, value: any[]): any
+  set(key: string, value: Operate): any
   set(key: string, value: any[], option: OPTION): any
+  set(key: string, value: string, option: OPTION): any
+
   set(
     key: string,
     value: object,
@@ -53,10 +67,17 @@ class Storage {
         }
         goodStorage.set(key, arr)
         return arr
+      } else {
+        throw new Error('属性key不存在或值不存在')
       }
-    } else if (Array.isArray(value) && option === OPTION.ACCUMU) {
+    } else if (option === OPTION.ACCUMU) {
       const arr: any[] = goodStorage.get(key, [])
-      arr.push(...value)
+      if (Array.isArray(value)) {
+        arr.push(...value)
+      } else if (isString(value) && !arr.includes(value)) {
+        arr.push(value)
+      }
+
       goodStorage.set(key, arr)
       return arr
     }
@@ -70,7 +91,7 @@ class Storage {
       if (option === OPTION.ACCUMU || option === OPTION.ADDORAPPOBJTOARR) {
         return goodStorage.get(key, [])
       } else {
-        goodStorage.get(key)
+        return goodStorage.get(key)
       }
     }
   }
@@ -91,6 +112,8 @@ class Storage {
         arr.splice(eleIndex, 1)
         goodStorage.set(key, arr)
       }
+    } else {
+      goodStorage.remove(key)
     }
   }
 }

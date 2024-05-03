@@ -1,6 +1,8 @@
 <template>
-    <toSearch />
-    <Ctgy />
+    <div>
+        <toSearch />
+        <Ctgy />
+    </div>
 </template>
 
 <script setup lang="ts">

@@ -25,6 +25,17 @@ class BookApi {
       false
     )
   }
+  findBooksByAutoCompKeyword(keyword: string) {
+    return request.get(`/booksmodule/findBooksByAutoCompKeyword/${keyword}`, false)
+  }
+
+  findPublisersByAutoCompKey(keyword: string) {
+    return request.get(`/booksmodule/findPublisersByAutoCompKey/${keyword}`, false)
+  }
+
+  findBksByPublishIds(publishids: number[]) {
+    return request.post('/booksmodule/findBksByPublishIds', false, publishids)
+  }
 }
 
 export default BookApi.bookApi

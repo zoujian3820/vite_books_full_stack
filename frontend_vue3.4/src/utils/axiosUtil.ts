@@ -23,10 +23,18 @@ import axios, {
   // AxiosPromise
 } from 'axios'
 
+import goodstorageutil from './goodstorageutil'
 import { ElMessage } from 'element-plus'
 import conf from '@/config'
+import router from '@/router'
+import { RouteLocationRaw } from 'vue-router'
+import { debounce } from '@/utils'
 const SERVER_ERR = '请求服务器的网址错误或网络连接失败'
 const methods: Method[] = ['get', 'post', 'put', 'delete', 'patch']
+
+const routerPush = debounce((args: RouteLocationRaw) => {
+  router.push(args)
+}, 500)
 
 class AxiosUtil {
   static axiosUtil: AxiosUtil = new AxiosUtil()
@@ -52,6 +60,13 @@ class AxiosUtil {
   // 1、请求开始前的请求拦截器
   beforeReqIntercpt() {
     this.axiosInstance.interceptors.request.use((request) => {
+      const headers = request.headers!
+      const token = goodstorageutil.get('token')
+      const userid = goodstorageutil.get('userid')
+      if (!headers.Authorization && token && userid) {
+        headers.Authorization = `Bearer ${token}`
+        headers.Userid = userid
+      }
       return request
     })
   }
@@ -63,10 +78,27 @@ class AxiosUtil {
         switch (code) {
           case 200:
             return response.data
+          case 400:
+          case 403:
+            ElMessage.error(msg)
+            return
+          case 401:
+            ElMessage.error(msg)
+            // 错误提示后，清除token，并跳转到登录页
+            goodstorageutil.remove('token')
+            routerPush({
+              path: '/login',
+              query: {
+                redirect: encodeURIComponent(router.currentRoute.value.fullPath)
+              }
+            })
+            return
           case 500:
-            return ElMessage.error(`发生了错误${msg}`)
+            ElMessage.error(`发生了错误${msg}`)
+            return
           default:
-            return ElMessage.error('发生了未知错误')
+            ElMessage.error('发生了未知错误')
+            return
         }
       },
       (err) => {

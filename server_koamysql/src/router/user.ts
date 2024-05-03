@@ -97,9 +97,11 @@ router.get('/findByLikeWithOrm/:key', async (ctx: Context) => {
 })
 
 router.get('/findUserWithPager/:pageNo/:pageSize', async (ctx: Context) => {
-  const { pageNo, pageSize } = ctx.params
+  const pageNo = parseInt(ctx.params.pageNo)
+  const pageSize = parseInt(ctx.params.pageSize)
+
   const offset = (pageNo - 1) * pageSize
-  ctx.body = ctx.resSuccess(await userDao.findUserWithPager(offset, parseInt(pageSize)))
+  ctx.body = ctx.resSuccess(await userDao.findUserWithPager(offset, pageSize))
 })
 
 router.get('/countTotal', async (ctx: Context) => {

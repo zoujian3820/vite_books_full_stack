@@ -22,8 +22,8 @@ class ShopcartController {
 
   @post('/addBookToShopCart')
   async addBookToShopCart(ctx: Context) {
-    // const userid = ctx.req.headers.userid as string
-    const userid = ctx.cookies.get('userid') || ''
+    const userid = ctx.req.headers.userid as string
+    // const userid = ctx.cookies.get('userid') || ''
     const shopCartRaw = ctx.request.body
     ctx.body = ctx.resSuccess(
       await ShopCartService.addBookToShopCart(shopCartRaw, parseInt(userid))
@@ -31,7 +31,7 @@ class ShopcartController {
   }
   @post('/appOrSubtrBookFrmShopCart')
   async appOrSubtrBookFrmShopCart(ctx: Context) {
-    const userid = ctx.cookies.get('userid') || ''
+    const userid = ctx.req.headers.userid as string
     const shopCartRaw = ctx.request.body
     ctx.body = ctx.resSuccess(
       await ShopCartService.appOrSubtrBookFrmShopCart(shopCartRaw, parseInt(userid))
@@ -39,7 +39,7 @@ class ShopcartController {
   }
   @del('/delOneBookFrmSc/:shopcartid')
   async delOneBookFrmSc(ctx: Context) {
-    const userid = ctx.cookies.get('userid') || ''
+    const userid = ctx.req.headers.userid as string
     const { shopcartid } = ctx.params
     ctx.body = ctx.resSuccess(
       await ShopCartService.delOneBookFrmSc(parseInt(shopcartid), parseInt(userid))

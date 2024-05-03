@@ -12,6 +12,7 @@ export type Userinfo = {
   address: string
   valid: number
   birth: Date
+  token?: string
 }
 
 class UserDao {
@@ -35,6 +36,10 @@ class UserDao {
     // 反回所有数据
     // 此方法可加raw去除其他无用结构数据
     return defmodel.findAll({ raw: true })
+  }
+  findOneUser(username: string, password: string): Promise<any> {
+    // 查询用户信息
+    return model.findOne({ raw: true, where: { username, password } })
   }
   findByProps() {
     // 只反回所有数据中的  设定的列值

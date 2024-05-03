@@ -19,14 +19,29 @@ export default defineStore('shopcartStrore', {
     }
   },
   actions: {
+    storeShopCartList(shopCartList: ShopCart[]) {
+      this.shopCartList = shopCartList
+      Storage.set('shopCartList', shopCartList)
+    },
     // 获取所有购物车列表接口
     async findCurUserShopCartList(userid: number) {
       const result: AxiosResponse<ShopCart[]> = await shopCartApi.getShopCartList(
         userid
       )
-      this.shopCartList = result.data
+
+      const localScLst: ShopCart[] = Storage.get(
+        'shopCartList',
+        OPTION.ADDORAPPOBJTOARR
+      )
+
+      this.shopCartList = result.data.map((item) => ({
+        ...item,
+        checked:
+          localScLst.find(({ shopcartid }) => shopcartid === item.shopcartid)
+            ?.checked || item.checked
+      }))
       // goodStorage.set('shopCartList', result.data)
-      Storage.set('shopCartList', result.data)
+      Storage.set('shopCartList', this.shopCartList)
     },
     // 新增购物车接口
     async addBookToShopCart(shopcart: ShopCart) {
@@ -91,6 +106,7 @@ export default defineStore('shopcartStrore', {
 
 function storeShopCart(result: AxiosResponse<ShopCart>) {
   const dbShopCart: ShopCart = result.data
+  dbShopCart.checked = true
   // 更新购物车数据
   const shopCartList: ShopCart[] = Storage.set(
     'shopCartList',

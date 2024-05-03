@@ -4,7 +4,9 @@ import { BookInfo } from '@/piniastore/book/state'
 import { ShopCart } from '@/piniastore/shopcart/state'
 import Books from '@/piniaviews/books/service'
 import { ElMessageBox } from 'element-plus'
-import { computed, reactive } from 'vue'
+import { computed, reactive, ref } from 'vue'
+import router from '@/router'
+import goodstorageutil from '@/utils/goodstorageutil'
 
 function findShopcartByisbn(bookItem: BookInfo) {
   return ShopCartService.store.shopCartList.find(
@@ -18,12 +20,40 @@ type BallType = {
 }
 
 export default class ShopCartService {
+  static isSelectAll = ref(false)
   static store = shopcartStore()
   static storeRefs = storeToRefs(ShopCartService.store)
   static ball: BallType = reactive({ showorhidden: false })
 
   static getSonEle(ele: Element, innerEleName: string) {
     return <HTMLBodyElement>ele.getElementsByClassName(innerEleName)[0]
+  }
+  static updateIsSelectALL() {
+    const shopcartLst = ShopCartService.store.getShopCartList
+    const isSelectAll =
+      !!shopcartLst.length && shopcartLst.every((item) => item.checked)
+
+    ShopCartService.isSelectAll.value = isSelectAll
+    return shopcartLst
+  }
+  static checkEveryCheckbox() {
+    // 点击选中购物车商品后，检测全选，并把当前选中状态数据(checked)更新到store
+    ShopCartService.store.storeShopCartList(ShopCartService.updateIsSelectALL())
+  }
+  static selectAll() {
+    const { getShopCartList, storeShopCartList } = ShopCartService.store
+    storeShopCartList(
+      getShopCartList.map((item) => ({
+        ...item,
+        checked: ShopCartService.isSelectAll.value
+      }))
+    )
+  }
+  static toHome() {
+    router.push('/')
+  }
+  static toShopCarList() {
+    router.push('/shopcartlist')
   }
   // 小球加车抛物线飞入动画 钩子方法回调
   static beforeDrop(ele: Element) {
@@ -72,7 +102,8 @@ export default class ShopCartService {
   }
   // static async findCurUserShopCartList(userid: number) {
   static async findCurUserShopCartList() {
-    await ShopCartService.store.findCurUserShopCartList(1)
+    const userid = parseInt(goodstorageutil.get('userid')) || -1
+    await ShopCartService.store.findCurUserShopCartList(userid)
   }
 
   static uptBookNumWithSCLstNum(books: BookInfo[]) {
@@ -84,6 +115,20 @@ export default class ShopCartService {
         }
       })
     })
+  }
+  static addBookToShopCartWrapper(event: Event, bookItem: BookInfo) {
+    if (goodstorageutil.get('token')) {
+      ShopCartService.addBookToShopCart(event, bookItem)
+    } else {
+      ElMessageBox.confirm('请先登录', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true
+      }).then(() => {
+        router.push('/login')
+      })
+    }
   }
   // 新增购物车
   static async addBookToShopCart(event: Event, bookItem: BookInfo) {
@@ -101,11 +146,30 @@ export default class ShopCartService {
     ShopCartService.drop(event)
 
     await ShopCartService.store.addBookToShopCart(shopcart)
-    // 更新购物车数据到图片列表
+    // 更新购物车数据到图书列表
     // Books.uptBookNumWithSCLstNum()
     Books.updateBookNum(shopcart.purcharsenum, bookItem.ISBN)
   }
+  static async appOrSubtrBookInShopCart(shopcart: ShopCart, event: Event) {
+    const targetEl = <HTMLBodyElement>event.currentTarget
+    const actionType: string = targetEl.getAttribute('actionType')!
 
+    async function handlerFn(purcharsenum: number) {
+      await ShopCartService.store.appOrSubtrBookFrmShopCart({
+        ...shopcart,
+        purcharsenum
+      })
+    }
+
+    switch (actionType) {
+      case 'add':
+        handlerFn(shopcart.purcharsenum + 1)
+        return
+      case 'minus':
+        handlerFn(shopcart.purcharsenum - 1)
+        return
+    }
+  }
   static async appOrSubtrBookFrmShopCart(bookItem: BookInfo, event: Event) {
     const targetEl = <HTMLBodyElement>event.currentTarget
     const actionType: string = targetEl.getAttribute('actionType')!
@@ -115,9 +179,10 @@ export default class ShopCartService {
     async function handlerFn(purcharsenum: number) {
       await ShopCartService.store.appOrSubtrBookFrmShopCart({
         ...findShopcart,
+        bookprice: bookItem.discountprice,
         purcharsenum
       })
-      // 更新购物车数据到图片列表
+      // 更新购物车数据到图书列表
       Books.updateBookNum(purcharsenum, bookItem.ISBN)
     }
 
@@ -132,6 +197,20 @@ export default class ShopCartService {
           handlerFn(bookItem.purcharsenum - 1)
           return
       }
+    }
+  }
+  static async delOneBookInSc(shopcart: ShopCart) {
+    try {
+      await ElMessageBox.confirm('确定从购物车中删除这本书？', '删除', {
+        type: 'warning',
+        confirmButtonText: '确定',
+        cancelButtonText: '再想想',
+        center: true
+      })
+
+      await ShopCartService.store.delOneBookFrmSc(shopcart.shopcartid!)
+    } catch (error) {
+      console.log(error)
     }
   }
   static async delOneBookFrmSc(bookItem: BookInfo) {
@@ -155,18 +234,41 @@ export default class ShopCartService {
       console.log(error)
     }
   }
+  static back() {
+    router.back()
+  }
   static refreshShopCartList() {
     const store = ShopCartService.store
     const totalCount = computed(() =>
-      store.shopCartList.reduce((pre, cur) => pre + cur.purcharsenum, 0)
+      store.getShopCartList
+        .filter((item) => item.checked)
+        .reduce((pre, cur) => pre + cur.purcharsenum, 0)
     )
     const totalPrice = computed(() =>
-      parseFloat(
-        store.shopCartList
+      procDecimalZero(
+        store.getShopCartList
+          .filter((item) => item.checked)
           .reduce((pre, cur) => pre + cur.bookprice * cur.purcharsenum, 0)
-          .toFixed(2)
       )
     )
     return { totalCount, totalPrice }
   }
+}
+
+function procDecimalZero(num: number) {
+  let strValue = num.toString()
+  const splitValues = strValue.split('.')
+  if (splitValues.length === 1) {
+    // 整数
+    strValue = strValue + '.00'
+  } else if (splitValues.length > 1) {
+    // 只有一位小数
+    if (splitValues[1].length === 1) {
+      strValue = strValue + '0'
+    } else if (splitValues[1].length > 2) {
+      // 大于两位小数
+      strValue = num.toFixed(2).toString()
+    }
+  }
+  return strValue as any as number
 }

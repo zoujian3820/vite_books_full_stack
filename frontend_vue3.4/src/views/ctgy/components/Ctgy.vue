@@ -92,7 +92,7 @@ const { geFirstCtgys, changeTap, firstCtgyList, firstCtgyActiveId, secondCtgyLis
 
                 .secondctgyname {
                     color: #0d0d0d;
-                    font-weight: bold;
+                    font-weight: bolder;
                 }
 
                 .secondctgynameshop {

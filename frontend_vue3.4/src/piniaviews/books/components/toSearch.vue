@@ -4,7 +4,7 @@
         <div class="tosearch">
             <i class="iconfont icon-fangdajing fangdajing" />
             <div class="tosearch-keyword">
-                <input type="text" placeholder="" class="tosearch-keyword-input">
+                <input type="text" placeholder="" readonly class="tosearch-keyword-input" @click="toSearch">
                 <span class="keyword">
                     {{ getThirdCtgy.thirdctgyname }}
                     <i class="iconfont icon-guanbi" />
@@ -18,9 +18,12 @@
 <script setup lang="ts">
 import FstToThrCtgy from '@/piniaviews/ctgy/service';
 const { getThirdCtgy } = FstToThrCtgy.storeRefs
+import router from '@/router';
 // // 持久化搜索数据
 // FstToThrCtgy.persistentBookSearchData()
-
+function toSearch() {
+    router.push({ path: '/search' })
+}
 </script>
 <style lang="scss" scoped>
 @import '@/assets/css/common.scss';
@@ -80,8 +83,7 @@ const { getThirdCtgy } = FstToThrCtgy.storeRefs
             }
 
             .keyword,
-            &-input,
-            .icon-guanbi {
+            &-input {
                 grid-row: 1/2;
                 grid-column: 1/2;
             }

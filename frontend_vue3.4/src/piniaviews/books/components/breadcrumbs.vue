@@ -16,7 +16,7 @@ const { getFirstCtgy, getSecondCtgy } = FstToThrCtgy.storeRefs
     align-items: center;
     font-size: 0.23rem;
     padding: 0.12rem 0;
-    font-weight: bold;
+    font-weight: bolder;
     text-shadow: 0 0 0.01rem black;
     gap: 0.1rem;
 

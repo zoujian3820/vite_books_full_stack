@@ -42,7 +42,7 @@ import getImg from '@/utils/imgUtil'
 import books from '../service'
 import addsubtrsc from './addsubtrsc.vue';
 
-const { findBooksByThirdCtgyId, storeRefs } = books
+const { /*findBooksByThirdCtgyId,*/ storeRefs } = books
 // findBooksByThirdCtgyId()
 const { bookList } = storeRefs
 
@@ -58,6 +58,10 @@ const { bookList } = storeRefs
     // justify-items: flex-end;
     justify-items: center;
     row-gap: 0.1rem;
+
+    &:last-child {
+        margin-bottom: 0.8rem;
+    }
 
     .book-pic {
         width: 1.8rem;

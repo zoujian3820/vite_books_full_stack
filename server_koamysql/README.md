@@ -237,6 +237,22 @@ delete from 表名 where 条件;
 delete from userinfo where username='王二' and address='广州';
 delete from userinfo where username='王二' and birth is null; 
 
+# 此种方式 limit 无法使用 limit 1, 2 或 limit 2 offset 1 这种模式
+DELETE FROM books.historykeyword ORDER BY clickcount DESC LIMIT 1
+
+// 子查询+临时表 实现复杂 删除
+DELETE FROM books.historykeyword 
+WHERE historykeywordid IN (
+    SELECT historykeywordid
+    FROM (
+        SELECT historykeywordid 
+        FROM books.historykeyword 
+        ORDER BY clickcount DESC 
+        LIMIT 0, 1
+    ) AS temp
+)
+
+
 // 更新mysql表里面的数据
 update 表名 set 字段名1=值, 字段名2=值, 字段名3=值 ... [where一个可选的子句，用于指定更新的行。如果省略 WHERE 子句，将更新表中的所有行];
 update userinfo set username='王二', address='湖南长沙' where userid=3;

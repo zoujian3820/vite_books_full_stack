@@ -1,7 +1,7 @@
 <template>
-    <div class="shopcart">
+    <div class="shopcart" v-show="isShow">
         <div class="content">
-            <div class="content-left">
+            <div class="content-left" @click="toShopCarList">
                 <i :class="{ hightlight: totalCount > 0 }" class="iconfont icon-gouwuche" />
                 <div v-show="totalCount > 0" class="num">{{ totalCount }}</div>
             </div>
@@ -28,10 +28,17 @@
 </template>
 
 <script setup lang="ts">
-import { Transition } from 'vue';
-import ShopCartService from '@/piniaviews/shopcart/service';
-const { beforeDrop, dropping, afterDrop, ball } = ShopCartService
+import { Transition, ref } from 'vue';
+import ShopCartService from '@/piniaviews/books/service/shopcartService';
+const { beforeDrop, dropping, afterDrop, ball, toShopCarList } = ShopCartService
 const { totalCount, totalPrice } = ShopCartService.refreshShopCartList()
+
+const isShow = ref(true)
+function crtlShopCart(isShow_: boolean) {
+    isShow.value = isShow_
+}
+// defineExpose vue3.2以后 提供的暴露方法的api
+defineExpose({ crtlShopCart })
 
 </script>
 <style lang="scss" scoped>
@@ -42,6 +49,7 @@ const { totalCount, totalPrice } = ShopCartService.refreshShopCartList()
     left: 0;
     bottom: 0;
     background-color: #fff;
+    border-top: 1px solid #f2f2f2f2;
     @include wh(100%, 0.73rem);
 
     .content {
@@ -94,7 +102,7 @@ const { totalCount, totalPrice } = ShopCartService.refreshShopCartList()
             }
 
             .totalPrice {
-                font-weight: bold;
+                font-weight: bolder;
             }
 
             .toPay {

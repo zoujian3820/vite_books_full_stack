@@ -1,5 +1,5 @@
 import { Context } from 'koa'
-import { get, Controller } from '@/decorator'
+import { get, post, Controller } from '@/decorator'
 import BooksDao from '@/modules/books/dao/BooksDao'
 
 @Controller('/booksmodule')
@@ -27,5 +27,23 @@ class BooksController {
         await BooksDao.findBooksBySecondCtgyId(parseInt(secondctgyid), sortField, ascOrDesc)
       )
     }
+  }
+
+  @get('/findBooksByAutoCompKeyword/:autoCompKeyword')
+  async findBooksByAutoCompKeyword(ctx: Context) {
+    const { autoCompKeyword } = ctx.params
+    ctx.body = ctx.resSuccess(await BooksDao.findBooksByAutoCompKeyword(autoCompKeyword))
+  }
+
+  @get('/findPublisersByAutoCompKey/:autoCompKeyword')
+  async findPublisersByAutoCompKey(ctx: Context) {
+    const { autoCompKeyword } = ctx.params
+    ctx.body = ctx.resSuccess(await BooksDao.findPublisersByAutoCompKey(autoCompKeyword))
+  }
+
+  @post('/findBksByPublishIds')
+  async findBksByPublishIds(ctx: Context) {
+    const publishids: number[] = ctx.request.body
+    ctx.body = ctx.resSuccess(await BooksDao.findBksByPublishIds(publishids))
   }
 }

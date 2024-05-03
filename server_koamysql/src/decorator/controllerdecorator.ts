@@ -14,6 +14,8 @@ export function Controller(modulePath: string = '/') {
           modulePath = ''
         }
       }
+    } else {
+      modulePath = ''
     }
     // /ctgymodule + /findSecThirdCtgys/:firstctgyid
     return modulePath + reqPath

@@ -1,13 +1,17 @@
-import { FirstCtgy, SecondCtgy, ThirdCtgy } from '@/piniastore/state'
+import { FirstCtgy, SecondCtgy /*ThirdCtgy*/ } from '@/piniastore/state'
 import { Ref, ref /*toRefs*/, watchEffect, nextTick, WatchStopHandle } from 'vue'
 import { storeToRefs } from 'pinia'
 import ctgyStore, { thirdAllCtgy } from '@/piniastore/ctgy'
 import router from '@/router'
 import { useRoute } from 'vue-router'
 import Books from '@/piniaviews/books/service'
+import bookStore from '@/piniastore/book'
+import { Operate } from '@/utils/goodstorageutil'
 
 export default class FstToThrCtgy {
   static store = ctgyStore()
+  static bookStore = bookStore()
+
   static storeRefs = storeToRefs(FstToThrCtgy.store)
   static firstCtgyActiveId: Ref<number> = ref(0)
   static switchThrdCtgyActiveId: Ref<number> = ref(0)
@@ -141,6 +145,8 @@ export default class FstToThrCtgy {
     if (thirdctgyid === thirdAllCtgy.thirdctgyid) {
       FstToThrCtgy.store.storeThirdCtgy(thirdAllCtgy)
     }
+
+    FstToThrCtgy.bookStore.storeOperate(Operate.THRDCTGYID)
 
     router.push({
       path: '/books',
