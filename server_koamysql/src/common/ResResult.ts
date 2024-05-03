@@ -12,9 +12,9 @@ export class ResResult {
     const code: Code = Code.SUCCESS
     return { data, msg, code }
   }
-  static fail(msg: any = '', code: Code = Code.SERVERERROR) {
+  static fail(msg: any = '', code: Code = Code.SERVERERROR, type?: string) {
     // const code: Code = Code.SERVERERROR
-    return { undefined, msg, code }
+    return { undefined, msg, code, type }
   }
 }
 

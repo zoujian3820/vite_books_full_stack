@@ -2,12 +2,12 @@
 import koa, { Context } from 'koa'
 import { fail, Code } from './ResResult'
 import logger from './LogUtil'
-// import JwtSecret from '@/common/JwtSecret'
-interface Req_ {
-  url: string
-  method: string
-  headers: { [k: string]: string }
-}
+// import MyJwt from '@/common/MyJwt'
+// interface Req_ {
+//   url: string
+//   method: string
+//   headers: { [k: string]: string }
+// }
 
 /*******************自身手写的 jwt 鉴权**************************************/
 /* 
@@ -37,7 +37,7 @@ const globalException = async (ctx: Context, next: koa.Next) => {
         const isSchemeToken = /^Bearer$/i.test(scheme)
         if (isSchemeToken && token) {
           // 验证token
-          await JwtSecret.verifyJWTToken(token, userid)
+          await MyJwt.verifyJWTToken(token)
           // console.log('jwt data:', data)
         } else {
           ctx.body = fail(!isSchemeToken ? tokenFmtErrMsg : tokenEmptyMsg, Code.UNAUTHORIZEDERROR)
@@ -101,7 +101,7 @@ const globalException = async (ctx: Context, next: koa.Next) => {
     logger.info(`全局异常处理: ${err.message}, error.name: ${err.name}`)
     if (err.status === 401) {
       // ctx.status = 401
-      ctx.body = fail('这是不合法或过期token', Code.UNAUTHORIZEDERROR)
+      ctx.body = fail('这是不合法或过期token', Code.UNAUTHORIZEDERROR, 'invalid_token')
     } else {
       ctx.body = fail(`服务器错误: ${err.message}`, Code.SERVERERROR)
     }

@@ -5,7 +5,7 @@ import ctgyDao from '@/modules/ctgy/dao/CtgyDao'
 import ctgyService from '@/modules/ctgy/service/CtgyService'
 import { findSecThrdCtgysByFstCtgyId } from '@modules/ctgy/defmodel'
 import redisUtil from '@/common/RedisUtil'
-// import JwtSecret from '@/common/JwtSecret'
+// import MyJwt from '@/common/MyJwt'
 
 @Controller('/ctgymodule')
 class CtgyController {
@@ -38,7 +38,7 @@ class CtgyController {
   }
   @get('/findFirstCtgys')
   async findFirstCtgys(ctx: Context) {
-    // const payloadData = await JwtSecret.verifyJWTToken(
+    // const payloadData = await MyJwt.verifyJWTToken(
     //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJpZCI6MSwidXNlcm5hbWUiOiJ6aGFuZ3NhbiIsInBhc3N3b3JkIjoiMTIzNCIsImFkZHJlc3MiOiLlub_lt54iLCJ2YWxpZCI6MX0sImlhdCI6MTcxNDY2NjA2OSwiZXhwIjoxNzE0NjY2MDY5fQ.jJDA-iZ9ji8SC2TXK2AZV-fA1cJPs6E0ET5pshaHgkU',
     //   1
     // )

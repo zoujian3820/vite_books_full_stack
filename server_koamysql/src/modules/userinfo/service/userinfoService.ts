@@ -1,13 +1,13 @@
 import UserDao, { Userinfo } from '../dao/UserDao'
-import JwtSecret from '@/common/JwtSecret'
+import MyJwt from '@/common/MyJwt'
 
 class UserinfoService {
   static userinfoService: UserinfoService = new UserinfoService()
   async login(username: string, password: string) {
     const userinfo: Userinfo = await UserDao.findOneUser(username, password)
     if (userinfo?.userid) {
-      await JwtSecret.setSecret(userinfo.userid)
-      const token = await JwtSecret.createJWTToken(userinfo)
+      const token = await MyJwt.createJWTToken(userinfo)
+      // await MyJwt.setRedisJwtToken(userinfo.userid, token)
       return { ...userinfo, token }
     } else {
       // throw new Error('用户名或密码错误')

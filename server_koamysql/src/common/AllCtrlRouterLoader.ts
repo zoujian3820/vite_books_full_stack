@@ -7,7 +7,8 @@ import json from 'koa-json'
 import globalException from './GlobalException'
 import { sequelize } from '@modules/BaseDao'
 import koaJwt from 'koa-jwt'
-import JwtSecret from './JwtSecret'
+import MyJwt from './MyJwt'
+import HandleInvalidToken, { uncheckedPathsRegExps } from './HandleInvalidToken'
 
 class AllRouterLoader {
   app!: Koa
@@ -31,17 +32,9 @@ class AllRouterLoader {
     this.app.use(body())
     this.app.use(globalException)
     // jwt认证中间件 及密钥
-    this.app.use(
-      koaJwt({ secret: JwtSecret.secret }).unless({
-        path: [
-          // 登录和注册接口都不需要校验token登录
-          /^\/dang\/usermodule\/login/,
-          /^\/dang\/usermodule\/register/,
-          // 三级分类模块都不校验token登录
-          /^\/dang\/ctgymodule/
-        ]
-      })
-    )
+    this.app.use(koaJwt({ secret: MyJwt.secret }).unless({ path: uncheckedPathsRegExps }))
+    // 处理无效token的中间件
+    this.app.use(HandleInvalidToken)
   }
   storeRootRouterToCtx() {
     const rootRouter = new Router()
