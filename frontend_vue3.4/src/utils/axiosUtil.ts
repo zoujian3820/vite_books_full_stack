@@ -30,6 +30,7 @@ import router from '@/router'
 import { RouteLocationRaw } from 'vue-router'
 import { debounce } from '@/utils'
 const SERVER_ERR = '请求服务器的网址错误或网络连接失败'
+const UNAUTHORIZED_ERR = '这是不合法或过期token'
 const methods: Method[] = ['get', 'post', 'put', 'delete', 'patch']
 
 const routerPush = debounce((args: RouteLocationRaw) => {
@@ -83,15 +84,20 @@ class AxiosUtil {
             ElMessage.error(msg)
             return
           case 401:
-            ElMessage.error(msg)
-            // 错误提示后，清除token，并跳转到登录页
-            goodstorageutil.remove('token')
-            routerPush({
-              path: '/login',
-              query: {
-                redirect: encodeURIComponent(router.currentRoute.value.fullPath)
-              }
-            })
+            if (msg === UNAUTHORIZED_ERR) {
+              ElMessage.error(msg)
+              // 错误提示后，清除token，并跳转到登录页
+              goodstorageutil.remove('token')
+              routerPush({
+                path: '/login',
+                query: {
+                  redirect: encodeURIComponent(router.currentRoute.value.fullPath)
+                }
+              })
+            } else {
+              ElMessage.error(msg)
+              throw new Error(msg)
+            }
             return
           case 500:
             ElMessage.error(`发生了错误${msg}`)

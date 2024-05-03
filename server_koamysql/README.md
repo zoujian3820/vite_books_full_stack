@@ -465,6 +465,8 @@ npm i nodemon -S
 // typescript + ts-node依赖
 npm i typescript -S
 npm i ts-node -S
+// 使用koa封装的jwt中间件依赖
+npm i koa-jwt
 
 ```
 复制粘贴到控制台，共19个依赖
@@ -489,6 +491,7 @@ npm i sequelize-typescript -S
 npm i nodemon -S
 npm i typescript -S
 npm i ts-node -S
+npm i koa-jwt
 
 # 用mariadb替代mysql
 npm install mariadb

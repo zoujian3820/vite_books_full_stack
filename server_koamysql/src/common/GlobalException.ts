@@ -2,13 +2,15 @@
 import koa, { Context } from 'koa'
 import { fail, Code } from './ResResult'
 import logger from './LogUtil'
-import JwtSecret from '@/common/JwtSecret'
+// import JwtSecret from '@/common/JwtSecret'
 interface Req_ {
   url: string
   method: string
   headers: { [k: string]: string }
 }
 
+/*******************自身手写的 jwt 鉴权**************************************/
+/* 
 // 忽略路径
 const uncheckedPaths = ['/login', '/register']
 
@@ -79,6 +81,31 @@ const globalException = async (ctx: Context, next: koa.Next) => {
         break
     }
   }
+}
+
+*/
+
+/**********改用 koa-jwt 中间件的方式，不用自身手写的鉴权了 ********************/
+const globalException = async (ctx: Context, next: koa.Next) => {
+  // 当下一个中间件出现异常，这里将捕获到异常，并返回给客户端
+  // 在src\common\AllCtrlRouterLoader.ts的 loadMiddleAware 方法中
+  // 实现下一个中间件就是 koa-jwt
+  /*
+  loadMiddleAware() {
+    this.app.use(globalException)
+    // jwt认证中间件 及密钥
+    this.app.use(koaJwt({ secret: 'xxxxxx' }))
+  }
+  */
+  await next().catch((err) => {
+    logger.info(`全局异常处理: ${err.message}, error.name: ${err.name}`)
+    if (err.status === 401) {
+      // ctx.status = 401
+      ctx.body = fail('这是不合法或过期token', Code.UNAUTHORIZEDERROR)
+    } else {
+      ctx.body = fail(`服务器错误: ${err.message}`, Code.SERVERERROR)
+    }
+  })
 }
 
 export default globalException
