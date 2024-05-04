@@ -19,7 +19,8 @@ interface ReqExecute {
 import axios, {
   AxiosInstance,
   AxiosRequestConfig,
-  AxiosResponse
+  AxiosResponse,
+  InternalAxiosRequestConfig
   // AxiosPromise
 } from 'axios'
 
@@ -28,7 +29,10 @@ import { ElMessage } from 'element-plus'
 import conf from '@/config'
 import router from '@/router'
 import { RouteLocationRaw } from 'vue-router'
-import { debounce } from '@/utils'
+import { debounce, CommonFunType } from '@/utils'
+import UserApi from '@/api/UserApi'
+import { Userinfo } from '@/piniastore/userinfo'
+
 const SERVER_ERR = '请求服务器的网址错误或网络连接失败'
 const methods: Method[] = ['get', 'post', 'put', 'delete', 'patch']
 
@@ -40,6 +44,11 @@ class AxiosUtil {
   static axiosUtil: AxiosUtil = new AxiosUtil()
   axiosInstance!: AxiosInstance
   request!: ReqExecute
+  // 当前是否有 access_token静默续期 请求在进行中
+  isFinishing: boolean = false
+  // 开始静默续期后，后续加入的请求队列
+  requests: CommonFunType[] = []
+
   constructor() {
     // TS中无参数或少参数，可以接受多参数类型，any返回值 ，可接受任何类型
     this.request = {
@@ -61,7 +70,7 @@ class AxiosUtil {
   beforeReqIntercpt() {
     this.axiosInstance.interceptors.request.use((request) => {
       const headers = request.headers!
-      const token = goodstorageutil.get('token')
+      const token = goodstorageutil.get('access_token')
       const userid = goodstorageutil.get('userid')
       if (!headers.Authorization && token && userid) {
         headers.Authorization = `Bearer ${token}`
@@ -74,7 +83,9 @@ class AxiosUtil {
   beforeResponseIntercpt() {
     this.axiosInstance.interceptors.response.use(
       (response) => {
-        const { msg, code, type } = response.data
+        const config = response.config
+        const { msg, code } = response.data
+        let type = response.data.type
         switch (code) {
           case 200:
             return response.data
@@ -83,21 +94,11 @@ class AxiosUtil {
             ElMessage.error(msg)
             return
           case 401:
-            if (type === 'invalid_token') {
-              ElMessage.error(msg)
-              // 错误提示后，清除token，并跳转到登录页
-              goodstorageutil.remove('token')
-              routerPush({
-                path: '/login',
-                query: {
-                  redirect: encodeURIComponent(router.currentRoute.value.fullPath)
-                }
-              })
-            } else {
-              ElMessage.error(msg)
-              throw new Error(msg)
+            if (this.isFinishing) {
+              type = 'expired_token'
             }
-            return
+            // token失效及 access_token过期续期 处理
+            return this.handleTokenInvalidAndExpired(config, type, msg)
           case 500:
             ElMessage.error(`发生了错误${msg}`)
             return
@@ -111,6 +112,74 @@ class AxiosUtil {
         console.log('response err', err)
       }
     )
+  }
+  handleTokenInvalidAndExpired(
+    config: InternalAxiosRequestConfig,
+    type: string,
+    msg: string
+  ) {
+    switch (type) {
+      case 'expired_token':
+        // 静默登录续期 刷新 access_token
+        return this.handleTokenExpired(config)
+      case 'invalid_token':
+        ElMessage.error(msg)
+        // 错误提示后，清除token，并跳转到登录页
+        goodstorageutil.remove('access_token')
+        routerPush({
+          path: '/login',
+          query: {
+            redirect: encodeURIComponent(router.currentRoute.value.fullPath)
+          }
+        })
+        return
+      default:
+        ElMessage.error(msg)
+        throw new Error(msg)
+    }
+  }
+  handleTokenExpired(config: InternalAxiosRequestConfig) {
+    if (!this.isFinishing) {
+      const access_token = goodstorageutil.get('access_token')
+      const refresh_token = goodstorageutil.get('refresh_token')
+      const userid = goodstorageutil.get('userid')
+      this.isFinishing = true
+
+      return UserApi.loginRenewal({
+        userid,
+        access_token,
+        refresh_token
+      }).then((result: AxiosResponse<Userinfo>) => {
+        const { access_token, refresh_token, userid } = result.data || {}
+        if (access_token && refresh_token && userid) {
+          goodstorageutil.set('access_token', access_token as string)
+          goodstorageutil.set('refresh_token', refresh_token as string)
+          goodstorageutil.set('userid', userid)
+          goodstorageutil.set('userinfo', result.data)
+          this.isFinishing = false
+          this.requests.forEach((cb) => cb(access_token))
+          this.requests = []
+          // 刷新token后，重新发送请求
+          if (config.headers) {
+            config.headers.Authorization = `Bearer ${access_token}`
+            config.headers['Content-Type'] = 'application/json;charset=UTF-8'
+          }
+          return this.axiosInstance(config).then((res) => {
+            return Promise.resolve(res)
+          })
+        }
+      })
+    } else {
+      // 统一处理同时请求到 access_token 过期的请求
+      return new Promise((resolve) => {
+        // 将resolve放进队列，用一个函数形式来保存，等token刷新后直接执行
+        this.requests.push((access_token: string) => {
+          config.headers.Authorization = `bearer ${access_token}`
+          config.headers['Content-Type'] = 'application/json;charset=UTF-8'
+          resolve(this.axiosInstance(config))
+        })
+      })
+    }
   }
   // 3、发送请求给服务器 [发送 post get put delete 或 patch]
   sendRequest(options: AxiosRequestConfig_) {

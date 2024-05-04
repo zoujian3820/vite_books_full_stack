@@ -17,6 +17,7 @@ export const uncheckedPathsRegExps = [
   // 登录和注册接口都不需要校验token登录
   /^\/dang\/usermodule\/login/,
   /^\/dang\/usermodule\/register/,
+  /^\/dang\/usermodule\/loginRenewal/,
   // 三级分类模块都不校验token登录
   /^\/dang\/ctgymodule/
 ]

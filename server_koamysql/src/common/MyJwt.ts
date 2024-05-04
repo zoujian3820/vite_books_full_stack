@@ -1,7 +1,7 @@
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import RedisUtil from './RedisUtil'
 import { Userinfo } from '@/modules/userinfo/dao/UserDao'
-import logger from './LogUtil'
+// import logger from './LogUtil'
 
 class MyJwt {
   static myJwt: MyJwt = new MyJwt()
@@ -16,14 +16,12 @@ class MyJwt {
     // 登出和注销帐户等操作，需要删除对应的 token，使先前的 token 失效
     await RedisUtil.hdel('redisJwtToken', `key${userid}`)
   }
-  async createJWTToken(userinfo: Userinfo) {
+  async createJWTToken(userinfo: Userinfo, expiresIn = '1h') {
     // 生成JWT Token
     const token: string = jwt.sign({ data: userinfo }, this.secret, {
-      expiresIn: '1h',
+      expiresIn,
       header: { alg: 'HS256', typ: 'JWT' }
     })
-    // 创建新的token，立将其存储在Redis中，保持token的有效性
-    await this.setRedisJwtToken(userinfo.userid, token)
     return token
   }
   async verifyJWTToken(token: string) {

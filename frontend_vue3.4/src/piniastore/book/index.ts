@@ -51,6 +51,8 @@ export default defineStore('bookStore', {
         ascOrDesc
       )
 
+      console.log('bookList====>', bookList)
+      
       this.bookList = getCalcDstpriceData(bookList)
       goodStorage.set('bookList', this.bookList)
     },

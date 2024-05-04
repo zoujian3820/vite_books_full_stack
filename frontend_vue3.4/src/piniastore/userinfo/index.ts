@@ -17,6 +17,9 @@ export default defineStore('userinfoStrore', {
     }
   },
   actions: {
+    setUserinfo(userinfo: Userinfo) {
+      this.userinfo = userinfo
+    },
     // 获取所有购物车列表接口
     async login(username: string, password: string) {
       const loginUser = { username, password } as Userinfo
@@ -24,7 +27,8 @@ export default defineStore('userinfoStrore', {
 
       this.userinfo = result.data
 
-      Storage.set('token', result.data.token as string)
+      Storage.set('access_token', result.data.access_token as string)
+      Storage.set('refresh_token', result.data.refresh_token as string)
       Storage.set('userid', result.data.userid)
       Storage.set('userinfo', result.data)
     }
@@ -38,7 +42,8 @@ export type Userinfo = {
   address: string
   valid: number
   birth: Date
-  token?: string
+  access_token?: string
+  refresh_token?: string
 }
 
 type InitUserState = {

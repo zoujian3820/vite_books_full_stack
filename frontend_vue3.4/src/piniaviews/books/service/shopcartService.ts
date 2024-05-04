@@ -117,7 +117,7 @@ export default class ShopCartService {
     })
   }
   static addBookToShopCartWrapper(event: Event, bookItem: BookInfo) {
-    if (goodstorageutil.get('token')) {
+    if (goodstorageutil.get('access_token')) {
       ShopCartService.addBookToShopCart(event, bookItem)
     } else {
       ElMessageBox.confirm('请先登录', '提示', {

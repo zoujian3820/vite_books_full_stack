@@ -40,7 +40,7 @@ const routes: RouteRecordRaw[] = [
     path: '/login',
     component: login,
     beforeEnter: (to, from, next) => {
-      const token = goodstorageutil.get('token')
+      const token = goodstorageutil.get('access_token')
       if (token) {
         next({
           path: '/ctgy'
@@ -76,7 +76,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   // 忽略路径
   const uncheckedPaths = ['/login', '/register']
-  const token = goodstorageutil.get('token')
+  const token = goodstorageutil.get('access_token')
   if (token || uncheckedPaths.find((pth) => to.path.startsWith(pth))) {
     next()
   } else {

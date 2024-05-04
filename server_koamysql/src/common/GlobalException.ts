@@ -101,7 +101,8 @@ const globalException = async (ctx: Context, next: koa.Next) => {
     logger.info(`全局异常处理: ${err.message}, error.name: ${err.name}`)
     if (err.status === 401) {
       // ctx.status = 401
-      ctx.body = fail('这是不合法或过期token', Code.UNAUTHORIZEDERROR, 'invalid_token')
+      // 返回type值为 expired_token 表示access_token过期 前端应该 发起token续期请求
+      ctx.body = fail('这是不合法或过期token', Code.UNAUTHORIZEDERROR, 'expired_token')
     } else {
       ctx.body = fail(`服务器错误: ${err.message}`, Code.SERVERERROR)
     }
