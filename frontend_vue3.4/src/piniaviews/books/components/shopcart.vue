@@ -5,7 +5,7 @@
                 <i :class="{ hightlight: totalCount > 0 }" class="iconfont icon-gouwuche" />
                 <div v-show="totalCount > 0" class="num">{{ totalCount }}</div>
             </div>
-            <div class="content-right" :class="{ hightlight: totalPrice > 0 }">
+            <div @click="toPay" class="content-right" :class="{ hightlight: totalPrice > 0 }">
                 <template v-if="totalCount > 0">
                     <div class="totalPrice">&yen; {{ totalPrice }}</div>
                     <div class="toPay">去支付<i class="iconfont icon-youjiantou" /></div>
@@ -30,6 +30,7 @@
 <script setup lang="ts">
 import { Transition, ref } from 'vue';
 import ShopCartService from '@/piniaviews/books/service/shopcartService';
+import router from '@/router';
 const { beforeDrop, dropping, afterDrop, ball, toShopCarList } = ShopCartService
 const { totalCount, totalPrice } = ShopCartService.refreshShopCartList()
 
@@ -39,7 +40,11 @@ function crtlShopCart(isShow_: boolean) {
 }
 // defineExpose vue3.2以后 提供的暴露方法的api
 defineExpose({ crtlShopCart })
-
+function toPay() {
+    if (totalCount.value > 0) {
+        router.push('/order')
+    }
+}
 </script>
 <style lang="scss" scoped>
 @import '@/assets/css/mixins.scss';

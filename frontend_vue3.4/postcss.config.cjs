@@ -13,6 +13,9 @@ module.exports = {
         'last 2 version' //所有主流浏览器最近2个版本
       ],
       grid: true //开启grid布局的兼容（浏览器IE除外其它都能兼容grid，可以关闭开启）
+    },
+    'postcss-px-to-viewport': {
+      viewportWidth: 375
     }
   }
 }

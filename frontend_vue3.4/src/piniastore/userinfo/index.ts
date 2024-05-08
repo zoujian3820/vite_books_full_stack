@@ -2,10 +2,7 @@ import { AxiosResponse } from 'axios'
 import { defineStore } from 'pinia'
 import Storage, { OPTION } from '@/utils/goodstorageutil'
 import UserApi from '@/api/UserApi'
-
-function hasProps(obj: Record<string, any>) {
-  return obj && Object.getOwnPropertyNames(obj).length
-}
+import { hasProps } from '@/utils'
 
 export default defineStore('userinfoStrore', {
   state: () => {
@@ -25,6 +22,18 @@ export default defineStore('userinfoStrore', {
       const loginUser = { username, password } as Userinfo
       const result: AxiosResponse<Userinfo> = await UserApi.login(loginUser)
 
+      this.userinfo = result.data
+
+      Storage.set('access_token', result.data.access_token as string)
+      Storage.set('refresh_token', result.data.refresh_token as string)
+      Storage.set('userid', result.data.userid)
+      Storage.set('userinfo', result.data)
+    },
+    async registeredUsers(username: string, password: string) {
+      const result: AxiosResponse<Userinfo> = await UserApi.registeredUsers(
+        username,
+        password
+      )
       this.userinfo = result.data
 
       Storage.set('access_token', result.data.access_token as string)

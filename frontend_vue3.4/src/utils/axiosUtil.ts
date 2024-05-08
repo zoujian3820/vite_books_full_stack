@@ -100,7 +100,7 @@ class AxiosUtil {
             // token失效及 access_token过期续期 处理
             return this.handleTokenInvalidAndExpired(config, type, msg)
           case 500:
-            ElMessage.error(`发生了错误${msg}`)
+            ElMessage.error(`发生了错误：${msg}`)
             return
           default:
             ElMessage.error('发生了未知错误')

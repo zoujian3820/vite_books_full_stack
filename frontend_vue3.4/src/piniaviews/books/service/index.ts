@@ -7,6 +7,7 @@ import { thirdAllCtgy } from '@/piniastore/ctgy'
 import { BookInfo } from '@/piniastore/book/state'
 import { Operate, getValArrOfObj } from '@/utils/goodstorageutil'
 import { ElMessage } from 'element-plus'
+import router from '@/router'
 
 export default class Books {
   static store = bookStore()
@@ -17,6 +18,11 @@ export default class Books {
   static isAutoCompSearch = ref(false)
   static isReadyOpen = ref(true)
   // static publisherPanelRef: Ref<HTMLBodyElement | undefined> = ref<HTMLBodyElement>()
+
+  static bookDetail(isbn: string) {
+    Books.store.storeISBN(isbn)
+    router.push({ name: 'bookdetail' })
+  }
 
   static sortBook(_sortField: string) {
     if (

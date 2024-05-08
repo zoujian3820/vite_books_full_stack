@@ -100,7 +100,8 @@ defineProps<{
 
     .addbtn {
         @include flex-box(center, center);
-        margin-top: 0.18rem;
+        // margin-top: 0.18rem;
+        margin-top: 0.09rem;
 
         &-inner {
             @include wh(80%, 0.32rem);

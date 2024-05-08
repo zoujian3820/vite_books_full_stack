@@ -3,7 +3,8 @@
         <div class="tosearch">
             <i class="iconfont icon-fangdajing" />
             <div class="tosearch-keyword">
-                <input type="text" placeholder="输入搜索内容" class="tosearch-keyword-input">
+                <input @click="$router.push('/search')" readonly type="text" placeholder="输入搜索内容"
+                    class="tosearch-keyword-input">
                 <i class="iconfont icon-saomiao" />
             </div>
         </div>

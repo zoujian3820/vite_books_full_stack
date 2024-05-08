@@ -25,4 +25,15 @@ export default class UserController {
       ctx.body = ctx.resFail('登录已过期', Code.FORBIDDENERROR, 'invalid_token')
     }
   }
+
+  @post('/registeredUsers')
+  async registeredUsers(ctx: Context) {
+    const { username, password } = ctx.request.body
+    const userinfo = await userinfoService.registeredUsers(username, password)
+    if (userinfo?.userid) {
+      ctx.body = ctx.resSuccess(userinfo)
+    } else {
+      ctx.body = ctx.resFail('用户已存在，请更换用户名')
+    }
+  }
 }

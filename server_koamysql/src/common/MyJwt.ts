@@ -24,6 +24,16 @@ class MyJwt {
     })
     return token
   }
+  async getLoginUserinfo(userinfo: Userinfo) {
+    // access_token 有效期 1小时
+    const access_token = await this.createJWTToken(userinfo, '1h')
+    // 创建新的token，立将其存储在Redis中，保持token的有效性
+    await this.setRedisJwtToken(userinfo.userid, access_token)
+    // refresh_token 有效期 15天
+    const refresh_token = await this.createJWTToken(userinfo, '15d')
+    // await MyJwt.setRedisJwtToken(userinfo.userid, token)
+    return { ...userinfo, access_token, refresh_token }
+  }
   async verifyJWTToken(token: string) {
     // 验证JWT Token
     const decoded = jwt.verify(token, this.secret) as JwtPayload

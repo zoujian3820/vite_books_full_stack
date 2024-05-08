@@ -37,7 +37,7 @@
 @import '@/assets/viewwindow.css';
 @import '@/assets/reset.css';
 @import '@/assets/font/iconfont.css';
-// @import '//at.alicdn.com/t/c/font_4507918_9oor96jq0vm.css';
+// @import '//at.alicdn.com/t/c/font_4507918_pfqul9b0pua.css‘
 
 body {
   user-select: none;

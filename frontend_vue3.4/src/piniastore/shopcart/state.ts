@@ -10,3 +10,5 @@ export type ShopCart = {
 }
 
 export const initShopcart: ShopCart[] = []
+export const chkedSCLst: ShopCart[] = []
+export const subChkedSCLst: ShopCart[] = []

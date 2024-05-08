@@ -20,6 +20,12 @@ export const uncheckedPathsRegExps = [
   /^\/dang\/usermodule\/loginRenewal/,
   // 三级分类模块都不校验token登录
   /^\/dang\/ctgymodule/
+  // 开发时，测试接口开放部分
+  // /^\/dang\/ordAndOrdDetailModule/,
+  // /^\/dang\/evaluatemodule/,
+  // /^\/dang\/replymodule/,
+  // /^\/dang\/booksmodule\/findBookDetailsByISBN/,
+  // /^\/dang\/booksmodule/
 ]
 
 export default async (ctx: Context, next: koa.Next) => {

@@ -4,6 +4,12 @@ import BooksDao from '@/modules/books/dao/BooksDao'
 
 @Controller('/booksmodule')
 class BooksController {
+  @get('/findBookLstWithPager/:curPageNo')
+  async findBookLstWithPager(ctx: Context) {
+    const { curPageNo } = ctx.params
+    ctx.body = ctx.resSuccess(await BooksDao.findBookLstWithPager(curPageNo))
+  }
+
   @get('/findBooksByThirdCtgyId/:thirdctgyid')
   async findBooksByThirdCtgyId(ctx: Context) {
     const { thirdctgyid } = ctx.params
@@ -45,5 +51,11 @@ class BooksController {
   async findBksByPublishIds(ctx: Context) {
     const publishids: number[] = ctx.request.body
     ctx.body = ctx.resSuccess(await BooksDao.findBksByPublishIds(publishids))
+  }
+
+  @get('/findBookDetailsByISBN/:ISBN')
+  async findBookDetailsByISBN(ctx: Context) {
+    const { ISBN } = ctx.params
+    ctx.body = ctx.resSuccess(await BooksDao.findBookDetailsByISBN(ISBN))
   }
 }

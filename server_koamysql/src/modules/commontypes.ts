@@ -73,3 +73,14 @@ export function combine<T extends object[]>(...t: T) {
     return { ...pre, ...cur }
   }, {})
 }
+
+export function addEntryToArr<T extends EleOfArr<T>[], K extends keyof EleOfArr<T>>(
+  arr: T,
+  k: K,
+  v: any
+) {
+  return arr.map((item) => {
+    item[k] = v
+    return item
+  })
+}

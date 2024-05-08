@@ -3,7 +3,8 @@ import { storeToRefs } from 'pinia'
 import { BookInfo } from '@/piniastore/book/state'
 import { ShopCart } from '@/piniastore/shopcart/state'
 import Books from '@/piniaviews/books/service'
-import { ElMessageBox } from 'element-plus'
+// import { ElMessageBox } from 'element-plus'
+import { showDialog, showConfirmDialog } from 'vant'
 import { computed, reactive, ref } from 'vue'
 import router from '@/router'
 import goodstorageutil from '@/utils/goodstorageutil'
@@ -116,24 +117,30 @@ export default class ShopCartService {
       })
     })
   }
-  static addBookToShopCartWrapper(event: Event, bookItem: BookInfo) {
+  static async addBookToShopCartWrapper(event: Event, bookItem: BookInfo) {
     if (goodstorageutil.get('access_token')) {
       ShopCartService.addBookToShopCart(event, bookItem)
     } else {
-      ElMessageBox.confirm('请先登录', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-        center: true
-      }).then(() => {
-        router.push('/login')
+      // ElMessageBox.confirm('请先登录', '提示', {
+      //   confirmButtonText: '确定',
+      //   cancelButtonText: '取消',
+      //   type: 'warning',
+      //   center: true
+      // }).then(() => {
+      //   router.push('/login')
+      // })
+
+      await showDialog({
+        title: '提示',
+        message: '请先登录'
       })
+      router.push('/login')
     }
   }
   // 新增购物车
   static async addBookToShopCart(event: Event, bookItem: BookInfo) {
     const shopcart: ShopCart = {
-      userid: 1,
+      userid: goodstorageutil.get('userid'),
       checked: false,
       bookisbn: bookItem.ISBN,
       bookname: bookItem.bookname,
@@ -201,13 +208,17 @@ export default class ShopCartService {
   }
   static async delOneBookInSc(shopcart: ShopCart) {
     try {
-      await ElMessageBox.confirm('确定从购物车中删除这本书？', '删除', {
-        type: 'warning',
-        confirmButtonText: '确定',
-        cancelButtonText: '再想想',
-        center: true
+      // await ElMessageBox.confirm('确定从购物车中删除这本书？', '删除', {
+      //   type: 'warning',
+      //   confirmButtonText: '确定',
+      //   cancelButtonText: '再想想',
+      //   center: true
+      // })
+      await showConfirmDialog({
+        title: '删除',
+        message: '确定从购物车中删除这本书？',
+        cancelButtonText: '再想想'
       })
-
       await ShopCartService.store.delOneBookFrmSc(shopcart.shopcartid!)
     } catch (error) {
       console.log(error)
@@ -215,12 +226,17 @@ export default class ShopCartService {
   }
   static async delOneBookFrmSc(bookItem: BookInfo) {
     try {
-      await ElMessageBox.confirm('确定从购物车中删除这本书？', '删除', {
-        type: 'warning',
-        confirmButtonText: '确定',
-        cancelButtonText: '再想想',
-        center: true
+      await showConfirmDialog({
+        title: '删除',
+        message: '确定从购物车中删除这本书？',
+        cancelButtonText: '再想想'
       })
+      // await ElMessageBox.confirm('确定从购物车中删除这本书？', '删除', {
+      //   type: 'warning',
+      //   confirmButtonText: '确定',
+      //   cancelButtonText: '再想想',
+      //   center: true
+      // })
 
       const findShopcart = findShopcartByisbn(bookItem)!
       if (findShopcart && findShopcart.shopcartid) {

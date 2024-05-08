@@ -18,3 +18,9 @@ export interface BookInfo {
   isDecimal: boolean // 是否是小数 ++
   ranking: number // ++
 }
+
+export type CurpageDataType = {
+  curPageDataList: BookInfo[]
+  totalPageNum: number
+  curPageNo: number
+}

@@ -104,310 +104,313 @@ grant all privileges ON *.* TO admin@'%';
 mysql -uadmin -p1234
 
 ```
-- 6.mysql之增删改查表，增删改字段
+- 6.mysql之 建表、增删改查表、增删改字段
     - 关于mysql的操作命令说要大写，是为了区分变量和数据库语句。
-```
-// 创建数据库
-# 如果不存在test数据库，则创建
-# character 指定数据库字符集为utf8mb4 避免在数据库中存的数据出现乱码或有些字符不支持的情况
-# collate 指定字符集的默认校对规则
-create database if not exists 数据库名 character set utf8mb4 collate utf8mb4_general_ci;
 
-// 查看数据库命令 show databases;
-// 选择数据库命令 use 数据库名;
-// 删除数据库命令 drop database if exists 数据库名; 
-drop database if exists test2; // 假如存在test2数据库就删除
+  `创建数据库`
+  ```
+  // 创建数据库
+  # 如果不存在test数据库，则创建
+  # character 指定数据库字符集为utf8mb4 避免在数据库中存的数据出现乱码或有些字符不支持的情况
+  # collate 指定字符集的默认校对规则
+  create database if not exists 数据库名 character set utf8mb4 collate utf8mb4_general_ci;
 
-//【数据库备份】使用mysqldump导出数据：不能切到mysql控制台再使用以下命令，打开cmd就可以直接跑了
-mysqldump -u用户名 -p密码 --set-gtid-purged=OFF 旧数据库名 > /导出地址/xxx.sql
+  // 查看数据库命令 show databases;
+  // 选择数据库命令 use 数据库名;
+  // 删除数据库命令 drop database if exists 数据库名; 
+  drop database if exists test2; // 假如存在test2数据库就删除
 
-mysqldump -uadmin -p1234 --set-gtid-purged=OFF test > D:\test.sql
+  //【数据库备份】使用mysqldump导出数据：不能切到mysql控制台再使用以下命令，打开cmd就可以直接跑了
+  mysqldump -u用户名 -p密码 --set-gtid-purged=OFF 旧数据库名 > /导出地址/xxx.sql
 
-mysqldump -u admin -p1234 test > d:\test2.sql 
-// linux上
-mysqldump -u admin -p1234 test > /tmp/tset_db.sql
+  mysqldump -uadmin -p1234 --set-gtid-purged=OFF test > D:\test.sql
 
-
-仅是做普通的本机备份恢复时,可以添加
---set-gtid-purged=OFF
-作用是在备份时候不出现GTID信息
-
-// 导入数据到新库：
-mysql -u用户名 -p密码 数据库名 < /数据库文件地址/xxx.sql
-mysql -uadmin -p1234 new_db < d:/test.sql
+  mysqldump -u admin -p1234 test > d:\test2.sql 
+  // linux上
+  mysqldump -u admin -p1234 test > /tmp/tset_db.sql
 
 
-// 创建数据库表
-    // 字符类型
-    char(固定长度) 1-255字节   如电话号码 char(11)
-    varchar(可变长) 1-255字节  如人的姓名 用varchar(30)
-    text(大文本) 65535字节
-    // 整数类型
-    tinyint(1个字节) 如人的年龄就够用，最大值127
-    smallint(2个字节) 最大值 32767
-    mediumint(3个字节) 最大值 8388607
-    int(4个字节) 最大值 2147483647
-    bigint(8个字节) 最大值9223372036854775807
-    // 浮动类型
-    float(4个字节)   double(8个字节)
-    // 日期/时间类型
-    date(3个字节)     年月日 1959/07/25
-    datetime(8个字节) 年月日时分秒  1959/07/25 10:26:09
+  仅是做普通的本机备份恢复时,可以添加
+  --set-gtid-purged=OFF
+  作用是在备份时候不出现GTID信息
+
+  // 导入数据到新库：
+  mysql -u用户名 -p密码 数据库名 < /数据库文件地址/xxx.sql
+  mysql -uadmin -p1234 new_db < d:/test.sql
 
 
-create table 表名(
-    userid字段 int not null auto_increment, // userid为自增字段
+  // 创建数据库表
+      // 字符类型
+      char(固定长度) 1-255字节   如电话号码 char(11)
+      varchar(可变长) 1-255字节  如人的姓名 用varchar(30)
+      text(大文本) 65535字节
+      // 整数类型
+      tinyint(1个字节) 如人的年龄就够用，最大值127
+      smallint(2个字节) 最大值 32767
+      mediumint(3个字节) 最大值 8388607
+      int(4个字节) 最大值 2147483647
+      bigint(8个字节) 最大值9223372036854775807
+      // 浮动类型
+      float(4个字节)   double(8个字节)
+      // 日期/时间类型
+      date(3个字节)     年月日 1959/07/25
+      datetime(8个字节) 年月日时分秒  1959/07/25 10:26:09
+
+
+  create table 表名(
+      userid字段 int not null auto_increment, // userid为自增字段
+      username字段 varchar(30) not null,
+      psw字段 varchar(30) not null,
+      address字段 varchar(50) default '没有填写地址',
+      valid字段 tinyint default 1,
+      birth字段 datetime null,
+      primary key(字段userid) // 主键用userid字段，主键是一个可以唯一表示一条记录的字段
+  );
+
+  create table userinfo(
+      userid int not null auto_increment,
+      username varchar(30) not null,
+      psw varchar(30) not null,
+      address varchar(50) default '没有填写地址',
+      valid tinyint default 1,
+      birth datetime null,
+      primary key(userid)
+  );
+
+
+  // 以下方式，直接声明在哪个数据库下，建表 
+  create table 数据库名.表名(
     username字段 varchar(30) not null,
-    psw字段 varchar(30) not null,
-    address字段 varchar(50) default '没有填写地址',
-    valid字段 tinyint default 1,
-    birth字段 datetime null,
-    primary key(字段userid) // 主键用userid字段，主键是一个可以唯一表示一条记录的字段
-);
+  )
+  create table `数据库名`.`表名`(
+    username字段 varchar(30) not null,
+  )
 
-create table userinfo(
-    userid int not null auto_increment,
-    username varchar(30) not null,
-    psw varchar(30) not null,
-    address varchar(50) default '没有填写地址',
-    valid tinyint default 1,
-    birth datetime null,
-    primary key(userid)
-);
-
-// 以下方式，直接声明在哪个数据库下，建表 
-create table 数据库名.表名(
-  username字段 varchar(30) not null,
-)
-create table `数据库名`.`表名`(
-  username字段 varchar(30) not null,
-)
-
-// 展示出当前的创建命令，以及外键信息
-show create table 表名;
-show create table 数据库名.表名;
-show create table books.thirdctgy;
-----------------------------------------------------------------------------------------------------------+
-| Table     | Create Table
-+-----------+---------------------------------------------------------------------------------------------+
-| thirdctgy | CREATE TABLE `thirdctgy` (
-  `thirdctgyid` int NOT NULL AUTO_INCREMENT,
-  `thirdctgyname` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
-  `secctgyid` int DEFAULT NULL,
-  PRIMARY KEY (`thirdctgyid`),
-  KEY `fk_secctgyid` (`secctgyid`),
-  CONSTRAINT `fk_secctgyid` FOREIGN KEY (`secctgyid`) REFERENCES `secondctgy` (`secondctgyid`)
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci |
-+-----------+------------------------------------------------------------------------------------------------
+  // 展示出当前的创建命令，以及外键信息
+  show create table 表名;
+  show create table 数据库名.表名;
+  show create table books.thirdctgy;
+  ----------------------------------------------------------------------------------------------------------+
+  | Table     | Create Table
+  +-----------+---------------------------------------------------------------------------------------------+
+  | thirdctgy | CREATE TABLE `thirdctgy` (
+    `thirdctgyid` int NOT NULL AUTO_INCREMENT,
+    `thirdctgyname` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+    `secctgyid` int DEFAULT NULL,
+    PRIMARY KEY (`thirdctgyid`),
+    KEY `fk_secctgyid` (`secctgyid`),
+    CONSTRAINT `fk_secctgyid` FOREIGN KEY (`secctgyid`) REFERENCES `secondctgy` (`secondctgyid`)
+  ) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci |
+  +-----------+------------------------------------------------------------------------------------------------
 
 
-// 查询出表的列信息，每列字段的数据类型，及有哪些列字段
-方法一：desc 表名; 
-  desc userinfo;
-方法二：show columns from 表名; 
-  show columns from userinfo;
+  // 查询出表的列信息，每列字段的数据类型，及有哪些列字段
+  方法一：desc 表名; 
+    desc userinfo;
+  方法二：show columns from 表名; 
+    show columns from userinfo;
 
-// 修改表名
-alter table userinfo rename myuserinfo; // 修改表userinfo的表名为myuserinfo
+  // 修改表名
+  alter table userinfo rename myuserinfo; // 修改表userinfo的表名为myuserinfo
 
-// 修改表字段
-alter table 表名 change 旧字段名 新字段名 新数据类型
-alter table userinfo change psw password varchar(20);
+  // 修改表字段
+  alter table 表名 change 旧字段名 新字段名 新数据类型
+  alter table userinfo change psw password varchar(20);
 
-// 删除表字段
-alter table 表名 drop 字段名
+  // 删除表字段
+  alter table 表名 drop 字段名
 
-// 新增表字段
-alter table 表名 add column 字段 字段类型 default 默认值;
-alter table userinfo add age tinyint default 30;
-alter table userinfo add column age tinyint default 30;
+  // 新增表字段
+  alter table 表名 add column 字段 字段类型 default 默认值;
+  alter table userinfo add age tinyint default 30;
+  alter table userinfo add column age tinyint default 30;
 
-// 删除数据表
-drop table if exists 表名
-```
+  // 删除数据表
+  drop table if exists 表名
+  ```
 
 - 7.mysql表数据的增删改查
-```
-// 增加一条mysql表数据
-insert into userinfo values(1,'zhangsan','1234','广州',1,'1999/09/09 09:09:09');
-insert into userinfo(username,password,birth) values('李四','1234','2001/01/01 01:01:01');
+  ```
+  // 增加一条mysql表数据
+  insert into userinfo values(1,'zhangsan','1234','广州',1,'1999/09/09 09:09:09');
+  insert into userinfo(username,password,birth) values('李四','1234','2001/01/01 01:01:01');
 
-// 删除一条mysql表数据
-delete from 表名 where 条件;
-delete from userinfo where username='王二' and address='广州';
-delete from userinfo where username='王二' and birth is null; 
+  // 删除一条mysql表数据
+  delete from 表名 where 条件;
+  delete from userinfo where username='王二' and address='广州';
+  delete from userinfo where username='王二' and birth is null; 
 
-# 此种方式 limit 无法使用 limit 1, 2 或 limit 2 offset 1 这种模式
-DELETE FROM books.historykeyword ORDER BY clickcount DESC LIMIT 1
+  # 此种方式 limit 无法使用 limit 1, 2 或 limit 2 offset 1 这种模式
+  DELETE FROM books.historykeyword ORDER BY clickcount DESC LIMIT 1
 
-// 子查询+临时表 实现复杂 删除
-DELETE FROM books.historykeyword 
-WHERE historykeywordid IN (
-    SELECT historykeywordid
-    FROM (
-        SELECT historykeywordid 
-        FROM books.historykeyword 
-        ORDER BY clickcount DESC 
-        LIMIT 0, 1
-    ) AS temp
-)
+  // 子查询+临时表 实现复杂 删除
+  DELETE FROM books.historykeyword 
+  WHERE historykeywordid IN (
+      SELECT historykeywordid
+      FROM (
+          SELECT historykeywordid 
+          FROM books.historykeyword 
+          ORDER BY clickcount DESC 
+          LIMIT 0, 1
+      ) AS temp
+  )
 
 
-// 更新mysql表里面的数据
-update 表名 set 字段名1=值, 字段名2=值, 字段名3=值 ... [where一个可选的子句，用于指定更新的行。如果省略 WHERE 子句，将更新表中的所有行];
-update userinfo set username='王二', address='湖南长沙' where userid=3;
-update userinfo set username='王二', address='湖南长沙' where userid=3 and password=1234;
+  // 更新mysql表里面的数据
+  update 表名 set 字段名1=值, 字段名2=值, 字段名3=值 ... [where一个可选的子句，用于指定更新的行。如果省略 WHERE 子句，将更新表中的所有行];
+  update userinfo set username='王二', address='湖南长沙' where userid=3;
+  update userinfo set username='王二', address='湖南长沙' where userid=3 and password=1234;
 
-// 查询mysql表数据
-# 查询表所有行数据
-select * from 表名;
-select * from userinfo; 
+  // 查询mysql表数据
+  # 查询表所有行数据
+  select * from 表名;
+  select * from userinfo; 
 
-# 投影查询，就是只查询出部分字段数据
-select 字段名1, 字段名2 from 表名; 
-select userid, address from userinfo; 
+  # 投影查询，就是只查询出部分字段数据
+  select 字段名1, 字段名2 from 表名; 
+  select userid, address from userinfo; 
 
-# 查询别名设置
-select 字段名 as 别名, 字段名2 as 别名2 from 表名; 
-select username as 用户名, address as 地址, ... from userinfo; 
-或者直接省略as 
-select 字段名 别名, 字段名2 别名2, ... from 表名;
-select username 用户名, address 地址 from userinfo;
+  # 查询别名设置
+  select 字段名 as 别名, 字段名2 as 别名2 from 表名; 
+  select username as 用户名, address as 地址, ... from userinfo; 
+  或者直接省略as 
+  select 字段名 别名, 字段名2 别名2, ... from 表名;
+  select username 用户名, address 地址 from userinfo;
 
-# limit查询
-limit查询mysql中的一个特殊关键字，用于指定查询结果从哪条记录开始显示，一共显示多少条，有三种使用方式：
-1. limit从哪条(用下标的方式，第一数据为0)记录开始查，查询几条数据
-select * from userinfo limit 1,3; // 表示从第二条数据开始查（包括第二条），查3条
+  # limit查询
+  limit查询mysql中的一个特殊关键字，用于指定查询结果从哪条记录开始显示，一共显示多少条，有三种使用方式：
+  1. limit从哪条(用下标的方式，第一数据为0)记录开始查，查询几条数据
+  select * from userinfo limit 1,3; // 表示从第二条数据开始查（包括第二条），查3条
 
-2. limit后只写一个记录数，会从第一条记录开始查询
-select * from userinfo limit 3; // 表示从第一条开始查（包括第一条），查询3条
+  2. limit后只写一个记录数，会从第一条记录开始查询
+  select * from userinfo limit 3; // 表示从第一条开始查（包括第一条），查询3条
 
-3. limit后先写记录数，offset后面写起始位置从哪条开始查，和第一种类似
-select * from userinfo limit 3 offset 1; // 表示查3条，从第二条数据开始查（包括第二条），查询结果和第一种方式相同
+  3. limit后先写记录数，offset后面写起始位置从哪条开始查，和第一种类似
+  select * from userinfo limit 3 offset 1; // 表示查3条，从第二条数据开始查（包括第二条），查询结果和第一种方式相同
 
-# 条件查询
-and（且）查询 
-select * from 表名 where 字段1=值 and 字段2=值;
-select * from userinfo where username='李四' and password=1234;
+  # 条件查询
+  and（且）查询 
+  select * from 表名 where 字段1=值 and 字段2=值;
+  select * from userinfo where username='李四' and password=1234;
 
-or（或）查询  
-select * from 表名 where 字段1=值 or 字段2=值;
-select * from userinfo where username='李四' or password=1234;
+  or（或）查询  
+  select * from 表名 where 字段1=值 or 字段2=值;
+  select * from userinfo where username='李四' or password=1234;
 
-between（区间）查询  
-select * from 表名 where 字段名 between 开始区间值（包含自身） and 结束区间值（包含自身）;
-select * from userinfo where age between 18 and 35; // 结果18-35岁的都会查出来
+  between（区间）查询  
+  select * from 表名 where 字段名 between 开始区间值（包含自身） and 结束区间值（包含自身）;
+  select * from userinfo where age between 18 and 35; // 结果18-35岁的都会查出来
 
-in查询
-select * from 表名 where 字段名 in(值1,值2,...);
-select * from userinfo where age in(18,21,26); // 结果：只要是18、21、26岁的都会查出来
+  in查询
+  select * from 表名 where 字段名 in(值1,值2,...);
+  select * from userinfo where age in(18,21,26); // 结果：只要是18、21、26岁的都会查出来
 
-is null 空值查询
-select * from 表名 where 字段名 is null;
-select * from userinfo where birth is null; // 只要生日字段birth为NULL的都会查出来
+  is null 空值查询
+  select * from 表名 where 字段名 is null;
+  select * from userinfo where birth is null; // 只要生日字段birth为NULL的都会查出来
 
-like模糊查询 %表示一个到多个任意字符,但无法匹配null和空格 _下划线表示一个字符 __两个_表示两个字符 以此类推
-# mysql4.5以上一个_可以代表一个字母也可代表一个汉字，统一按字符的个数来算，如varchar(20)可以写20个英文字母也可写20个汉字
-select * from 表名 where 字段名 like 条件;
-# 条件（字母不区分大小写，如：like 'M%'和like 'm%'结果是一样的）;
-select * from userinfo where username like '小%';   //查询名字 以小字开头的所有人
-select * from userinfo where username like ' 小%';  //查询名字 以空格加小字开头的所有人
-select * from userinfo where username like ' 小% '; //查询名字 以空格加小字开头，且结尾为空格的所有人
-select * from userinfo where username like '%菲%';  //查询名字 中间包含菲字的所有人
-select * from userinfo where username like '_菲%';  //查询名字 第二个字是菲字的的所有人
-select * from userinfo where username like '_菲_';  //查询名字 为三个字且中间为菲字的所有人
-select * from userinfo where username like '__菲';  //查询名字 为三个字且最后一字为菲字的所有人
-# 加binary 实现模糊查询区分大小写
-select * from 表名 where 字段名 like binary 条件;
-select * from userinfo where username like binary 'L%'; //查询名字 以大写L字母开头的所有人
+  like模糊查询 %表示一个到多个任意字符,但无法匹配null和空格 _下划线表示一个字符 __两个_表示两个字符 以此类推
+  # mysql4.5以上一个_可以代表一个字母也可代表一个汉字，统一按字符的个数来算，如varchar(20)可以写20个英文字母也可写20个汉字
+  select * from 表名 where 字段名 like 条件;
+  # 条件（字母不区分大小写，如：like 'M%'和like 'm%'结果是一样的）;
+  select * from userinfo where username like '小%';   //查询名字 以小字开头的所有人
+  select * from userinfo where username like ' 小%';  //查询名字 以空格加小字开头的所有人
+  select * from userinfo where username like ' 小% '; //查询名字 以空格加小字开头，且结尾为空格的所有人
+  select * from userinfo where username like '%菲%';  //查询名字 中间包含菲字的所有人
+  select * from userinfo where username like '_菲%';  //查询名字 第二个字是菲字的的所有人
+  select * from userinfo where username like '_菲_';  //查询名字 为三个字且中间为菲字的所有人
+  select * from userinfo where username like '__菲';  //查询名字 为三个字且最后一字为菲字的所有人
+  # 加binary 实现模糊查询区分大小写
+  select * from 表名 where 字段名 like binary 条件;
+  select * from userinfo where username like binary 'L%'; //查询名字 以大写L字母开头的所有人
 
-# 聚合查询
-## count计算
-select count(*) from userinfo;
-select count(*) as 用户总数 from userinfo;
+  # 聚合查询
+  ## count计算
+  select count(*) from userinfo;
+  select count(*) as 用户总数 from userinfo;
 
-select count(userid) from userinfo;
-+---------------+
-| count(userid) |
-+---------------+
-|            11 |
-+---------------+
-select count(birth) as 有生日数据的总数 from userinfo;
-// birth列值为null的不会计算进来
-+--------------------------+
-| 有生日数据的总数         |
-+--------------------------+
-|                        7 |
-+--------------------------+
-## max最大值
-select max(userid) as 最大用户id from userinfo;
-+----------------+
-| 最大用户id     |
-+----------------+
-|             12 |
-+----------------+
-## min最小值
-select min(userid) as 最小用户id from userinfo;
-select min(userid) as 最小用户id, max(userid) as 最大用户id from userinfo;
-+----------------+----------------+
-| 最小用户id     | 最大用户id     |
-+----------------+----------------+
-|              1 |             12 |
-+----------------+----------------+
-## avg平均值
-select avg(userid) as 平均值, max(userid) as 最大用户id from userinfo;
-+-----------+----------------+
-| 平均值    | 最大用户id     |
-+-----------+----------------+
-|    6.0909 |             12 |
-+-----------+----------------+
-# 分组聚合查询
-// 给address分组了，除了address外，其它字段就不能单独展示了，只能用计数的方式展示
-select address as 地址, count(valid) as 总人数 from userinfo where valid=1 group by address;
-+-----------------------------+-----------+
-| 地址                        | 总人数    |
-+-----------------------------+-----------+
-| 广州                        |         3 |
-| 湖北武汉                    |         1 |
-| 江西南昌市青山湖区          |         2 |
-| 没有填写地址                |         1 |
-| 东莞                        |         1 |
-| 上海                        |         1 |
-| 重庆                        |         1 |
-+-----------------------------+-----------+
-select count(birth) as 有生日人数, address as 地址, count(valid) as 总人数 from userinfo where password=1234 or username='小七' group by address;
-+-----------------+--------------------+-----------+
-| 有生日人数      | 地址               | 总人数    |
-+-----------------+--------------------+-----------+
-|               2 | 广州               |         3 |
-|               1 | 湖北武汉           |         1 |
-|               0 | 没有填写地址       |         1 |
-|               0 | 东莞               |         1 |
-|               1 | 上海               |         1 |
-|               1 | 重庆               |         1 |
-+-----------------+--------------------+-----------+
-// 根据多列数据分组，此处根据username和address分组，统计相同名字且地址一样的有多少人，这里面有生日数据的有多少人
-select count(birth) as 有生日人数,username,  address as 地址, count(valid) as 总人数 from userinfo where password=1234 or username='小七' group by address, username;
-+-----------------+----------+--------------------+-----------+
-| 有生日人数      | username | 地址               | 总人数    |
-+-----------------+----------+--------------------+-----------+
-|               1 | zhangsan | 广州               |         1 |
-|               1 | 李四     | 湖北武汉           |         1 |
-|               1 | 李one    | 广州               |         1 |
-|               0 | 王二     | 没有填写地址       |         1 |
-|               0 | 小七     | 东莞               |         1 |
-|               1 | 丽影     | 上海               |         1 |
-|               1 | 小晴     | 重庆               |         2 |
-|               0 | 莫菲     | 广州               |         1 |
-+-----------------+----------+--------------------+-----------+
-```
+  select count(userid) from userinfo;
+  +---------------+
+  | count(userid) |
+  +---------------+
+  |            11 |
+  +---------------+
+  select count(birth) as 有生日数据的总数 from userinfo;
+  // birth列值为null的不会计算进来
+  +--------------------------+
+  | 有生日数据的总数         |
+  +--------------------------+
+  |                        7 |
+  +--------------------------+
+  ## max最大值
+  select max(userid) as 最大用户id from userinfo;
+  +----------------+
+  | 最大用户id     |
+  +----------------+
+  |             12 |
+  +----------------+
+  ## min最小值
+  select min(userid) as 最小用户id from userinfo;
+  select min(userid) as 最小用户id, max(userid) as 最大用户id from userinfo;
+  +----------------+----------------+
+  | 最小用户id     | 最大用户id     |
+  +----------------+----------------+
+  |              1 |             12 |
+  +----------------+----------------+
+  ## avg平均值
+  select avg(userid) as 平均值, max(userid) as 最大用户id from userinfo;
+  +-----------+----------------+
+  | 平均值    | 最大用户id     |
+  +-----------+----------------+
+  |    6.0909 |             12 |
+  +-----------+----------------+
+  # 分组聚合查询
+  // 给address分组了，除了address外，其它字段就不能单独展示了，只能用计数的方式展示
+  select address as 地址, count(valid) as 总人数 from userinfo where valid=1 group by address;
+  +-----------------------------+-----------+
+  | 地址                        | 总人数    |
+  +-----------------------------+-----------+
+  | 广州                        |         3 |
+  | 湖北武汉                    |         1 |
+  | 江西南昌市青山湖区          |         2 |
+  | 没有填写地址                |         1 |
+  | 东莞                        |         1 |
+  | 上海                        |         1 |
+  | 重庆                        |         1 |
+  +-----------------------------+-----------+
+  select count(birth) as 有生日人数, address as 地址, count(valid) as 总人数 from userinfo where password=1234 or username='小七' group by address;
+  +-----------------+--------------------+-----------+
+  | 有生日人数      | 地址               | 总人数    |
+  +-----------------+--------------------+-----------+
+  |               2 | 广州               |         3 |
+  |               1 | 湖北武汉           |         1 |
+  |               0 | 没有填写地址       |         1 |
+  |               0 | 东莞               |         1 |
+  |               1 | 上海               |         1 |
+  |               1 | 重庆               |         1 |
+  +-----------------+--------------------+-----------+
+  // 根据多列数据分组，此处根据username和address分组，统计相同名字且地址一样的有多少人，这里面有生日数据的有多少人
+  select count(birth) as 有生日人数,username,  address as 地址, count(valid) as 总人数 from userinfo where password=1234 or username='小七' group by address, username;
+  +-----------------+----------+--------------------+-----------+
+  | 有生日人数      | username | 地址               | 总人数    |
+  +-----------------+----------+--------------------+-----------+
+  |               1 | zhangsan | 广州               |         1 |
+  |               1 | 李四     | 湖北武汉           |         1 |
+  |               1 | 李one    | 广州               |         1 |
+  |               0 | 王二     | 没有填写地址       |         1 |
+  |               0 | 小七     | 东莞               |         1 |
+  |               1 | 丽影     | 上海               |         1 |
+  |               1 | 小晴     | 重庆               |         2 |
+  |               0 | 莫菲     | 广州               |         1 |
+  +-----------------+----------+--------------------+-----------+
+  ```
 - 8. mysql排序 order by xxx asc/desc
-升序asc 降序desc
-```
-select * from 表名 order by 字段1 升或降, 字段2 升或降;
-# 字段排序优先级，从左到右
-select * from books.userinfo order by userid desc, password desc;
-```
+  升序asc 降序desc
+  ```
+  select * from 表名 order by 字段1 升或降, 字段2 升或降;
+  # 字段排序优先级，从左到右
+  select * from books.userinfo order by userid desc, password desc;
+  ```
 
 ## 安装Navicat工具操作mysql数据库
 链接：https://pan.baidu.com/s/1YK-triv80E7O4Whvu58NnA?pwd=y45k 
@@ -917,6 +920,27 @@ src\dao\
 
     ```
 
+### mysql建表索引
+  ```
+  # drop table if exists evaluate;
+  create table books.evaluate (
+    evaluateid int not null,
+    content varchar(200) not null,
+    evaluator varchar(20) not null comment '评价人',
+    isbn varchar(20) not null,
+    headportrai varchar(30) not null comment '头像',
+    givealikenum int not null comment '点赞数',
+    evaluatedegree tinyint(1) not null comment '好评，差评，中评',
+    pubdate datetime(6) null comment '发表日期',
+    isanonymous tinyint(1) not null comment '是否为匿名用户',
+
+    primary key (evaluateid) using btree,
+    index fk_evalid(evaluateid) using btree, #索引
+    constraint fk_isbn foreign key (isbn) references books.books(ISBN) on delete cascade
+  );
+  ```
+  ![BTREE索引.png](./doc/image/BTREE索引.png)
+
 ### 新建mysql一级分类表
 ```
 // 声明给books数据库，新建一个表firstctgy
@@ -1277,6 +1301,15 @@ server_koamysql\src\controller\CtgyController.ts
   127.0.0.1:6379> hget user name
   "Acho"
   ```
+
+  hdel命令：一次能删除多个Hash对象数据中的key value值
+  ```
+  # hdel 对象名 你的key1 你的key2 ...
+
+  127.0.0.1:6379> hdel user age name
+  (integer) 1
+  ```
+    
 
   hmget命令：一次能获取多个Hash对象数据中的key value值
   ```

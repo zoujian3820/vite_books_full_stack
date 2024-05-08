@@ -1,4 +1,4 @@
-type EleOfArr<T> = T extends Array<infer E> ? E : never
+export type EleOfArr<T> = T extends Array<infer E> ? E : never
 
 // 如下限制结果为: T为数组数据类型，K为联合类型，数组: [{a:'q1',b:'ty'}] T: {a:string,b:string}
 // K的可选值为：数组单个item对象中，所有的key值 K: a|b
@@ -15,7 +15,8 @@ import goodStorage from 'good-storage'
 export enum OPTION {
   ACCUMU = 0, // 数组累加
   ADDORAPPOBJTOARR = 2, // 把对象添加或追加到数组
-  NONE = -1 // 什么都不做
+  NONE = -1, // 什么都不做
+  ARR = 3
 }
 
 export enum Operate {
@@ -84,11 +85,15 @@ class Storage {
     goodStorage.set(key, value)
     return value
   }
-  get(key: string): any
-  get(key: string, option: OPTION): any
+  get<T = any>(key: string): T
+  get<T = any>(key: string, option: OPTION): T
   get(key: string, option: OPTION = OPTION.NONE) {
     if (key) {
-      if (option === OPTION.ACCUMU || option === OPTION.ADDORAPPOBJTOARR) {
+      if (
+        option === OPTION.ACCUMU ||
+        option === OPTION.ARR ||
+        option === OPTION.ADDORAPPOBJTOARR
+      ) {
         return goodStorage.get(key, [])
       } else {
         return goodStorage.get(key)

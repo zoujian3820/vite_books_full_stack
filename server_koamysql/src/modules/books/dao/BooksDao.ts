@@ -1,10 +1,42 @@
 // import { Op, Sequelize } from 'sequelize'
-// import { sequelize } from '@modules/BaseDao'
+import { sequelize } from '@modules/BaseDao'
 import BooksModel from '@modules/decormodel/books'
 import { Op } from 'sequelize'
 import { getNoReptItem } from '@modules/commontypes'
+import PagerUtil, { pagerDecorator } from '@/common/PagerUtil'
+
 class BooksDao {
   static booksDao: BooksDao = new BooksDao()
+  // async findBookLstWithPager(curPageNo: string): Promise<any> {
+  //   const firstRecNo = PagerUtil.getFirstRecNocurPage(curPageNo)
+  //   const sql = `SELECT * FROM books.books LIMIT ${PagerUtil.PageSize} OFFSET ${firstRecNo}`
+  //   const curPageDataList = (await sequelize.query(sql))[0]
+  //   const totalRecNumObj = (
+  //     await sequelize.query(`select count(isbn) as totalNum from books.books`)
+  //   )[0][0] as { totalNum: number }
+
+  //  // 分页总页数
+  //   const totalPageNum = PagerUtil.getTotalPageNum(totalRecNumObj.totalNum)
+  //   console.log(totalPageNum)
+  //   return curPageDataList
+  // }
+
+  // @PagerDecorator(sequelize, `select * from books.books`)
+  async findBookLstWithPager(curPageNo: string) {
+    const countPageField = 'isbn'
+    const basePagerSql = `select * from books.books `
+    const recTotalNumSql = `select count(${countPageField}) from books.books`
+    await this.bookPager(curPageNo, basePagerSql, recTotalNumSql, countPageField)
+    return PagerUtil.getCurPageData()
+  }
+
+  @pagerDecorator(sequelize)
+  bookPager(
+    curPageNo: string,
+    basePagerSql: string,
+    recTotalNumSql: string,
+    countPageField: string
+  ) {}
   async findBooksByThirdCtgyId(
     thirdctgyid: number,
     sortField: string = '',
@@ -60,6 +92,12 @@ class BooksDao {
       where: {
         publishid: { [Op.in]: publishids }
       }
+    })
+  }
+  async findBookDetailsByISBN(ISBN: string) {
+    return await BooksModel.findOne({
+      raw: true,
+      where: { ISBN }
     })
   }
 }

@@ -1,9 +1,10 @@
-import { BookInfo } from './state'
+import { BookInfo, CurpageDataType } from './state'
 import BookApi from '@/api/BookApi'
 import { AxiosResponse } from 'axios'
 import { defineStore } from 'pinia'
 import goodStorage, { Operate } from '@/utils/goodstorageutil'
 import searchStore from '@/piniastore/search'
+import { hasProps, toFixed_ } from '@/utils'
 
 export default defineStore('bookStore', {
   state: () => {
@@ -20,12 +21,68 @@ export default defineStore('bookStore', {
     },
     getOperate(state): Operate {
       return state.operate || goodStorage.get('operate')
+    },
+    getBookDetail(state): BookInfo {
+      return hasProps(state.bookDetail)
+        ? state.bookDetail
+        : goodStorage.get('bookDetail') || {}
+    },
+    getISBN(state): string {
+      return state.isbn || goodStorage.get('ISBN')
+    },
+    isLastPage(state): boolean {
+      return state.curPageAllData.curPageNo === state.curPageAllData.totalPageNum
+    },
+    getCurPageData(state): CurpageDataType {
+      return state.curPageAllData.curPageDataList.length
+        ? state.curPageAllData
+        : goodStorage.get('curpageData') || state.curPageAllData
+    },
+    getCurPageBookList(state): BookInfo[] {
+      return state.curPageAllData.curPageDataList.length
+        ? state.curPageAllData.curPageDataList
+        : goodStorage.get('curpageData')?.curPageDataList || []
     }
   },
   actions: {
+    storeISBN(isbn: string) {
+      this.isbn = isbn
+      goodStorage.set('ISBN', isbn)
+    },
     storeOperate(operate: Operate) {
       this.operate = operate
       goodStorage.set('operate', this.operate)
+    },
+    async findBookLstWithPager() {
+      if (
+        !this.curPageAllData.curPageNo ||
+        this.curPageAllData.curPageNo < this.curPageAllData.totalPageNum
+      ) {
+        this.curPageAllData.curPageNo = this.curPageAllData.curPageNo + 1
+        const { data }: AxiosResponse<CurpageDataType> =
+          await BookApi.findBookLstWithPager(this.curPageAllData.curPageNo)
+        // 如果是第一页，则直接覆盖
+        if (this.curPageAllData.curPageDataList.length === 0) {
+          const bookList = { data: data.curPageDataList } as AxiosResponse<
+            BookInfo[]
+          >
+
+          this.curPageAllData = {
+            ...data,
+            curPageDataList: getCalcDstpriceData(bookList)
+          }
+        } else {
+          const { curPageNo, totalPageNum } = data
+          Object.assign(this.curPageAllData, { curPageNo, totalPageNum })
+
+          const bookList = { data: data.curPageDataList } as AxiosResponse<
+            BookInfo[]
+          >
+
+          this.curPageAllData.curPageDataList.push(...getCalcDstpriceData(bookList))
+        }
+        goodStorage.set('curpageData', this.curPageAllData)
+      }
     },
     async findAllBookListByScId(
       secondCtgyid: number,
@@ -52,7 +109,7 @@ export default defineStore('bookStore', {
       )
 
       console.log('bookList====>', bookList)
-      
+
       this.bookList = getCalcDstpriceData(bookList)
       goodStorage.set('bookList', this.bookList)
     },
@@ -76,16 +133,20 @@ export default defineStore('bookStore', {
         await BookApi.findPublisersByAutoCompKey(this.getAutoCompKeyword)
 
       this.publisherList = bookList.data.map((item) => ({ ...item, checked: true }))
+    },
+    async findBookDetailsByISBN() {
+      const res: AxiosResponse<BookInfo> = await BookApi.findBookDetailsByISBN(
+        this.getISBN
+      )
+      const { data } = res
+      this.bookDetail = {
+        ...data,
+        discountprice: toFixed_(data.originalprice * data.discount)
+      }
+      goodStorage.set('bookDetail', this.bookDetail)
     }
   }
 })
-
-const toFixed_ = (num: number): number => {
-  if (num.toString().indexOf('.') !== -1) {
-    return parseFloat(num.toFixed(2))
-  }
-  return num
-}
 
 const getCalcDstpriceData = (list: AxiosResponse<BookInfo[]>) => {
   return list.data.map((item) => {
@@ -98,14 +159,30 @@ const getCalcDstpriceData = (list: AxiosResponse<BookInfo[]>) => {
 
 type InitStateType = {
   bookList: BookInfo[]
+  bookDetail: BookInfo
   operate: Operate
   publisherList: Publisher[]
+  isbn: string
+  curPageAllData: CurpageDataType
+  headerRef: HTMLBodyElement | undefined
+  headerHeight: number
+  headerOPacity: { opacity: number }
 }
 
 const initState: InitStateType = {
   bookList: [],
+  bookDetail: {} as BookInfo,
   operate: Operate.INIT,
-  publisherList: []
+  publisherList: [],
+  isbn: '',
+  curPageAllData: {
+    curPageDataList: [],
+    totalPageNum: 0,
+    curPageNo: 0
+  },
+  headerRef: undefined,
+  headerHeight: 0,
+  headerOPacity: { opacity: 1 }
 }
 
 export interface Publisher {

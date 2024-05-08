@@ -1,4 +1,4 @@
-import { FirstCtgy, SecondCtgy /*ThirdCtgy*/ } from '@/piniastore/state'
+import { FirstCtgy, SecondCtgy, ThirdCtgy } from '@/piniastore/state'
 import { Ref, ref /*toRefs*/, watchEffect, nextTick, WatchStopHandle } from 'vue'
 import { storeToRefs } from 'pinia'
 import ctgyStore, { thirdAllCtgy } from '@/piniastore/ctgy'
@@ -95,6 +95,14 @@ export default class FstToThrCtgy {
     return watchEffect(async (onInvallidate) => {
       onInvallidate(() => {})
       await FstToThrCtgy.geSecondThrdCtgyList()
+      const { secondCtgyList } = FstToThrCtgy.store
+      if (secondCtgyList?.length) {
+        const firstSec: SecondCtgy = secondCtgyList[0]
+        FstToThrCtgy.store.storeSecondCtgy(firstSec)
+        FstToThrCtgy.store.storeThirdCtgy(
+          firstSec.thirdctgys.length ? firstSec.thirdctgys[0] : ({} as ThirdCtgy)
+        )
+      }
     })
   }
 

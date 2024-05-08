@@ -3,10 +3,7 @@ import CtgyApi from '@/api/CtgyApi'
 import { AxiosResponse } from 'axios'
 import { defineStore } from 'pinia'
 import goodStorage from 'good-storage'
-
-function hasProps(obj: Record<string, any>) {
-  return obj && Object.getOwnPropertyNames(obj).length
-}
+import { hasProps } from '@/utils'
 
 export const thirdAllCtgy: ThirdCtgy = {
   thirdctgyid: -1,

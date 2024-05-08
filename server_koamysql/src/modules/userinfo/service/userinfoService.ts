@@ -4,17 +4,31 @@ import MyJwt from '@/common/MyJwt'
 
 class UserinfoService {
   static userinfoService: UserinfoService = new UserinfoService()
+
+  async registeredUsers(username: string, password: string) {
+    const userinfo: Userinfo = await UserDao.findOneUser(username, password)
+    if (!userinfo?.userid) {
+      const dbUserinfo: Userinfo = await UserDao.addUser({
+        username,
+        password
+      } as any as Userinfo)
+      return MyJwt.getLoginUserinfo(dbUserinfo)
+    } else {
+      return null
+    }
+  }
   async login(username: string, password: string) {
     const userinfo: Userinfo = await UserDao.findOneUser(username, password)
     if (userinfo?.userid) {
-      // access_token 有效期 1小时
-      const access_token = await MyJwt.createJWTToken(userinfo, '1h')
-      // 创建新的token，立将其存储在Redis中，保持token的有效性
-      await MyJwt.setRedisJwtToken(userinfo.userid, access_token)
-      // refresh_token 有效期 15天
-      const refresh_token = await MyJwt.createJWTToken(userinfo, '15d')
-      // await MyJwt.setRedisJwtToken(userinfo.userid, token)
-      return { ...userinfo, access_token, refresh_token }
+      // // access_token 有效期 1小时
+      // const access_token = await MyJwt.createJWTToken(userinfo, '1h')
+      // // 创建新的token，立将其存储在Redis中，保持token的有效性
+      // await MyJwt.setRedisJwtToken(userinfo.userid, access_token)
+      // // refresh_token 有效期 15天
+      // const refresh_token = await MyJwt.createJWTToken(userinfo, '15d')
+      // // await MyJwt.setRedisJwtToken(userinfo.userid, token)
+      // return { ...userinfo, access_token, refresh_token }
+      return MyJwt.getLoginUserinfo(userinfo)
     } else {
       // throw new Error('用户名或密码错误')
       return null

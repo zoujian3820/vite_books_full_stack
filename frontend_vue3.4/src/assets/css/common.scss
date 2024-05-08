@@ -18,3 +18,12 @@
   background-color: #f6f6f6;
   border-radius: 1rem;
 }
+
+.zuojiantou {
+  display: inline-block;
+  font-size: 0.31rem;
+  transform: rotate(180deg);
+  &:before {
+    content: '\e61d';
+  }
+}

@@ -6,6 +6,13 @@ const shopcartlist = () => import('@/piniaviews/shopcartlist/index.vue')
 const search = () => import('@/piniaviews/search/index.vue')
 const login = () => import('@/piniaviews/userinfo/login.vue')
 const register = () => import('@/piniaviews/userinfo/register.vue')
+const bookdetail = () => import('@/piniaviews/bookdetail/index.vue')
+const goods = () => import('@/piniaviews/bookdetail/components/goods.vue')
+const evaluate = () =>
+  import('@/piniaviews/bookdetail/components/evaluate/index.vue')
+const home = () => import('@/piniaviews/home/home.vue')
+const orderinfo = () => import('@/piniaviews/orderinfo/index.vue')
+const ordersort = () => import('@/piniaviews/orderinfo/ordersort/index.vue')
 
 const animal = () => import('@/myanimal/animal.vue')
 search
@@ -14,6 +21,11 @@ const routes: RouteRecordRaw[] = [
     name: 'testpinia',
     path: '/testpinia',
     component: import('@/piniaexam/index.vue')
+  },
+  {
+    name: 'home',
+    path: '/home',
+    component: home
   },
   {
     name: 'ctgy',
@@ -26,9 +38,37 @@ const routes: RouteRecordRaw[] = [
     component: books
   },
   {
+    name: 'bookdetail',
+    path: '/bookdetail',
+    component: bookdetail,
+    redirect: '/goods',
+    children: [
+      {
+        name: 'goods',
+        path: '/goods',
+        component: goods
+      },
+      {
+        name: 'evaluate',
+        path: '/evaluate',
+        component: evaluate
+      }
+    ]
+  },
+  {
     name: 'shopcartlist',
     path: '/shopcartlist',
     component: shopcartlist
+  },
+  {
+    name: 'order',
+    path: '/order',
+    component: orderinfo
+  },
+  {
+    name: 'ordersort',
+    path: '/ordersort',
+    component: ordersort
   },
   {
     name: 'search',
@@ -43,7 +83,7 @@ const routes: RouteRecordRaw[] = [
       const token = goodstorageutil.get('access_token')
       if (token) {
         next({
-          path: '/ctgy'
+          path: '/home'
         })
       } else {
         next()
@@ -63,8 +103,8 @@ const routes: RouteRecordRaw[] = [
   {
     name: 'default',
     path: '/',
-    // redirect: '/ctgy'
-    component: ctgy
+    // redirect: '/home'
+    component: home
   }
 ]
 

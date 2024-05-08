@@ -26,7 +26,7 @@
             <div class="empty-tip">您的购物车还空着呢？快去逛逛吧</div>
             <button class="button" @click="toHome">去逛逛</button>
         </div>
-        <div class="cal">
+        <div v-if="getShopCartList.length > 0" class="cal">
             <span class="checkall">
                 <input type="checkbox" class="iconfont check" :class="{ highlight: getShopCartList.length > 0 }"
                     v-model="isSelectAll" @change="selectAll" />
@@ -35,7 +35,8 @@
                     合计：<span class="money">&yen;{{ totalPrice }}</span>
                 </span>
             </span>
-            <span class="pay" :class="{ highlight: getShopCartList.length > 0 }">去结算({{ totalCount }})</span>
+            <span class="pay" @click="toPay" :class="{ highlight: getShopCartList.length > 0 }">去结算({{ totalCount
+                }})</span>
         </div>
     </div>
 </template>
@@ -46,9 +47,13 @@ import addsubtrsc from '@/piniaviews/books/components/addsubtrsc.vue';
 import vheader from '@/components/vheader.vue';
 import ShopCartService from '@/piniaviews/books/service/shopcartService';
 import { onMounted } from 'vue';
-const { storeRefs, refreshShopCartList, back, isSelectAll, selectAll, checkEveryCheckbox, updateIsSelectALL, toHome } = ShopCartService
+const { storeRefs, refreshShopCartList, isSelectAll, selectAll, checkEveryCheckbox, updateIsSelectALL, toHome } = ShopCartService
 const { getShopCartList } = storeRefs
 const { totalPrice, totalCount } = refreshShopCartList()
+import router from '@/router';
+function toPay() {
+    router.push({ name: 'order' })
+}
 
 onMounted(() => {
     // 更新全选按钮状态

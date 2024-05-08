@@ -13,6 +13,13 @@ class UserApi {
     // 登录续期接口 access_token 有效期为1小时，当超过1小时，需要调用该接口进行续期
     return request.post('/usermodule/loginrenewal', false, params)
   }
+
+  registeredUsers(username: string, password: string) {
+    return request.post('/usermodule/registeredUsers', false, {
+      username,
+      password
+    })
+  }
 }
 
 interface LoginRenewalParams {

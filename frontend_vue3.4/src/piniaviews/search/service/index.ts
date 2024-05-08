@@ -33,8 +33,8 @@ export default class SearchService {
     FstToThrCtgy.switchThrdCtgyActiveId.value = thirdAllCtgy.thirdctgyid
     FstToThrCtgy.store.storeThirdCtgy(thirdAllCtgy)
 
-    const { firstctgyId } = goodstorageutil.get('firstCtgy')
-    const { secondctgyid } = goodstorageutil.get('secondCtgy')
+    const { firstctgyId } = goodstorageutil.get('firstCtgy') || { firstctgyId: 1 }
+    const { secondctgyid } = goodstorageutil.get('secondCtgy') || { secondctgyid: 1 }
     // const { thirdctgyid } = goodstorageutil.get('thirdCtgy')
     // 跳至book页面
     router.push({
@@ -100,17 +100,13 @@ export default class SearchService {
     await SearchService.store.delDecoveryKeyword()
   }
 
-  static ontapHistoryitem(item: string) {
+  static ontapHistoryitem(keyword: string) {
     // 跳至book页面
-    router.push({
-      path: ''
-    })
+    SearchService.searchBooksByKey(keyword)
   }
   static ontapDecoveryitem(item: HistoryKeyword) {
     // 跳至book页面
-    router.push({
-      path: ''
-    })
+    SearchService.searchBooksByKey(item.historykeyword)
   }
 }
 

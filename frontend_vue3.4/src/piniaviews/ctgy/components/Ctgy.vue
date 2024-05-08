@@ -32,6 +32,7 @@ import FstToThrCtgy from '../service'
 import ThrdCtgy from './ThrdCtgy.vue'
 import { onBeforeRouteLeave } from 'vue-router';
 import { thirdAllCtgy } from '@/piniastore/ctgy'
+import goodstorageutil from '@/utils/goodstorageutil';
 
 const {
     storeRefs,
@@ -48,8 +49,12 @@ const { firstCtgyList, secondCtgyList } = storeRefs
 let stopWatch: WatchStopHandle = () => { }
 
 async function getData() {
+    const { firstctgyId } = goodstorageutil.get('firstCtgy') || {}
+    // const { secondctgyid } = goodstorageutil.get('secondCtgy') || {}
     await geFirstCtgys()
-    firstCtgyActiveId.value = firstCtgyList.value[0].firstctgyId
+
+    firstCtgyActiveId.value = firstctgyId || firstCtgyList.value[0].firstctgyId
+
     storeFirstCtgy()
 
     stopWatch = watchFirstCtgyActiveIdHandle()

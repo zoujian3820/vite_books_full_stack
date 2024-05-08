@@ -18,6 +18,10 @@ import path from 'path'
 // isSsrBuild?: boolean;
 // isPreview?: boolean;
 
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+import { VantResolver } from '@vant/auto-import-resolver'
+
 export default defineConfig(({ mode }) => {
   const envFileName: string = '.env'
   const curEnvFileName = `${envFileName}.${mode}`
@@ -49,7 +53,16 @@ export default defineConfig(({ mode }) => {
   }
   return {
     base: envMap.VITE_ROUTER_BASE_URL || '/',
-    plugins: [vue(), ...plugins],
+    plugins: [
+      vue(),
+      AutoImport({
+        resolvers: [VantResolver()]
+      }),
+      Components({
+        resolvers: [VantResolver()]
+      }),
+      ...plugins
+    ],
     server,
     resolve: {
       alias: {

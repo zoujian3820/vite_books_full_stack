@@ -1,8 +1,8 @@
 <template>
-    <div class="bookitem" v-for="item of bookList" :key="item.ISBN">
-        <img :src="getImg(item.bookpicname)" alt="" class="book-pic">
+    <div class="bookitem" ref="bookitemRef" v-for="item of bookList" :key="item.ISBN">
+        <img @click="bookDetail(item.ISBN)" :src="getImg(item.bookpicname)" alt="" class="book-pic">
         <div class="bookinfo">
-            <div class="bookinfo-brief">
+            <div @click="bookDetail(item.ISBN)" class="bookinfo-brief">
                 <div class="book-name">{{ item.bookname }}</div>
                 <div class="book-author-publs">
                     <span class="author spacing">{{ item.author }}</span>
@@ -10,7 +10,7 @@
                     <span class="publs spacing">{{ item.publishername }}</span>
                 </div>
             </div>
-            <div class="bookinfo-other">
+            <div @click="bookDetail(item.ISBN)" class="bookinfo-other">
                 <div class="price">
                     <span class="discountprice spacing">
                         <span class="symbol">&yen;</span>
@@ -30,8 +30,9 @@
                 <div class="ranklist">
                     <span>图书畅销总排行榜第1名</span>
                 </div>
-                <addsubtrsc :bookitem="item" />
+                <!-- <addsubtrsc :bookitem="item" /> -->
             </div>
+            <addsubtrsc :bookitem="item" />
         </div>
         <div class="empty" v-show="false">库存所有书已经售完</div>
     </div>
@@ -42,7 +43,7 @@ import getImg from '@/utils/imgUtil'
 import books from '../service'
 import addsubtrsc from './addsubtrsc.vue';
 
-const { /*findBooksByThirdCtgyId,*/ storeRefs } = books
+const { /*findBooksByThirdCtgyId,*/ storeRefs, bookDetail } = books
 // findBooksByThirdCtgyId()
 const { bookList } = storeRefs
 
