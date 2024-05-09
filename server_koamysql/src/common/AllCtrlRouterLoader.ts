@@ -55,7 +55,7 @@ class AllRouterLoader {
     const allFullFilePaths: string[] = []
     for (let file of allFiles) {
       if (this.isCtrlFile(file)) {
-        const fullFilePath = dir + '\\' + file
+        const fullFilePath = dir + '/' + file
         allFullFilePaths.push(fullFilePath)
       }
     }
@@ -79,8 +79,15 @@ class AllRouterLoader {
     }
   }
   listen() {
-    this.app.listen(3002)
-    console.log('在3002端口监听ing...')
+    let port: number = 0
+    const curEnv = process.env.NODE_ENV || 'dev'
+    curEnv === 'dev' ? 'dev' : 'prod'
+
+    // 端口 开发环境用3002 生产用8002
+    port = curEnv === 'dev' ? 3002 : 8002
+
+    this.app.listen(port)
+    console.log(`在${port}端口监听ing...`)
   }
 }
 

@@ -1561,3 +1561,20 @@ src\conf\RedisConfig.ts
 # 重写了接口的redis调用文件
 src\common\RedisUtil.ts
 ```
+
+
+### 上线前的一些修改 
+package.json文件scripts中配置环境变量原本用set NODE_ENV 但在linux上得用 export NODE_ENV 不能用set
+```
+ "scripts": {
+    "dev": "set NODE_ENV=dev&& nodemon --watch src/ -e ts --exec ts-node ./src/app.ts",
+    "prod": "export NODE_ENV=prod&& nodemon --watch src/ -e ts --exec ts-node ./src/app.ts"
+  },
+```
+
+src\common\AllCtrlRouterLoader.ts 上线前得配好，访问端口，如区分开发环境和生产环境
+
+src\conf\DbConfig.ts 上线前得配好mysql 服务器线上地址及端口号密码等
+
+src\conf\RedisConfig.ts 上线前得配好Redis服务器线上地址及端口号密码等
+
