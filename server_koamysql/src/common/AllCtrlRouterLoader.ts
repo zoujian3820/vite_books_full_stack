@@ -63,7 +63,8 @@ class AllRouterLoader {
   }
   isCtrlFile(file: string) {
     // 文件名
-    const fileName: string = file.substring(file.lastIndexOf('\\') + 1, file.lastIndexOf('.'))
+    // const fileName: string = file.substring(file.lastIndexOf('\\') + 1, file.lastIndexOf('.'))
+    const fileName = path.basename(file, path.extname(file))
     // 扩展名
     const extensionName: string = file.substring(file.lastIndexOf('.') + 1, file.length)
     return fileName.indexOf('Controller') !== -1 && extensionName === 'ts'
