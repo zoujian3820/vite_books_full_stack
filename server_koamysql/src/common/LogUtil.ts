@@ -24,21 +24,21 @@ class LogUtil {
         console: { type: 'console' },
         debug_file: { type: 'file', filename: 'mylog/debug.log' },
         info_file: {
-          type: 'datefile',
+          type: 'dateFile',
           filename: 'mylog/info',
           pattern: 'yyyy-MM-dd.log',
           encoding: 'utf-8',
           alwaysIncludePattern: true
         },
         warn_file: {
-          type: 'datefile',
+          type: 'dateFile',
           filename: 'mylog/warn',
           pattern: 'yyyy-MM-dd.log',
           encoding: 'utf-8',
           alwaysIncludePattern: true
         },
         error_file: {
-          type: 'datefile',
+          type: 'dateFile',
           filename: 'mylog/error',
           pattern: 'yyyy-MM-dd.log',
           encoding: 'utf-8',
