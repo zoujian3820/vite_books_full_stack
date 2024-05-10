@@ -37,7 +37,7 @@ class AllRouterLoader {
     const allFiles: string[] = this.getFiles(dir)
     const allFullFilePaths: string[] = []
     for (let file of allFiles) {
-      const fullFilePath = dir + '\\' + file
+      const fullFilePath = dir + '/' + file
       allFullFilePaths.push(fullFilePath)
     }
     return allFullFilePaths
