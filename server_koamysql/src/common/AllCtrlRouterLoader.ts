@@ -81,8 +81,8 @@ class AllRouterLoader {
   }
   listen() {
     let port: number = 0
-    const curEnv = process.env.NODE_ENV || 'dev'
-    curEnv === 'dev' ? 'dev' : 'prod'
+    let curEnv = process.env.NODE_ENV || 'dev'
+    curEnv = curEnv === 'dev' ? 'dev' : 'prod'
 
     // 端口 开发环境用3002 生产用8002
     port = curEnv === 'dev' ? 3002 : 8002

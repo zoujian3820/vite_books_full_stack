@@ -495,10 +495,127 @@ npm i nodemon -S
 npm i typescript -S
 npm i ts-node -S
 npm i koa-jwt
+npm i cross-env
+npm i colors-console
 
 # 用mariadb替代mysql
 npm install mariadb
 ```
+
+## 使用cross-env兼容window和linux设置环境变量差异
+window上用set linux上则用export 所以要写几套，不能统一，此时就可以上cross-env了
+```json
+  "scripts": {
+    "exec": "pm2 start --interpreter ./node_modules/.bin/ts-node ./src/app.ts --name books -i 2 --watch",
+    # 看看 每次相同的命令要配两次，很麻烦对不对
+    "dev_win": "set NODE_ENV=dev&& nodemon --watch src/ -e ts --exec ts-node ./src/app.ts",
+    "dev_linux": "export NODE_ENV=dev&& nodemon --watch src/ -e ts --exec ts-node ./src/app.ts",
+    "pm2dev_win": "set NODE_ENV=dev&& npm run exec",
+    "pm2dev_linux": "export NODE_ENV=dev&& npm run exec",
+    # 以下是 cross-env 简化版, 连后面的&& 都省略了，记住别加，加了变量值就加上后面的 && 成 dev&& 了
+    "dev": "cross-env NODE_ENV=dev nodemon --watch src/ -e ts --exec ts-node ./src/app.ts",
+    "pm2dev": "cross-env NODE_ENV=dev npm run exec",
+  },
+```
+
+## 使用 chalk 或 colors-console 实现console输出不同颜色
+```
+npm i colors-console
+```
+默认情况下，使用以下方案直接打印，也可实现，在浏览器也可直接运行
+```js
+console.log('\x1B[31m%s\x1B[0m', '这是红色') // 打印出红色字
+console.log('\x1B[36m%s\x1B[0m', '这是青色') // 打印出青色字
+
+// 颜色参考
+{
+'bright'    : '\x1B[1m', // 亮色
+'grey'      : '\x1B[2m', // 灰色
+'italic'    : '\x1B[3m', // 斜体
+'underline' : '\x1B[4m', // 下划线
+'reverse'   : '\x1B[7m', // 反向
+'hidden'    : '\x1B[8m', // 隐藏
+'black'     : '\x1B[30m', // 黑色
+'red'       : '\x1B[31m', // 红色
+'green'     : '\x1B[32m', // 绿色
+'yellow'    : '\x1B[33m', // 黄色
+'blue'      : '\x1B[34m', // 蓝色
+'magenta'   : '\x1B[35m', // 品红
+'cyan'      : '\x1B[36m', // 青色
+'white'     : '\x1B[37m', // 白色
+'blackBG'   : '\x1B[40m', // 背景色为黑色
+'redBG'     : '\x1B[41m', // 背景色为红色
+'greenBG'   : '\x1B[42m', // 背景色为绿色
+'yellowBG'  : '\x1B[43m', // 背景色为黄色
+'blueBG'    : '\x1B[44m', // 背景色为蓝色
+'magentaBG' : '\x1B[45m', // 背景色为品红
+'cyanBG'    : '\x1B[46m', // 背景色为青色
+'whiteBG'   : '\x1B[47m' // 背景色为白色
+}
+```
+但是以上方案太过麻烦且很难记住色值，以下是colors-console简化版
+
+`颜色参数为字符串时`
+```js
+const colors = require('colors-console')
+
+console.log('颜色是：' + colors('red', '红色'))
+console.log('颜色是：', colors('cyan', '青色'))
+
+```
+
+`颜色参数为数组时`
+```js
+console.log(colors(['red','greenBG','underline'], '这是红色、绿色背景、下划线'))
+
+```
+
+`使用 chalk 来实现log样式化`
+
+https://github.com/chalk/chalk
+
+```
+npm install chalk
+```
+使用 
+```
+import chalk from 'chalk';
+
+.log(chalk.blue('Hello world!'));
+
+console.log(chalk.blue('Hello') + ' World' + chalk.red('!'));
+
+console.log(chalk.blue('Hello', 'World!', 'Foo', 'bar', 'biz', 'baz'));
+
+console.log(chalk.red('Hello', chalk.underline.bgBlue('world') + '!'));
+```
+
+## 安装log4js日志系统
+```
+npm i log4js -S
+```
+
+## 安装mysql数据库
+```
+npm i mysql -S
+```
+
+## 安装koa-jwt
+```
+npm i koa-jwt -S
+```
+
+## 安装koa-json
+```
+npm i koa-json -S
+```
+
+## 安装koa-body
+```
+  
+`
+```
+
 
 ## 配置启动脚本【热部署】
 ```
