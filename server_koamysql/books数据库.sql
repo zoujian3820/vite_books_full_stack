@@ -75,7 +75,7 @@ INSERT INTO `books` VALUES ('978-7-216', '理想之城(全两册)', '若花燃�
 DROP TABLE IF EXISTS `evaluate`;
 CREATE TABLE `evaluate`  (
   `evaluateid` int(0) NOT NULL,
-  `content` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `content` varchar(1200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `evaluator` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '评价人',
   `isbn` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `headportrai` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '头像',
@@ -97,6 +97,21 @@ INSERT INTO `evaluate` VALUES (2, '趣味性很强，给孩子看，非常不错
 INSERT INTO `evaluate` VALUES (3, '超棒，趣味性很强，给孩子看，非常不错的书', '匿名用户', '978-7-208', 'niming.png', 300, 3, '2022-05-05 00:00:00.000000', 1);
 INSERT INTO `evaluate` VALUES (4, '其他不错就是发货有点慢', '何小可', '978-7-208', 'huangruguo.png', 2398, 2, '2022-03-02 00:00:00.000000', 0);
 INSERT INTO `evaluate` VALUES (5, '讲解人生哲理的好书，透彻，推荐！', '陈琪', '978-7-206', 'huangruguo.png', 2598, 1, '2022-04-10 00:00:00.000000', 0);
+INSERT INTO `evaluate` VALUES (6, '这本书初中时候当做中学生推荐书目读过，读起来跟费劲，只记得文笔不错，情节印象不深，时隔二十年再读，仍然觉得挺费劲，不过有了不同的感悟。', '小叶', '978-7-101', 'seckill3.png', 321, 1, '2024-05-11 18:03:08.000000', 0);
+INSERT INTO `evaluate` VALUES (7, '在生产力不足的时代，人们认知世界的水平有限，就只能想像出宗教来解释世间的一切', '小叶', '978-7-106', 'seckill3.png', 321, 2, '2024-05-08 17:03:08.000000', 0);
+INSERT INTO `evaluate` VALUES (8, '主人公阿廖沙刚刚失去父亲，在埋葬棺木之时，他天真烂漫，注意力还停留在坟坑里的两只青蛙是否被掩埋，我想他的年纪应该是8、9岁', '小叶', '978-7-107', 'seckill3.png', 321, 2, '2024-05-12 11:03:08.000000', 0);
+INSERT INTO `evaluate` VALUES (9, '的确是一部伟大的名著高尔基以一部自己童年人身经历描写了当时俄国民众苦难生活的现状也解释了后来俄国十月革命为什么会一呼百应取得了成功。', '小叶', '978-7-108', 'seckill3.png', 321, 2, '2024-05-10 10:03:08.000000', 0);
+INSERT INTO `evaluate` VALUES (10, '例如阿廖沙的两个舅舅简直就是混账他们家暴，两个舅妈都间接或直接的死于他们的手中。捉弄当时已经年迈且半瞎的老师傅格里戈里。', '小叶', '978-7-109', 'seckill3.png', 321, 2, '2024-04-12 09:06:18.000000', 0);
+INSERT INTO `evaluate` VALUES (11, '阿廖沙的母亲瓦尔瓦拉是前后性格发生剧变的人物主要发生在三个阶段。', '小叶', '978-7-201', 'seckill3.png', 321, 2, '2023-05-12 11:03:08.000000', 0);
+INSERT INTO `evaluate` VALUES (12, '她也开始想她父亲和第二任丈夫一样打人比如阿廖沙卖掉了继父的一本书去买了安徒生童话和鲁滨逊漂流记打他让学校所有人都知道了这件事喊他小偷。', '小叶', '978-7-202', 'seckill3.png', 321, 2, '2024-03-22 13:13:03.000000', 0);
+INSERT INTO `evaluate` VALUES (13, '通过阿廖沙和外祖父母和父母亲的遭遇看的出只所以这么惨是当时社会环境的问题', '小叶', '978-7-203', 'seckill3.png', 321, 2, '2023-12-02 09:13:11.000000', 0);
+INSERT INTO `evaluate` VALUES (14, '喜欢维亚希尔，他和善纯良孝顺，身处逆境却依旧渴求知识', '小叶', '978-7-204', 'seckill3.png', 321, 2, '2024-03-22 13:13:03.000000', 0);
+INSERT INTO `evaluate` VALUES (15, '瓦尔登湖一个我做梦都想去看的地方，景色特美，让人感到宁静', '紫月', '978-7-205', 'huangruguo.png', 321, 2, '2024-01-12 11:03:08.000000', 0);
+INSERT INTO `evaluate` VALUES (16, '外祖父，可恨，可怜，可悲。可恨的是他残暴自大，他自私冷漠', '小叶', '978-7-101', 'seckill3.png', 321, 2, '2024-02-12 11:03:08.000000', 0);
+INSERT INTO `evaluate` VALUES (17, '童年,又出新版本了吗', '小童', '978-7-102', 'wangboyu.png', 321, 3, '2024-01-02 11:03:08.000000', 0);
+INSERT INTO `evaluate` VALUES (18, '每日一读，这本书不错', '小叶', '978-7-103', 'seckill3.png', 321, 1, '2024-02-20 11:03:08.000000', 0);
+INSERT INTO `evaluate` VALUES (19, '难忘的童年，一起回味一下', '李KK', '978-7-104', 'niming.png', 321, 1, '2024-03-11 11:03:08.000000', 0);
+INSERT INTO `evaluate` VALUES (20, '一起来读书吧', '紫月呀', '978-7-105', 'huangruguo.png', 321, 1, '2024-04-01 11:03:08.000000', 0);
 
 -- ----------------------------
 -- Table structure for firstctgy
@@ -136,7 +151,7 @@ CREATE TABLE `historykeyword`  (
 -- ----------------------------
 INSERT INTO `historykeyword` VALUES (73, '六年级上册', 4);
 INSERT INTO `historykeyword` VALUES (74, '六年级上', 22);
-INSERT INTO `historykeyword` VALUES (75, '六年友谊', 1);
+INSERT INTO `historykeyword` VALUES (75, '六年友谊', 2);
 INSERT INTO `historykeyword` VALUES (76, '六年级', 8);
 INSERT INTO `historykeyword` VALUES (77, '童年', 1);
 INSERT INTO `historykeyword` VALUES (78, '北师大教授', 1);
@@ -203,7 +218,7 @@ CREATE TABLE `orderdetail`  (
   PRIMARY KEY (`orderdetailid`) USING BTREE COMMENT '主键',
   INDEX `fk_orderid`(`orderid`) USING BTREE,
   CONSTRAINT `fk_orderid` FOREIGN KEY (`orderid`) REFERENCES `orderinfo` (`orderid`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 52 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 53 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of orderdetail
@@ -222,6 +237,9 @@ INSERT INTO `orderdetail` VALUES (48, '有本事-继<<无所谓>>后睽违三年
 INSERT INTO `orderdetail` VALUES (49, '人生从容(在众声喧哗中保持从容(贾凭凹70岁)', 9.20, '人生从容.png', 30, 1);
 INSERT INTO `orderdetail` VALUES (50, '人生从容(在众声喧哗中保持从容(贾凭凹70岁)', 9.20, '人生从容.png', 31, 1);
 INSERT INTO `orderdetail` VALUES (51, '三体全集(全3册)', 9.20, '三体全集.png', 31, 1);
+INSERT INTO `orderdetail` VALUES (52, '紫图经典文库三岛由纪夫大集合(10册)', 32.75, '紫图经典文库.png', 32, 3);
+INSERT INTO `orderdetail` VALUES (53, '人生从容(在众声喧哗中保持从容(贾凭凹70岁)', 9.20, '人生从容.png', 33, 6);
+INSERT INTO `orderdetail` VALUES (54, '活着得有点兴致', 25.63, '活着得有点兴致.png', 34, 1);
 
 -- ----------------------------
 -- Table structure for orderinfo
@@ -233,7 +251,7 @@ CREATE TABLE `orderinfo`  (
   `customerid` int(0) NOT NULL COMMENT '顾客id',
   `orderstatus` tinyint(0) NOT NULL COMMENT '订单状态',
   PRIMARY KEY (`orderid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of orderinfo
@@ -251,6 +269,9 @@ INSERT INTO `orderinfo` VALUES (28, '2024-05-08 20:29:20', 62, -1);
 INSERT INTO `orderinfo` VALUES (29, '2024-05-08 20:32:45', 62, -1);
 INSERT INTO `orderinfo` VALUES (30, '2024-05-08 20:33:01', 62, -1);
 INSERT INTO `orderinfo` VALUES (31, '2024-05-08 20:52:31', 62, -1);
+INSERT INTO `orderinfo` VALUES (32, '2024-05-12 01:45:06', 62, -1);
+INSERT INTO `orderinfo` VALUES (33, '2024-05-12 16:01:53', 62, -1);
+INSERT INTO `orderinfo` VALUES (34, '2024-05-12 17:19:21', 62, -1);
 
 -- ----------------------------
 -- Table structure for reply
@@ -288,6 +309,13 @@ INSERT INTO `reply` VALUES (18, 'sssssf', '2024-05-06', 1, 'zhangsan');
 INSERT INTO `reply` VALUES (19, 'uiiii', '2024-05-06', 1, 'zhangsan');
 INSERT INTO `reply` VALUES (20, '', '2024-05-06', 2, 'zhangsan');
 INSERT INTO `reply` VALUES (21, '', '2024-05-06', 2, 'zhangsan');
+INSERT INTO `reply` VALUES (22, '每读一次感悟都更深一层', '2024-05-12', 6, 'admin');
+INSERT INTO `reply` VALUES (23, '是的', '2024-05-12', 16, 'admin');
+INSERT INTO `reply` VALUES (24, '主人公从小就可怜', '2024-05-12', 16, 'admin');
+INSERT INTO `reply` VALUES (25, '苦难的都是老百姓', '2024-05-12', 16, 'admin');
+INSERT INTO `reply` VALUES (26, '出了好多版了', '2024-05-12', 17, 'admin');
+INSERT INTO `reply` VALUES (27, '一起来看书吧', '2024-05-12', 17, 'admin');
+INSERT INTO `reply` VALUES (28, '很好看的', '2024-05-12', 17, 'admin');
 
 -- ----------------------------
 -- Table structure for secondctgy
@@ -300,7 +328,7 @@ CREATE TABLE `secondctgy`  (
   PRIMARY KEY (`secondctgyid`) USING BTREE,
   INDEX `fk_firstctgyid`(`firstctgyId`) USING BTREE,
   CONSTRAINT `fk_firstctgyid` FOREIGN KEY (`firstctgyId`) REFERENCES `firstctgy` (`firstctgyId`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of secondctgy
@@ -348,7 +376,7 @@ CREATE TABLE `shopcart`  (
   `userid` int(0) NOT NULL,
   `purcharsenum` int(0) NULL DEFAULT 0,
   PRIMARY KEY (`shopcartid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 181 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 182 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of shopcart
@@ -366,7 +394,7 @@ CREATE TABLE `thirdctgy`  (
   PRIMARY KEY (`thirdctgyid`) USING BTREE,
   INDEX `fk_secctgyid`(`secctgyid`) USING BTREE,
   CONSTRAINT `fk_secctgyid` FOREIGN KEY (`secctgyid`) REFERENCES `secondctgy` (`secondctgyid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 46 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 107 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of thirdctgy
