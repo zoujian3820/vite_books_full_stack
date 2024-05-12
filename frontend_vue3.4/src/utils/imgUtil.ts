@@ -22,14 +22,24 @@ export class LmgUtil {
     // const imgMap: Record<string, any> =
     // const imgMap: Record<string, { [key: string]: string }> =
     // const imgMap: Record<string, { [key in string]: string }> =
-    const imgMap: Record<string, { default: string }> = import.meta.glob('../assets/img/**/*.png', { eager: true })
+    const imgMap: Record<string, { default: string }> = import.meta.glob(
+      '../assets/img/**/*.png',
+      { eager: true }
+    )
     console.log('imgMap:', imgMap)
     let absolutePath: string = '' //绝对路径。
     let imgName: string = '' // 图片名
     for (const relatviePath in imgMap) {
       absolutePath = imgMap[relatviePath].default //
       if (absolutePath) {
-        imgName = decodeURIComponent(absolutePath.substring(absolutePath.lastIndexOf('/') + 1))
+        imgName = decodeURIComponent(
+          absolutePath.substring(absolutePath.lastIndexOf('/') + 1)
+        )
+        if (import.meta.env.MODE === 'production') {
+          imgName =
+            imgName.slice(0, imgName.indexOf('-')) +
+            imgName.slice(imgName.lastIndexOf('.'))
+        }
         this.imgList[imgName] = absolutePath
       }
     }
