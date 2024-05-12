@@ -1,6 +1,11 @@
 import vue from '@vitejs/plugin-vue'
 import VueDevTools from 'vite-plugin-vue-devtools'
-import { defineConfig, CommonServerOptions, PluginOption } from 'vite'
+import {
+  defineConfig,
+  CommonServerOptions,
+  PluginOption,
+  PreviewOptions
+} from 'vite'
 // 安装@types/node包 能在ts项目中使用esmodule的方式引用node模块不报错
 import fs from 'fs'
 import dotenv, { DotenvParseOutput } from 'dotenv'
@@ -27,6 +32,7 @@ export default defineConfig(({ mode }) => {
   const curEnvFileName = `${envFileName}.${mode}`
   console.log(`curEnvFileName: ${curEnvFileName}`)
   let server: CommonServerOptions = {}
+  let preview: PreviewOptions = {}
   const plugins: PluginOption = []
   const envData = fs.readFileSync(`./${curEnvFileName}`)
   const envMap: DotenvParseOutput = dotenv.parse(envData)
@@ -45,11 +51,22 @@ export default defineConfig(({ mode }) => {
     }
     console.log(`我是${mode}开发环境`, server)
   } else if (mode === 'production') {
+    // 生产发布前，使用preview在本地先预览
+    preview = {
+      // host: envMap.VITE_HOST,
+      host: '0.0.0.0',
+      port: Number(envMap.VITE_PORT),
+      proxy: {
+        [envMap.VITE_BASE_URL]: {
+          target: envMap.VITE_PROXY_DOMAIN
+        }
+      }
+    }
     server = {
       host: envMap.VITE_HOST,
       port: Number(envMap.VITE_PORT)
     }
-    console.log(`我是${mode}生产环境`, server)
+    console.log(`我是${mode}生产环境`, server, `preview本地预览`, preview)
   }
   return {
     base: envMap.VITE_ROUTER_BASE_URL || '/',
@@ -63,11 +80,16 @@ export default defineConfig(({ mode }) => {
       }),
       ...plugins
     ],
+    preview,
     server,
     resolve: {
       alias: {
         '@': path.resolve(__dirname, 'src')
       }
+    },
+    build: {
+      // 关闭资源转base64
+      assetsInlineLimit: 0
     }
   }
 })
