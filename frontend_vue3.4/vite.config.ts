@@ -52,21 +52,22 @@ export default defineConfig(({ mode }) => {
     console.log(`我是${mode}开发环境`, server)
   } else if (mode === 'production') {
     // 生产发布前，使用preview在本地先预览
-    preview = {
-      // host: envMap.VITE_HOST,
-      host: '0.0.0.0',
-      port: Number(envMap.VITE_PORT),
-      proxy: {
-        [envMap.VITE_BASE_URL]: {
-          target: envMap.VITE_PROXY_DOMAIN
-        }
-      }
-    }
+    // preview = {
+    //   // host: envMap.VITE_HOST,
+    //   host: '0.0.0.0',
+    //   port: Number(envMap.VITE_PORT),
+    //   proxy: {
+    //     [envMap.VITE_BASE_URL]: {
+    //       target: envMap.VITE_PROXY_DOMAIN
+    //     }
+    //   }
+    // }
     server = {
+      // 发生产只需要这两项，接口用 nginx 转发
       host: envMap.VITE_HOST,
       port: Number(envMap.VITE_PORT)
     }
-    console.log(`我是${mode}生产环境`, server, `preview本地预览`, preview)
+    console.log(`我是${mode}生产环境`, server)
   }
   return {
     base: envMap.VITE_ROUTER_BASE_URL || '/',

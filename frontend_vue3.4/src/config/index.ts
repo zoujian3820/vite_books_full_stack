@@ -25,11 +25,11 @@ class EnvConfigClass {
   initEnvConf() {
     this.envConf = {
       development: {
-        baseApi: '/dang',
+        baseApi: import.meta.env.VITE_BASE_URL,
         mockBaseApi: 'https://www.fastmock.site/mock/xxx'
       },
       production: {
-        baseApi: '/dang',
+        baseApi: import.meta.env.VITE_BASE_URL,
         mockBaseApi: ''
       }
     }
