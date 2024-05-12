@@ -67,6 +67,8 @@ module.exports = {
         extendDefaults: true
       }
     ],
-    'vue/multi-word-component-names': 'off'
+    'vue/multi-word-component-names': 'off',
+    // 让定义了未使用的变量或参数时不报错，只是警告
+    '@typescript-eslint/no-unused-vars': ['warning']
   }
 }

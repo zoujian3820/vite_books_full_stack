@@ -29,8 +29,12 @@
     },
     /* Linting */
     "strict": true, // 代码开启严格模式
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+
+    // noUnusedLocals和noUnusedParameters都设为false
+    // 让定义了未使用的变量或参数不会报错，中止项目运行
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+
     "noFallthroughCasesInSwitch": true,
     "types": ["vite/client"]
   },
