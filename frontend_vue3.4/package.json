@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite --mode development --open",
     "build": "vue-tsc && vite build --mode production",
+    "build2": "vite build --mode production",
     "preview": "vite preview --open --port 8888",
     "eslint": "eslint --init",
     "lint": "eslint --ext .ts --ext .vue --ext js src/"
