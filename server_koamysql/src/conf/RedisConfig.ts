@@ -38,6 +38,7 @@ class RedsConfig {
       prod: {
         host: 'localhost',
         port: 6379
+		// password: '123456' // 生产redis要设密码，且密码要复杂些，否则会被攻击
       }
     }
   }
