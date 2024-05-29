@@ -3,6 +3,7 @@ import redis from 'koa-redis'
 interface DbConConf {
   host: string
   port: number
+  password?: string
 }
 
 interface EnvConf {

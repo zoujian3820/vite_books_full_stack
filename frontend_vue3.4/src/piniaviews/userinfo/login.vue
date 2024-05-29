@@ -97,7 +97,8 @@ function register() {
             @include flex-box(center, center);
 
             ::v-deep svg {
-                width: 100%
+                width: 100%;
+                height: 0.7rem;
             }
         }
     }
