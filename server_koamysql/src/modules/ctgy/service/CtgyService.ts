@@ -1,4 +1,4 @@
-import RedisConfig, { RedisClient } from '@/conf/RedisConfig'
+// import RedisConfig, { RedisClient } from '@/conf/RedisConfig'
 import FirstCtgys from '@modules/decormodel/firstCtgy'
 import CtgyDao from '../dao/CtgyDao'
 import redisUtil from '@/common/RedisUtil'

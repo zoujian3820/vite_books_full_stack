@@ -12,6 +12,10 @@
         <div class="psw">
             <input type="password" v-model.trim="password2" name="psw2" placeholder="再次输入密码" class="psw-input" />
         </div>
+        <div class="psw captcha-box">
+            <input type="text" v-model="captchaCode" name="captcha" placeholder="验证码" class="psw-input" />
+            <div class="captcha" @click="getCaptcha" v-html="storeCaptcha.img"></div>
+        </div>
         <div class="loginbtn" @click="register">注册</div>
     </div>
 </template>
@@ -25,7 +29,10 @@ const username = ref('')
 const password = ref('')
 const password2 = ref('')
 
-const { registeredUsers } = loginService
+const { registeredUsers, getCaptcha, captchaCode } = loginService
+getCaptcha()
+
+const { storeCaptcha } = loginService.storeToRefs
 function register() {
     if (!username.value) return showNotify({
         type: 'warning',
@@ -43,6 +50,16 @@ function register() {
         type: 'warning',
         message: '密码不能小于4位数'
     })
+
+    if (!captchaCode.value) return showNotify({
+        type: 'warning',
+        message: '验证码不能为空'
+    })
+    if (captchaCode.value.length !== 4) return showNotify({
+        type: 'warning',
+        message: '验证码错误'
+    })
+
     registeredUsers(username.value, password.value)
 }
 </script>
@@ -84,6 +101,34 @@ function register() {
             font-size: 0.2rem;
             margin-left: 0.3rem;
             color: #333;
+        }
+    }
+
+    .captcha-box {
+        position: relative;
+        background-color: #fff;
+
+        .psw-input {
+            @include wh(2.5rem, 0.7rem);
+            background-color: #f6f6f6;
+            border-radius: 1rem;
+            margin-left: 0;
+            text-indent: 0.3rem
+        }
+
+        .captcha {
+            @include wh(1.4rem, 0.7rem);
+            padding-left: 0.2rem;
+            position: absolute;
+            left: 2.5rem;
+            top: 0;
+            z-index: 1;
+            background-color: #fff;
+            @include flex-box(center, center);
+
+            ::v-deep svg {
+                width: 100%
+            }
         }
     }
 

@@ -19,7 +19,8 @@ export const uncheckedPathsRegExps = [
   /^\/dang\/usermodule\/register/,
   /^\/dang\/usermodule\/loginRenewal/,
   // 三级分类模块都不校验token登录
-  /^\/dang\/ctgymodule/
+  /^\/dang\/ctgymodule/,
+  /^\/dang\/usermodule\/getCaptch/
   // 开发时，测试接口开放部分
   // /^\/dang\/ordAndOrdDetailModule/,
   // /^\/dang\/evaluatemodule/,

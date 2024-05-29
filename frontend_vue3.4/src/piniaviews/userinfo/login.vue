@@ -9,6 +9,11 @@
         <div class="psw">
             <input type="password" v-model="password" name="psw" placeholder="密码" class="psw-input" />
         </div>
+        <div class="psw captcha-box">
+            <input type="text" v-model="captchaCode" name="captcha" placeholder="验证码" class="psw-input" />
+            <div class="captcha" @click="getCaptcha" v-html="storeCaptcha.img"></div>
+        </div>
+
         <div class="loginbtn" @click="login">登录</div>
         <div class="loginbtn register" @click="register">去注册</div>
     </div>
@@ -18,7 +23,11 @@
 import getImg from '@/utils/imgUtil'
 import loginService from './service/loginService';
 import router from '@/router';
-const { login, username, password } = loginService
+const { login, username, password, getCaptcha, captchaCode } = loginService
+const { storeCaptcha } = loginService.storeToRefs
+
+getCaptcha()
+
 function register() {
     // router.replace('/register')
     router.push('/register')
@@ -56,12 +65,40 @@ function register() {
         border-radius: 1rem;
 
         &-input {
-            @include wh(85%, 60%);
+            @include wh(2rem, 60%);
             border: none;
             background: none;
             font-size: 0.2rem;
             margin-left: 0.3rem;
             color: #333;
+        }
+    }
+
+    .captcha-box {
+        position: relative;
+        background-color: #fff;
+
+        .psw-input {
+            @include wh(2.5rem, 0.7rem);
+            background-color: #f6f6f6;
+            border-radius: 1rem;
+            margin-left: 0;
+            text-indent: 0.3rem
+        }
+
+        .captcha {
+            @include wh(1.4rem, 0.7rem);
+            padding-left: 0.2rem;
+            position: absolute;
+            left: 2.5rem;
+            top: 0;
+            z-index: 1;
+            background-color: #fff;
+            @include flex-box(center, center);
+
+            ::v-deep svg {
+                width: 100%
+            }
         }
     }
 

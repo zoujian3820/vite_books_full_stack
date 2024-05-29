@@ -12,11 +12,29 @@ class LoginService {
   static storeToRefs = storeToRefs(LoginService.store)
   static username = ref('')
   static password = ref('')
+  static captchaCode = ref('')
 
+  static async getCaptcha() {
+    await LoginService.store.getCaptcha()
+  }
   // 登录
   static async login() {
     const username = LoginService.username.value
     const password = LoginService.password.value
+    const captchaCode = LoginService.captchaCode.value
+
+    if (!captchaCode)
+      return showDialog({
+        title: '提示',
+        message: '验证码不能为空'
+      })
+
+    if (captchaCode.length !== 4)
+      return showDialog({
+        title: '提示',
+        message: '验证码错误'
+      })
+
     if (!username || !password) {
       // 提示用户输入用户名和密码
       // ElMessageBox.confirm('', {
@@ -33,7 +51,11 @@ class LoginService {
         message: '请输入用户名和密码'
       })
     } else {
-      await LoginService.store.login(username, password)
+      await LoginService.store.login({
+        username,
+        password,
+        captcha: LoginService.captchaCode.value
+      })
       // 登录成功后跳转到首页(图书三级分类页)
       const query = router.currentRoute.value.query
       const redirect = query.redirect as string
@@ -47,7 +69,11 @@ class LoginService {
     }
   }
   static async registeredUsers(username: string, password: string) {
-    await LoginService.store.registeredUsers(username, password)
+    await LoginService.store.registeredUsers({
+      username,
+      password,
+      captcha: LoginService.captchaCode.value
+    })
     await showToast('注册成功')
 
     router.push('/home')

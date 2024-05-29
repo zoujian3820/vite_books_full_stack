@@ -5,14 +5,27 @@ import { Code } from '@/common'
 
 @Controller('/usermodule')
 export default class UserController {
+  @get('/getCaptcha')
+  async getCaptcha(ctx: Context) {
+    const captcha = await userinfoService.getCaptcha()
+    ctx.body = ctx.resSuccess(captcha)
+  }
+
   @post('/login')
   async login(ctx: Context) {
-    const { username, password } = ctx.request.body
-    const userinfo = await userinfoService.login(username, password)
-    if (userinfo?.userid) {
+    const { username, password, captcha, encrypCaptcha, captchaId } = ctx.request.body
+    const userinfo = await userinfoService.login({
+      username,
+      password,
+      captcha,
+      encrypCaptcha,
+      captchaId
+    })
+    if (typeof userinfo === 'object' && userinfo.userid) {
       ctx.body = ctx.resSuccess(userinfo)
     } else {
-      ctx.body = ctx.resFail('用户名或密码错误')
+      // ctx.body = ctx.resFail('用户名或密码错误')
+      ctx.body = ctx.resFail(userinfo)
     }
   }
   @post('/loginRenewal')
@@ -28,12 +41,20 @@ export default class UserController {
 
   @post('/registeredUsers')
   async registeredUsers(ctx: Context) {
-    const { username, password } = ctx.request.body
-    const userinfo = await userinfoService.registeredUsers(username, password)
-    if (userinfo?.userid) {
+    const { username, password, captcha, encrypCaptcha, captchaId } = ctx.request.body
+    const userinfo = await userinfoService.registeredUsers({
+      username,
+      password,
+      captcha,
+      encrypCaptcha,
+      captchaId
+    })
+
+    if (typeof userinfo === 'object' && userinfo.userid) {
       ctx.body = ctx.resSuccess(userinfo)
     } else {
-      ctx.body = ctx.resFail('用户已存在，请更换用户名')
+      // ctx.body = ctx.resFail('用户已存在，请更换用户名')
+      ctx.body = ctx.resFail(userinfo)
     }
   }
 }
