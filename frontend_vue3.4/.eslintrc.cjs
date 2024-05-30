@@ -54,7 +54,7 @@ module.exports = {
     semi: 0, // 关闭语句结尾分号 （0为关闭这个条规则）
     quotes: [2, 'single'], //使用单引号
     'prefer-const': 2, // 不变的变量一定要使用const （2为开启这条规则）
-    '@typescript-eslint/no-unused-vars': 0, // 不允许出现未使用过的变量 （0为关闭这个条规则）
+    // '@typescript-eslint/no-unused-vars': 0, // 不允许出现未使用过的变量 （0为关闭这个条规则）
     '@typescript-eslint/no-inferrable-types': 0, // 不允许变量后面添加类型 （0为关闭这个条规则）
     '@typescript-eslint/no-non-null-assertion': 0,
     '@typescript-eslint/ban-types': [
@@ -68,7 +68,10 @@ module.exports = {
       }
     ],
     'vue/multi-word-component-names': 'off',
+
     // 让定义了未使用的变量或参数时不报错，只是警告
-    '@typescript-eslint/no-unused-vars': ['warning']
+    // 'no-unused-vars': 'off',
+    // '@typescript-eslint/no-unused-vars': ['off'] // 关闭
+    '@typescript-eslint/no-unused-vars': 'warn' // 警告
   }
 }
