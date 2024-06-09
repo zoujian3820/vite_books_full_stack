@@ -15,7 +15,7 @@ const orderinfo = () => import('@/piniaviews/orderinfo/index.vue')
 const ordersort = () => import('@/piniaviews/orderinfo/ordersort/index.vue')
 
 const animal = () => import('@/myanimal/animal.vue')
-search
+
 const routes: RouteRecordRaw[] = [
   {
     name: 'testpinia',
