@@ -590,33 +590,6 @@ console.log(chalk.blue('Hello', 'World!', 'Foo', 'bar', 'biz', 'baz'));
 console.log(chalk.red('Hello', chalk.underline.bgBlue('world') + '!'));
 ```
 
-## 安装log4js日志系统
-```
-npm i log4js -S
-```
-
-## 安装mysql数据库
-```
-npm i mysql -S
-```
-
-## 安装koa-jwt
-```
-npm i koa-jwt -S
-```
-
-## 安装koa-json
-```
-npm i koa-json -S
-```
-
-## 安装koa-body
-```
-  
-`
-```
-
-
 ## 配置启动脚本【热部署】
 ```
 // 当我们用nodemon启动项目后 nodemon会监听src/下的ts文件有更改，就调用ts-node命令来执行 ./src/app.ts
