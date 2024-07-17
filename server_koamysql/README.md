@@ -57,8 +57,16 @@ datadir=D:\extract\MySQL\MySQL_Server_8.0\data
 character-set-server=UTF8MB4
 #设置端口
 port = 3306
+ 
+group_concat_max_len = 10240
+
 #允许最大连接数，默认200
-max_connections=400
+max_connections=1000
+# 最大睡眠时间
+wait_timeout=300
+# 超时时间设置
+interactive_timeout = 500
+
 #创建新表时将使用的默认存储引擎
 default-storage-engine=INNODB
 
