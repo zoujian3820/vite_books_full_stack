@@ -51,32 +51,42 @@ class LoginService {
         message: '请输入用户名和密码'
       })
     } else {
-      await LoginService.store.login({
-        username,
-        password,
-        captcha: LoginService.captchaCode.value
-      })
-      // 登录成功后跳转到首页(图书三级分类页)
-      const query = router.currentRoute.value.query
-      const redirect = query.redirect as string
-      if (redirect) {
-        query.isRouteIntercep
-          ? router.replace(decodeURIComponent(redirect))
-          : router.back()
-      } else {
-        router.push('/home')
+      try {
+        await LoginService.store.login({
+          username,
+          password,
+          captcha: LoginService.captchaCode.value
+        })
+        // 登录成功后跳转到首页(图书三级分类页)
+        const query = router.currentRoute.value.query
+        const redirect = query.redirect as string
+        if (redirect) {
+          query.isRouteIntercep
+            ? router.replace(decodeURIComponent(redirect))
+            : router.back()
+        } else {
+          router.push('/home')
+        }
+      } catch (error) {
+        console.log('error', error)
+        LoginService.getCaptcha()
       }
     }
   }
   static async registeredUsers(username: string, password: string) {
-    await LoginService.store.registeredUsers({
-      username,
-      password,
-      captcha: LoginService.captchaCode.value
-    })
-    await showToast('注册成功')
+    try {
+      await LoginService.store.registeredUsers({
+        username,
+        password,
+        captcha: LoginService.captchaCode.value
+      })
+      await showToast('注册成功')
 
-    router.push('/home')
+      router.push('/home')
+    } catch (error) {
+      console.log('error', error)
+      LoginService.getCaptcha()
+    }
   }
 }
 

@@ -96,18 +96,20 @@ class UserinfoService {
   async loginRenewal(userid: number, access_token: string, refresh_token: string) {
     // access_token 为最新的情况下
     if (await MyJwt.checkIfTokenExists(access_token, userid)) {
-      // 校验当前 refresh_token 是否过期
-      const userinfo: Userinfo = await MyJwt.verifyJWTToken(refresh_token)
-      // logger.info()
-      // console.log('userinfo==>', userinfo)
+      try {
+        // 校验当前 refresh_token 是否过期
+        const userinfo: Userinfo = await MyJwt.verifyJWTToken(refresh_token)
+        // logger.info()
+        // console.log('userinfo==>', userinfo)
 
-      if (userinfo?.userid) {
-        const newAccess_token = await MyJwt.createJWTToken(userinfo, '1h')
-        // 创建新的token，立将其存储在Redis中，保持token的有效性
-        await MyJwt.setRedisJwtToken(userinfo.userid, newAccess_token)
-        return { ...userinfo, access_token: newAccess_token, refresh_token }
-      } else {
-        return null
+        if (userinfo?.userid) {
+          const newAccess_token = await MyJwt.createJWTToken(userinfo, '1h')
+          // 创建新的token，立将其存储在Redis中，保持token的有效性
+          await MyJwt.setRedisJwtToken(userinfo.userid, newAccess_token)
+          return { ...userinfo, access_token: newAccess_token, refresh_token }
+        }
+      } catch (error: any) {
+        console.log('jwt过期error==>', error)
       }
     }
   }

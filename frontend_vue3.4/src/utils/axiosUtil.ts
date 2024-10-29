@@ -91,7 +91,8 @@ class AxiosUtil {
             return response.data
           case 400:
           case 403:
-            ElMessage.error(msg)
+            // ElMessage.error(msg)
+            return this.handleTokenInvalidAndExpired(config, type, msg)
             return
           case 401:
             if (this.isFinishing) {

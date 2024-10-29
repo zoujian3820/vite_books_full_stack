@@ -44,5 +44,8 @@
     "vite-plugin-vue-devtools": "^7.0.27",
     "vue-eslint-parser": "^9.4.2",
     "vue-tsc": "^2.0.6"
+  },
+  "volta": {
+    "node": "20.15.0"
   }
 }
